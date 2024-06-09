@@ -1,0 +1,44 @@
+<nb-layout>
+  <nb-layout-header class="header-section" subheader>
+    <div class="header-container">
+      <div class="header-logo">
+        <a style="text-decoration:none;" routerLink=""><h1>Survey Sharing</h1></a>
+      </div>
+      <div class="Search bar">
+        <div style="display:inline-block">
+          <nb-actions size="medium">
+            <nb-action icon="search" link="search" style="top: 5px; left: 15px;"></nb-action>
+          </nb-actions>
+        </div>
+        <div style="display:inline-block"><input type="text" nbInput placeholder="Search"></div>
+        <div style="display:inline-block;">
+          <nb-select placeholder="Select Showcase" placeholder="Search type">
+            <nb-option value="0">Surveys</nb-option>
+            <nb-option value="1">Users</nb-option>
+          </nb-select>
+        </div>
+      </div>
+      <div *ngIf="hasMail" class="actions" style="float: right;">
+        <nb-actions size="medium">
+          <nb-action icon="person" link="user"></nb-action>
+          <nb-action icon="email" link="messages" badgeDot badgePosition="top right" badgeStatus="danger"></nb-action>
+        </nb-actions>
+      </div>
+      <div *ngIf="!hasMail" class="actions" style="float: right;">
+        <nb-actions size="medium">
+          <nb-action icon="person" link="user"></nb-action>
+          <nb-action icon="email" link="messages"></nb-action>
+        </nb-actions>
+      </div>
+      <nb-actions size="medium">
+        <nb-action icon="log-out" link="login"></nb-action>
+      </nb-actions>
+    </div>
+  </nb-layout-header>
+  <nb-layout-column>
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+  <nb-layout-footer fixed>
+    Lorenzo Bloise - l.bloise@outlook.it
+  </nb-layout-footer>
+</nb-layout>

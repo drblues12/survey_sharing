@@ -1,0 +1,37 @@
+.header-section {
+  width: 100%;
+  background-color: #f7f9fc; // Aggiungi un colore di sfondo per vedere meglio l'header
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+}
+
+.header-logo {
+  flex: 1;
+  h1 {
+    margin: 0; // Rimuovi margini per evitare spazi indesiderati
+  }
+}
+
+.search-bar {
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  input[nbInput] {
+    width: 100%; // Rende il campo di input più reattivo
+    max-width: 300px; // Limita la larghezza massima del campo di input
+  }
+}
+
+.actions {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}

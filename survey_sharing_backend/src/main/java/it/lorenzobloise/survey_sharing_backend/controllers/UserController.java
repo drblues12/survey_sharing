@@ -77,16 +77,6 @@ public class UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    //TODO
-    // Authentication (every role)
-    @GetMapping("/search/by_id")
-    public ResponseEntity findUsersById(@RequestParam String id){
-        Optional<User> result = userService.getUserById(id);
-        if(result.isEmpty())
-            return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
     // DELETE
 
     //TODO
