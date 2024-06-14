@@ -48,7 +48,7 @@ public class SurveyController {
         Set<Survey> result = surveyService.getAllSurveys();
         if(result.size()==0)
             return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
     }
 
     //TODO
@@ -59,7 +59,7 @@ public class SurveyController {
             Set<Survey> result = surveyService.getAllSurveysByOwner(owner);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -73,7 +73,7 @@ public class SurveyController {
             Set<Survey> result = surveyService.getSurveysByTitle(surveyTitle);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -91,7 +91,7 @@ public class SurveyController {
             Set<Survey> result = surveyService.getAllSurveysByOwner(user);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -107,7 +107,7 @@ public class SurveyController {
             result.retainAll(match);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -119,7 +119,7 @@ public class SurveyController {
     public ResponseEntity findStatistics(@PathVariable(value = "user") String user, @PathVariable(value = "survey") String surveyTitle){
         try{
             Statistics result = statisticsService.getStatistics(surveyTitle);
-            return new ResponseEntity(result, HttpStatus.OK);
+            return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

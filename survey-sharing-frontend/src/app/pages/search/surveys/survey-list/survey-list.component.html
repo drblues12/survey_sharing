@@ -1,1 +1,49 @@
-<p>survey-list works!</p>
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-header>
+        <h1>Results</h1>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-list>
+          <nb-list-item>
+            <div class="item-container">
+              <div class="item-title">
+                <b>Title</b>
+              </div>
+              <div class="item-owner">
+                <b>Created by</b>
+              </div>
+              <div class="item-date">
+                <b>Creation date</b>
+              </div>
+              <div class="item-button"></div>
+            </div>
+          </nb-list-item>
+          <nb-list-item *ngFor="let survey of search_results">
+            <div class="item-container">
+              <div class="item-title">
+                {{survey.title}}
+              </div>
+              <div class="item-owner">
+                <div *ngIf="owners_details.get(survey.owner)">
+                  <nb-user name="{{owners_details.get(survey.owner)?.name}} {{owners_details.get(survey.owner)?.surname}}" title="{{survey.owner}}"></nb-user>
+                </div>
+                <div *ngIf="!owners_details.get(survey.owner)">
+                  Loading user details...
+                </div>
+              </div>
+              <div class="item-date">
+                {{survey.creationDate[0]}}/{{survey.creationDate[1]}}/{{survey.creationDate[2]}}
+                <br>{{survey.creationDate[3]}}:{{survey.creationDate[4]}}:{{survey.creationDate[5]}}
+              </div>
+              <div class="item-button">
+                <button nbButton>Answer</button>
+              </div>
+            </div>
+          </nb-list-item>
+        </nb-list>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

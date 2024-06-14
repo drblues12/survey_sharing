@@ -1,5 +1,6 @@
 package it.lorenzobloise.survey_sharing_backend.controllers;
 
+import it.lorenzobloise.survey_sharing_backend.entities.Option;
 import it.lorenzobloise.survey_sharing_backend.entities.User;
 import it.lorenzobloise.survey_sharing_backend.services.UserService;
 import it.lorenzobloise.survey_sharing_backend.support.ResponseMessage;
@@ -44,17 +45,19 @@ public class UserController {
         Set<User> result = userService.getAllUsers();
         if(result.size()==0)
             return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
     }
 
     //TODO
     // Authentication (every role)
     @GetMapping("/search/by_name_surname")
-    public ResponseEntity findUsersByNameAndSurname(@RequestParam(required = false) String name, @RequestParam(required = false) String surname){
-        Set<User> result = userService.getUsersByNameAndSurname(name, surname);
+    public ResponseEntity findUsersByNameAndSurname(@RequestParam(required = false) String query){
+        if(query==null)
+            return findAllUsers();
+        Set<User> result = userService.getUsersByNameAndSurname(query);
         if(result.size()==0)
             return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
     }
 
     //TODO
@@ -64,7 +67,7 @@ public class UserController {
         Set<User> result = userService.getUsersByUsername(username);
         if(result.size()==0)
             return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
     }
 
     //TODO
@@ -74,7 +77,15 @@ public class UserController {
         Set<User> result = userService.getUsersByEmail(email);
         if(result.size()==0)
             return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/by_id")
+    public ResponseEntity findUserById(@RequestParam String id){
+        Optional<User> result = userService.getUserById(id);
+        if(result.isEmpty())
+            return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("",result.get()), HttpStatus.OK);
     }
 
     // DELETE

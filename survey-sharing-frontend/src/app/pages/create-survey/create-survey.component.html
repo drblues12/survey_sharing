@@ -1,0 +1,38 @@
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-header>
+        <h1>Create survey</h1>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-card>
+          <nb-card-header>
+            <div class="item-container">
+              <div class="item-1">
+                <h5><b>Survey title:</b></h5>
+              </div>
+              <div class="item-1">
+                <input nbInput placeholder="Title" [(ngModel)]="surveyTitle">
+                <button nbButton (click)="checkAvailability()">Check availability</button>
+              </div>
+              <div class="item-3"></div>
+              <div class="item-3"></div>
+              <div class="item-3"></div>
+              <div class="item-3"></div>
+            </div>
+          </nb-card-header>
+          <nb-card-body>
+            <div class="item-1">
+              <button nbButton nbContextMenuTag="my-context-menu" [nbContextMenu]="questionTypes">Add question</button>
+            </div>
+          </nb-card-body>
+          <nb-card-footer>
+            <div class="item-3">
+              <button nbButton (click)="submit()">Submit survey</button>
+            </div>
+          </nb-card-footer>
+        </nb-card>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

@@ -1,6 +1,7 @@
 package it.lorenzobloise.survey_sharing_backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import it.lorenzobloise.survey_sharing_backend.support.Utils;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -23,7 +24,7 @@ import java.util.TreeSet;
 @AllArgsConstructor
 public class Survey implements Comparable<Survey> {
 
-    public enum SurveyType{TEST, FORM}
+    public enum SurveyType{Test, Form}
     @Id
     private String id;
     @NotBlank(message = "Survey title shall not be blank")
@@ -33,7 +34,9 @@ public class Survey implements Comparable<Survey> {
     private String owner; // Username of the owner
     private Set<String> answers; // Answers id
     private Set<String> invitations; // Invitations id
-    private LocalDateTime creationDate;
+    @JsonIgnore
+    private LocalDateTime creationDateObj;
+    private String[] creationDate;
     @NotBlank(message = "Survey type shall not be blank")
     private SurveyType surveyType;
     private String statistics;
@@ -45,7 +48,8 @@ public class Survey implements Comparable<Survey> {
         this.owner = owner;
         this.title = title;
         this.questions = new LinkedList<>();
-        this.creationDate = LocalDateTime.now();
+        this.creationDateObj = LocalDateTime.now();
+        this.creationDate = Utils.parseDate(this.creationDateObj.toString());
         this.surveyType = surveyType;
         this.answers = new TreeSet<>();
         this.invitations = new TreeSet<>();
@@ -65,6 +69,6 @@ public class Survey implements Comparable<Survey> {
     @Override
     public int compareTo(Survey s) {
         if(this.equals(s)) return 0;
-        return this.creationDate.compareTo(s.creationDate);
+        return this.creationDateObj.compareTo(s.creationDateObj);
     }
 }

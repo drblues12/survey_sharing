@@ -1,5 +1,7 @@
 package it.lorenzobloise.survey_sharing_backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import it.lorenzobloise.survey_sharing_backend.support.Utils;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -25,13 +27,16 @@ public class Invitation implements Comparable<Invitation> {
     private String message;
     private boolean read;
     private boolean accepted;
-    private LocalDateTime date;
+    @JsonIgnore
+    private LocalDateTime invitationDateObj;
+    private String[] invitationDate;
 
     public Invitation(String user, String survey, String message){
         this.user = user;
         this.survey = survey;
         this.message = message;
-        this.date = LocalDateTime.now();
+        this.invitationDateObj = LocalDateTime.now();
+        this.invitationDate = Utils.parseDate(this.invitationDateObj.toString());
     }
 
     public Invitation(Invitation i){
@@ -43,14 +48,14 @@ public class Invitation implements Comparable<Invitation> {
         if(o==this) return true;
         if(o instanceof Invitation){
             Invitation i = (Invitation) o;
-            return user.equals(i.getUser()) && survey.equals(i.getSurvey()) && date.equals(i.getDate());
+            return user.equals(i.getUser()) && survey.equals(i.getSurvey()) && invitationDateObj.equals(i.getInvitationDateObj());
         }
         return false;
     }
 
     public int compareTo(Invitation i){
         if(this.equals(i)) return 0;
-        return this.date.compareTo(i.getDate());
+        return this.invitationDateObj.compareTo(i.getInvitationDateObj());
     }
 
 }

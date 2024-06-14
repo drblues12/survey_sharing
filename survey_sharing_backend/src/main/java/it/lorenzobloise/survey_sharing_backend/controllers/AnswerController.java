@@ -43,7 +43,7 @@ public class AnswerController {
             Set<Answer> result = answerService.getAllAnswers(user);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-            return new ResponseEntity(result, HttpStatus.OK);
+            return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -57,7 +57,7 @@ public class AnswerController {
             Set<Answer> result = answerService.getAnswersBySurveyTitle(user, surveyTitle);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-            return new ResponseEntity(result, HttpStatus.OK);
+            return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

@@ -4,11 +4,12 @@ import { Statistics } from "./statistics";
 import { User } from "./user";
 
 export class Survey{
+  id!: string;
   title!: string;
-  owner!: User;
-  survey_type!: string;
-  creation_date!: string; //TODO
-  answers!: Answer[];
-  invitations!: Invitation[];
-  statistics!: Statistics;
+  owner!: string;
+  surveyType!: string;
+  creationDate!: string[];
+  answers!: string[];
+  invitations!: string[];
+  statistics!: string | null;
 }

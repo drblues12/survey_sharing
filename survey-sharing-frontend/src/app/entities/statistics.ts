@@ -1,8 +1,8 @@
 import { Survey } from "./survey";
 
 export class Statistics{
-  id!: number;
-  survey!: Survey;
+  id!: string;
+  survey!: string;
   numberOfAnswers!: number;
   percentOfUsersWhoAnswered!: number;
   minimumAge!: number;
@@ -17,4 +17,5 @@ export class Statistics{
   listOfFeedbacks!: string[];
   numberOfPositiveFeedbacks!: number;
   numberOfNegativeFeedbacks!: number;
+  averageRating!: number;
 }

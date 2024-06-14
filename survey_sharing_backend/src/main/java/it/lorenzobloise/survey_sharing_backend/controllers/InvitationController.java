@@ -30,7 +30,7 @@ public class InvitationController {
             Set<Invitation> result = invitationService.addNewInvitationsToSurvey(surveyTitle, invitations);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-            return new ResponseEntity(result, HttpStatus.OK);
+            return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -46,7 +46,7 @@ public class InvitationController {
             Set<Invitation> result = invitationService.getAllInvitations(user);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-            return new ResponseEntity(result, HttpStatus.OK);
+            return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -58,7 +58,7 @@ public class InvitationController {
     public ResponseEntity deleteInvitation(@PathVariable(value = "user") String user, @RequestParam String invitation){
         try {
             Invitation result = invitationService.removeInvitation(invitation);
-            return new ResponseEntity(result, HttpStatus.OK);
+            return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -72,7 +72,7 @@ public class InvitationController {
                                            @RequestParam boolean read, @RequestParam boolean accepted){
         try {
             Invitation result = invitationService.updateInvitation(user, invitation, read, accepted);
-            return new ResponseEntity(result, HttpStatus.OK);
+            return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

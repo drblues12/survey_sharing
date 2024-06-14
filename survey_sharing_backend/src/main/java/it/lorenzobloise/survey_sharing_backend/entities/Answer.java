@@ -1,6 +1,7 @@
 package it.lorenzobloise.survey_sharing_backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import it.lorenzobloise.survey_sharing_backend.support.Utils;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -25,7 +26,10 @@ public class Answer implements Comparable<Answer> {
     @JsonIgnore
     private List<String> questions; // Questions id
     private String user; // User's username
-    private LocalDateTime date;
+    private Double rating;
+    @JsonIgnore
+    private LocalDateTime answerDateObj;
+    private String[] answerDate;
     private String feedback;
     @Version
     private Long version;
@@ -36,12 +40,25 @@ public class Answer implements Comparable<Answer> {
         this.survey = survey;
         this.questions = new LinkedList<>();
         this.feedback = "";
-        this.date = LocalDateTime.now();
+        this.answerDateObj = LocalDateTime.now();
+        this.answerDate = Utils.parseDate(this.answerDateObj.toString());
+        this.rating = null;
     }
 
     public Answer(String user, String survey, String feedback){
         this(user, survey);
         this.feedback = feedback;
+    }
+
+    public Answer(String user, String survey, double rating){
+        this(user, survey);
+        this.rating = rating;
+    }
+
+    public Answer(String user, String survey, String feedback, double rating){
+        this(user, survey);
+        this.feedback = feedback;
+        this.rating = rating;
     }
 
     public boolean equals(Object o){
@@ -56,7 +73,7 @@ public class Answer implements Comparable<Answer> {
 
     public int compareTo(Answer a){
         if(this.equals(a)) return 0;
-        return this.date.compareTo(a.getDate());
+        return this.answerDateObj.compareTo(a.getAnswerDateObj());
     }
 
 }

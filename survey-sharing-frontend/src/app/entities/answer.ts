@@ -3,10 +3,11 @@ import { Survey } from "./survey";
 import { User } from "./user";
 
 export class Answer{
-  id!: number;
-  user!: User;
-  survey!: Survey;
+  id!: string;
+  user!: string;
+  survey!: string;
   questions!: Question[];
-  date!: string; //TODO
+  answerDate!: string[];
   feedback!: string;
+  rating!: number | null;
 }

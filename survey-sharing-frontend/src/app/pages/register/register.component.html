@@ -1,0 +1,35 @@
+<div class="centered">
+  <nb-card>
+    <nb-card-header>
+      <h4>Register</h4>
+    </nb-card-header>
+    <nb-card-body>
+      <nb-form-field>
+        <input nbInput type="text" placeholder="Email">
+        <input fullWidth="true" nbInput type="text" placeholder="Username">
+      </nb-form-field>
+      <nb-form-field>
+        <input [type]="getInputType()" nbInput placeholder="Password">
+        <button fullWidth="true" nbSuffix nbButton ghost (click)="toggleShowPassword()">
+          <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
+                    pack="eva"
+                    [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+          </nb-icon>
+        </button>
+      </nb-form-field>
+      <nb-form-field>
+        <input nbInput type="text" placeholder="Name">
+        <input nbInput type="text" placeholder="Surname">
+        <input nbInput type="text" placeholder="Age">
+        <nb-select placeholder="Gender">
+          <nb-option value="0">Male</nb-option>
+          <nb-option value="1">Female</nb-option>
+        </nb-select>
+        <nb-select placeholder="Country" [(ngModel)]="selected_country">
+          <nb-option *ngFor="let country of countries" [value]="country.code">{{country.name}}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <button (click)="register()" nbButton fullWidth="true">Register</button>
+    </nb-card-body>
+  </nb-card>
+</div>

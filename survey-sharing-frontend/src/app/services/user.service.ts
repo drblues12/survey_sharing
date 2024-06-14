@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { ResponseMessage } from "../support/response-message";
+import { User } from "../entities/user";
 
 @Injectable({
   providedIn: 'root'
@@ -23,22 +24,20 @@ export class UserService{
     return this.http.get<ResponseMessage>(this.base_url+'/search/all');
   }
 
-  public findUsersByNameAndSurname(name: string, surname: string){
-    var url = this.base_url+'/search/by_name_surname';
-    if(name!=null && name.length!=0){
-      url += '/?name='+name;
-    }
-    if(surname!=null && surname.length!=0){
-      if(name!=null && name.length!=0){
-        url += '&'
-      }
-      url += 'surname='+surname
-    }
-    return this.http.get<ResponseMessage>(url);
+  public findUsersByNameAndSurname(name_and_surname: string){
+    return this.http.get<ResponseMessage>(this.base_url+'/search/by_name_surname?query='+name_and_surname);
   }
 
   public findUsersByEmail(email: string){
     return this.http.get<ResponseMessage>(this.base_url+'/search/by_email?email='+email);
+  }
+
+  public findUserById(id: string){
+    return this.http.get<ResponseMessage>(this.base_url+'/search/by_id?id='+id);
+  }
+
+  public findUsersByUsername(username: string){
+    return this.http.get<ResponseMessage>(this.base_url+'/search/by_username?username='+username);
   }
 
   // DELETE

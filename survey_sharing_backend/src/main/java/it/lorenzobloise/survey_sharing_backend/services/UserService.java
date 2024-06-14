@@ -5,9 +5,7 @@ import it.lorenzobloise.survey_sharing_backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
@@ -37,15 +35,18 @@ public class UserService {
         return new TreeSet<>(userRepository.findAll());
     }
 
-    public Set<User> getUsersByNameAndSurname(String name, String surname){
-        if(name==null && surname==null)
-            return new TreeSet<>();
-        if(name==null)
-            return new TreeSet<>(userRepository.findUsersBySurnameContainingIgnoreCase(surname));
-        if(surname==null)
-            return new TreeSet<>(userRepository.findUsersByNameContainingIgnoreCase(name));
-        Set<User> result = new TreeSet<>(userRepository.findUsersByNameContainingIgnoreCase(name));
-        result.addAll(userRepository.findUsersBySurnameContainingIgnoreCase(surname));
+    public Set<User> getUsersByNameAndSurname(String query){
+        Set<User> result = new TreeSet<>();
+        // Tokenize the query, separating name and surname
+        StringTokenizer st = new StringTokenizer(query," ");
+        List<String> tokens = new LinkedList<>();
+        while(st.hasMoreTokens()) tokens.add(st.nextToken());
+        for(String t: tokens){
+            TreeSet<User> partial = new TreeSet<>(userRepository.findUsersByNameContainingIgnoreCase(t));
+            TreeSet<User> partial2 = new TreeSet<>(userRepository.findUsersBySurnameContainingIgnoreCase(t));
+            partial.addAll(partial2);
+            for(User u: partial) result.add(u);
+        }
         return result;
     }
 

@@ -1,3 +1,55 @@
 <nb-layout>
-  <nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-header>
+        <h3>Welcome, {{user.name}} {{user.surname}}</h3>
+      </nb-card-header>
+    </nb-card>
+    <nb-card>
+      <nb-card-header>
+        <h3>Trending now</h3>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-list>
+          <nb-list-item>
+            <div class="item-container">
+              <div class="item-1">
+                <b>Title</b>
+              </div>
+              <div class="item-2">
+                <b>Created by</b>
+              </div>
+              <div class="item-2">
+                <b>Creation Date</b>
+              </div>
+              <div class="item-2">
+                <b>Average rating</b>
+              </div>
+              <div class="item-3"></div>
+            </div>
+          </nb-list-item>
+          <nb-list-item *ngFor="let survey of trending">
+            <div class="item-container">
+              <div class="item-1">
+                {{survey.title}}
+              </div>
+              <div class="item-2">
+                <nb-user name="{{user_details.get(survey.owner)?.name}} {{user_details.get(survey.owner)?.surname}}" title="{{survey.owner}}"></nb-user>
+              </div>
+              <div class="item-2">
+                {{survey.creationDate[0]}}/{{survey.creationDate[1]}}/{{survey.creationDate[2]}}
+                <br>{{survey.creationDate[3]}}:{{survey.creationDate[4]}}:{{survey.creationDate[5]}}
+              </div>
+              <div class="item-2">
+                <!--Average rating-->
+              </div>
+              <div class="item-3">
+                <button nbButton>Answer</button>
+              </div>
+            </div>
+          </nb-list-item>
+        </nb-list>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
 </nb-layout>

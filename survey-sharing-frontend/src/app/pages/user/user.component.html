@@ -1,1 +1,203 @@
-<p>user works!</p>
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-header>
+        <h1>{{user.name}} {{user.surname}}</h1>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-card>
+          <nb-card-header>
+            <h4>Information</h4>
+          </nb-card-header>
+          <nb-card-body>
+            <nb-list>
+              <nb-list-item>
+                <div class="item-container">
+                  <div class="item-1">
+                    <b>Name</b>: {{user.name}}
+                  </div>
+                  <div class="item-1">
+                    <b>Surname</b>: {{user.surname}}
+                  </div>
+                  <div class="item-1"></div>
+                  <div class="item-1"></div>
+                  <div class="item-1"></div>
+                </div>
+              </nb-list-item>
+              <nb-list-item>
+                <div class="item-container">
+                  <div class="item-1">
+                    <b>Username</b>: {{user.username}}
+                  </div>
+                  <div class="item-1">
+                    <b>Email</b>: {{user.email}}
+                  </div>
+                  <div class="item-1"></div>
+                  <div class="item-1"></div>
+                  <div class="item-1"></div>
+                </div>
+              </nb-list-item>
+              <nb-list-item>
+                <div class="item-container">
+                  <div class="item-1">
+                    <b>Age</b>: {{user.age}}
+                  </div>
+                  <div class="item-1">
+                    <b>Gender</b>: {{user.gender}}
+                  </div>
+                  <div class="item-1"></div>
+                  <div class="item-1"></div>
+                  <div class="item-1"></div>
+                </div>
+              </nb-list-item>
+              <nb-list-item>
+                <div class="item-1">
+                  <b>Country</b>: {{user.country}}
+                </div>
+                <div class="item-1">
+                  <b>Registered since</b>: {{user.registrationDate[0]}}/{{user.registrationDate[1]}}/{{user.registrationDate[2]}} {{user.registrationDate[3]}}:{{user.registrationDate[4]}}:{{user.registrationDate[5]}}
+                </div>
+                <div class="item-1"></div>
+                <div class="item-1"></div>
+                <div class="item-1"></div>
+              </nb-list-item>
+            </nb-list>
+          </nb-card-body>
+        </nb-card>
+        <nb-card>
+          <nb-tabset fullWidth="">
+            <nb-tab tabTitle="Created Surveys">
+              <nb-list>
+                <nb-list-item>
+                  <div class="item-container">
+                    <div class="item-1">
+                      <b>Title</b>
+                    </div>
+                    <div class="item-1">
+                      <b>Type</b>
+                    </div>
+                    <div class="item-1">
+                      <b>Creation date</b>
+                    </div>
+                    <div class="item-2">
+                      <b>Average rating</b>
+                    </div>
+                    <div class="item-3"></div>
+                    <div class="item-3"></div>
+                    <div class="item-3"></div>
+                  </div>
+                </nb-list-item>
+                <nb-list-item *ngFor="let survey of user.createdSurveys">
+                  <div class="item-container">
+                    <div class="item-1">
+                      {{survey}}
+                    </div>
+                    <div class="item-1">
+                      {{createdSurveys.get(survey)?.surveyType}}
+                    </div>
+                    <div class="item-1">
+                      {{appComponent.getParsedDate(createdSurveys.get(survey)?.creationDate)}}
+                      <br>{{appComponent.getParsedHour(createdSurveys.get(survey)?.creationDate)}}
+                    </div>
+                    <div class="item-2">
+                      <!--TODO Average Rating-->
+                    </div>
+                    <div class="item-3">
+                      <button nbButton>Answers</button>
+                    </div>
+                    <div class="item-3">
+                      <button nbButton>Statistics</button>
+                    </div>
+                    <div class="item-3">
+                      <button nbButton>Delete</button>
+                    </div>
+                  </div>
+                </nb-list-item>
+              </nb-list>
+            </nb-tab>
+            <nb-tab tabTitle="Answered surveys">
+              <nb-list>
+                <nb-list-item>
+                  <div class="item-container">
+                    <div class="item-1">
+                      <b>Title</b>
+                    </div>
+                    <div class="item-1">
+                      <b>Created by</b>
+                    </div>
+                    <div class="item-2">
+                      <b>Answer date</b>
+                    </div>
+                    <div class="item-3"></div>
+                    <div class="item-3"></div>
+                  </div>
+                </nb-list-item>
+                <nb-list-item *ngFor="let survey of answer_surveys">
+                  <div class="item-container">
+                    <div class="item-1">
+                      {{answers.get(survey)?.survey}}
+                    </div>
+                    <div class="item-1">
+                      <nb-user name="{{surveysOwners.get(survey)?.name}} {{surveysOwners.get(survey)?.surname}}" title="{{surveysOwners.get(survey)?.username}}"></nb-user>
+                    </div>
+                    <div class="item-2">
+                      {{appComponent.getParsedDate(answers.get(survey)?.answerDate)}}
+                      <br>{{appComponent.getParsedHour(answers.get(survey)?.answerDate)}}
+                    </div>
+                    <div class="item-3">
+                      <button nbButton>See details</button>
+                    </div>
+                    <div class="item-3">
+                      <button nbButton>Delete</button>
+                    </div>
+                  </div>
+                </nb-list-item>
+              </nb-list>
+            </nb-tab>
+            <nb-tab tabTitle="Invitations">
+              <nb-list>
+                <nb-list-item>
+                  <div class="item-container">
+                    <div class="item-1">
+                      <b>Survey</b>
+                    </div>
+                    <div class="item-1">
+                      <b>Sender</b>
+                    </div>
+                    <div class="item-2">
+                      <b>Invitation date</b>
+                    </div>
+                    <div class="item-3">
+                      <b>Message</b>
+                    </div>
+                    <div class="item-3"></div>
+                  </div>
+                </nb-list-item>
+                <nb-list-item *ngFor="let invitation of user.invitations">
+                  <div class="item-container">
+                    <div class="item-1">
+                      {{invitations.get(invitation)?.survey}}
+                    </div>
+                    <div class="item-1">
+                      <nb-user name="{{invitationSenders.get(invitation)?.name}} {{invitationSenders.get(invitation)?.surname}}" title="{{invitationSenders.get(invitation)?.username}}"></nb-user>
+                    </div>
+                    <div class="item-2">
+                      {{appComponent.getParsedDate(invitations.get(invitation)?.invitationDate)}}
+                      <br>{{appComponent.getParsedHour(invitations.get(invitation)?.invitationDate)}}
+                    </div>
+                    <div class="item-3">
+                      {{invitations.get(invitation)?.message}}
+                    </div>
+                    <div class="item-3">
+                      <button nbButton>Accept</button>
+                    </div>
+                  </div>
+                </nb-list-item>
+              </nb-list>
+            </nb-tab>
+          </nb-tabset>
+        </nb-card>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

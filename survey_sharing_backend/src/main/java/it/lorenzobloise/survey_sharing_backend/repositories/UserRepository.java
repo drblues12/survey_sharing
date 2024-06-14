@@ -2,6 +2,7 @@ package it.lorenzobloise.survey_sharing_backend.repositories;
 
 import it.lorenzobloise.survey_sharing_backend.entities.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 import java.util.Optional;

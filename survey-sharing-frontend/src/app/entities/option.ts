@@ -1,5 +1,5 @@
 export class Option{
-  id!: number;
+  id!: string;
   option!: string;
   selected!: boolean;
   correct!: boolean;

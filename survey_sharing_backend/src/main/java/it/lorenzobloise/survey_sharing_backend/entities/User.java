@@ -1,6 +1,7 @@
 package it.lorenzobloise.survey_sharing_backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import it.lorenzobloise.survey_sharing_backend.support.Utils;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
@@ -10,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -24,7 +26,7 @@ import java.util.TreeSet;
 @AllArgsConstructor
 public class User implements Comparable<User> {
 
-    public enum Gender{MALE, FEMALE};
+    public enum Gender{Male, Female};
     @Id
     private String id;
     @NotBlank(message = "Username shall not be blank")
@@ -46,6 +48,9 @@ public class User implements Comparable<User> {
     private Map<String,String> answers; // The key is the survey's title, so each user can only give one answer per survey, and the value is the answer's id
     private Set<String> invitations; // Ids of the invitations received
     @JsonIgnore
+    private LocalDateTime registrationDateObj;
+    private String[] registrationDate;
+    @JsonIgnore
     @Version
     private Long version;
 
@@ -60,6 +65,8 @@ public class User implements Comparable<User> {
         this.createdSurveys = new TreeSet<>();
         this.answers = new TreeMap<>();
         this.invitations = new TreeSet<>();
+        this.registrationDateObj = LocalDateTime.now();
+        this.registrationDate = Utils.parseDate(this.registrationDateObj.toString());
     }
 
     public User(String username, String email, String name, String surname, int age, Gender gender, String country, Set<String> createdSurveys, Map<String,String> answers) {
@@ -73,6 +80,8 @@ public class User implements Comparable<User> {
         this.createdSurveys = createdSurveys;
         this.answers = answers;
         this.invitations = new TreeSet<>();
+        this.registrationDateObj = LocalDateTime.now();
+        this.registrationDate = Utils.parseDate(this.registrationDateObj.toString());
     }
 
     public boolean equals(Object o){
