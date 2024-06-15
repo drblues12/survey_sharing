@@ -26,16 +26,15 @@ public class SurveyService {
 
     // POST
 
-    public Survey addSurvey(String user, String surveyTitle, String surveyType, List<Question> questions){
+    public Survey addSurvey(String user, String surveyTitle, List<Question> questions){
         Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user, user, user);
         if(u.isEmpty())
             throw new RuntimeException("User does not exist");
         if(surveyRepository.findSurveyByTitle(surveyTitle).isPresent())
             throw new RuntimeException("Survey already exists");
         try {
-            Survey.SurveyType surveyTypeConverted = Survey.SurveyType.valueOf(surveyType);
             // Create survey
-            Survey survey = new Survey(u.get().getUsername(), surveyTitle, surveyTypeConverted);
+            Survey survey = new Survey(u.get().getUsername(), surveyTitle);
             // Add this survey to the surveys repository
             Survey result = surveyRepository.save(survey);
             // Add questions
@@ -76,6 +75,10 @@ public class SurveyService {
 
     public Set<Survey> getSurveysByTitle(String surveyTitle){
         return new TreeSet<>(surveyRepository.findSurveysByTitleContaining(surveyTitle));
+    }
+
+    public Optional<Survey> getSurveyByTitle(String surveyTitle){
+        return surveyRepository.findSurveyByTitle(surveyTitle);
     }
 
     // DELETE

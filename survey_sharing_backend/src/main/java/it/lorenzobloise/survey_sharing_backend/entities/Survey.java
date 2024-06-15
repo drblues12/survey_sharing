@@ -24,7 +24,6 @@ import java.util.TreeSet;
 @AllArgsConstructor
 public class Survey implements Comparable<Survey> {
 
-    public enum SurveyType{Test, Form}
     @Id
     private String id;
     @NotBlank(message = "Survey title shall not be blank")
@@ -37,20 +36,17 @@ public class Survey implements Comparable<Survey> {
     @JsonIgnore
     private LocalDateTime creationDateObj;
     private String[] creationDate;
-    @NotBlank(message = "Survey type shall not be blank")
-    private SurveyType surveyType;
     private String statistics;
     @Version
     @JsonIgnore
     private Long version;
 
-    public Survey(String owner, String title, SurveyType surveyType){
+    public Survey(String owner, String title){
         this.owner = owner;
         this.title = title;
         this.questions = new LinkedList<>();
         this.creationDateObj = LocalDateTime.now();
         this.creationDate = Utils.parseDate(this.creationDateObj.toString());
-        this.surveyType = surveyType;
         this.answers = new TreeSet<>();
         this.invitations = new TreeSet<>();
         this.statistics = null;

@@ -23,6 +23,7 @@ public class MultipleChoiceQuestion extends Question {
     public MultipleChoiceQuestion(List<Option> options){
         super();
         this.options = options;
+        this.type = QuestionType.MultipleChoice.toString();
     }
 
 }

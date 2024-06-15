@@ -74,15 +74,12 @@
                       <b>Title</b>
                     </div>
                     <div class="item-1">
-                      <b>Type</b>
-                    </div>
-                    <div class="item-1">
                       <b>Creation date</b>
                     </div>
                     <div class="item-2">
                       <b>Average rating</b>
                     </div>
-                    <div class="item-3"></div>
+                    <div class="item-2"></div>
                     <div class="item-3"></div>
                     <div class="item-3"></div>
                   </div>
@@ -93,16 +90,13 @@
                       {{survey}}
                     </div>
                     <div class="item-1">
-                      {{createdSurveys.get(survey)?.surveyType}}
-                    </div>
-                    <div class="item-1">
                       {{appComponent.getParsedDate(createdSurveys.get(survey)?.creationDate)}}
                       <br>{{appComponent.getParsedHour(createdSurveys.get(survey)?.creationDate)}}
                     </div>
                     <div class="item-2">
                       <!--TODO Average Rating-->
                     </div>
-                    <div class="item-3">
+                    <div class="item-2">
                       <button nbButton>Answers</button>
                     </div>
                     <div class="item-3">

@@ -30,7 +30,6 @@ public class Statistics {
     private double averageAge;
     private int numberOfMaleUsersWhoAnswered;
     private int numberOfFemaleUsersWhoAnswered;
-    private double averageScore;
     private int numberOfInvitationsSent;
     private double percentOfInvitationsAccepted;
     private int numberOfDifferentCountries;

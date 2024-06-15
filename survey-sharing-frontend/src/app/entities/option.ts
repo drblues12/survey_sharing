@@ -2,5 +2,9 @@ export class Option{
   id!: string;
   option!: string;
   selected!: boolean;
-  correct!: boolean;
+
+  constructor(option: string){
+    this.option = option;
+    this.selected = false;
+  }
 }

@@ -27,6 +27,11 @@ export class UserComponent implements OnInit {
   surveysOwners: Map<string, User> = this.appComponent.surveysOwners;
   invitationSenders: Map<string, User> = this.appComponent.invitationSenders;
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if(this.appComponent.reloadUser){
+      this.appComponent.reloadUser = false;
+      window.location.reload();
+    }
+  }
 
 }

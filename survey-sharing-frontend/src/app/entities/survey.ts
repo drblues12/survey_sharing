@@ -7,7 +7,7 @@ export class Survey{
   id!: string;
   title!: string;
   owner!: string;
-  surveyType!: string;
+  questions!: string[];
   creationDate!: string[];
   answers!: string[];
   invitations!: string[];

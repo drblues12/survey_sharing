@@ -29,11 +29,11 @@ public class SurveyController {
     //TODO
     // Authentication as this user
     @PostMapping
-    public ResponseEntity createSurvey(@RequestParam String user, @RequestParam String surveyTitle, @RequestParam String surveyType,
+    public ResponseEntity createSurvey(@RequestParam String user, @RequestParam String surveyTitle,
                                        @RequestBody List<Question> questions){
         try{
             return new ResponseEntity(new ResponseMessage("Created successfully",
-                    surveyService.addSurvey(user, surveyTitle, surveyType, questions)), HttpStatus.OK);
+                    surveyService.addSurvey(user, surveyTitle, questions)), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -72,6 +72,20 @@ public class SurveyController {
         try{
             Set<Survey> result = surveyService.getSurveysByTitle(surveyTitle);
             if(result.size()==0)
+                return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
+        }catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+    }
+
+    //TODO
+    // Authentication (every role)
+    @GetMapping("/search/single/by_title")
+    public ResponseEntity findSurveyByTitle(@RequestParam String surveyTitle){
+        try{
+            Optional<Survey> result = surveyService.getSurveyByTitle(surveyTitle);
+            if(result.isEmpty())
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
             return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){

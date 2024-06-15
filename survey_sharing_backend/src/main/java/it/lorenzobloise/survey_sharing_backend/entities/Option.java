@@ -23,18 +23,15 @@ public class Option {
     @NotBlank(message = "Question shall not be blank")
     private String option;
     private boolean selected;
-    private boolean correct;
 
     public Option(String option){
         this.selected = false;
         this.option = option;
-        this.correct = false;
     }
 
-    public Option(String option, boolean selected, boolean correct){
+    public Option(String option, boolean selected){
         this(option);
         this.selected = selected;
-        this.correct = correct;
     }
 
 }

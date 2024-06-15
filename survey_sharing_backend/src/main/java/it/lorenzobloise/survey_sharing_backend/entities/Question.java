@@ -28,16 +28,19 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 public class Question {
 
+    public enum QuestionType{MultipleChoice, OpenEnded, Image}
     @Id
     private String id;
     @NotBlank(message = "Question shall not be blank")
     private String question;
+    protected String type;
     @Version
     private Long version;
 
     public Question(String question){
         this();
         this.question = question;
+        this.type = "";
     }
 
 }

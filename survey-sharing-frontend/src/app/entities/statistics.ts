@@ -10,7 +10,6 @@ export class Statistics{
   averageAge!: number;
   numberOfMaleUsersWhoAnswered!: number;
   numberOfFemaleUsersWhoAnswered!: number;
-  averageScore!: number;
   numberOfInvitationsSent!: number;
   percentOfInvitationsAccepted!: number;
   numberOfDifferentCountries!: number;

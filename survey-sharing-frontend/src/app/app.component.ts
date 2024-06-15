@@ -18,8 +18,8 @@ import { Invitation } from './entities/invitation';
 })
 export class AppComponent implements OnInit {
 
-  public user_tmp: User = new User('666b2ec551913d367a84ea7c', 'dr.blues.__', 'Lorenzo', 'Bloise',
-    'l.bloise@outlook.it', 23, 'MALE', 'Italy', ['13','06','2024','19','39','17']);
+  public user_tmp: User = new User('666d94dffd18ee202199c8cf', 'dr.blues.__', 'Lorenzo', 'Bloise',
+    'l.bloise@outlook.it', 23, 'MALE', 'Italy', ['15','06','2024','15','19','27']);
   user: User = this.user_tmp;
   createdSurveys: Map<string, Survey> = new Map<string,Survey>();
   answers: Map<string, Answer> = new Map<string, Answer>();
@@ -31,15 +31,20 @@ export class AppComponent implements OnInit {
   router: Router;
   searchType!: string;
   query: string = "";
+  reloadUser: boolean = false;
 
   constructor(public r: Router, public userService: UserService, public surveyService: SurveyService,
               public answerService: AnswerService, public invitationService: InvitationService, public statisticsService: StatisticsService){
     this.router = r;
-    this.user_tmp.setCreatedSurveys(['My second survey']);
+    this.userService.findUsersByUsername(this.user_tmp.username).subscribe(responseMessage => {
+      this.user_tmp.setCreatedSurveys(responseMessage.object[0].createdSurveys);
+      this.user_tmp.setAnswers(responseMessage.object[0].answers);
+      this.user_tmp.setInvitations(responseMessage.object[0].invitations);
+    })
     var tmp_answers: Map<string,string> = new Map<string, string>();
-    tmp_answers.set('My first survey', '666b620e6d9fb635b7d9ca40');
+    //tmp_answers.set('My first survey', '666b620e6d9fb635b7d9ca40');
     this.user_tmp.setAnswers(tmp_answers);
-    this.user_tmp.setInvitations(['666b628c6d9fb635b7d9ca41']);
+    //this.user_tmp.setInvitations(['666b628c6d9fb635b7d9ca41']);
   }
 
   ngOnInit(): void {

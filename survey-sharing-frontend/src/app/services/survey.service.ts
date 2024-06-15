@@ -15,8 +15,10 @@ export class SurveyService{
 
   // POST
 
-  public createSurvey(user: string, surveyTitle: string, surveyType: string, questions: Question[]): Observable<ResponseMessage>{
-    return this.http.post<ResponseMessage>(this.base_url+'?user='+user+'&surveyTitle='+surveyTitle+'&surveyType='+surveyType,questions);
+  public createSurvey(user: string, surveyTitle: string, questions: string): Observable<ResponseMessage>{
+    return this.http.post<ResponseMessage>(this.base_url+'?user='+user+'&surveyTitle='+surveyTitle,questions, {
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 
   // GET
@@ -31,6 +33,10 @@ export class SurveyService{
 
   public findSurveysByTitle(surveyTitle: string): Observable<ResponseMessage>{
     return this.http.get<ResponseMessage>(this.base_url+'/search/by_title?surveyTitle='+surveyTitle);
+  }
+
+  public findSurveyByTitle(surveyTitle: string): Observable<ResponseMessage>{
+    return this.http.get<ResponseMessage>(this.base_url+'/search/single/by_title?surveyTitle='+surveyTitle);
   }
 
   public findAllCreatedSurveys(user: string): Observable<ResponseMessage>{

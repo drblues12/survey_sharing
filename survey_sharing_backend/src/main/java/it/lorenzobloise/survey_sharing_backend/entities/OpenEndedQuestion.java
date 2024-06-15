@@ -18,11 +18,13 @@ public class OpenEndedQuestion extends Question {
     public OpenEndedQuestion(String answer){
         super();
         this.answer = answer;
+        this.type = QuestionType.OpenEnded.toString();
     }
 
     public OpenEndedQuestion(OpenEndedQuestion oeq){
         super(oeq.getQuestion());
         this.answer = oeq.getAnswer();
+        this.type = QuestionType.OpenEnded.toString();
     }
 
 }

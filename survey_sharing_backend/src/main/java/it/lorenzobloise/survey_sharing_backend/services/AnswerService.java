@@ -54,7 +54,7 @@ public class AnswerService {
                     MultipleChoiceQuestion tmp = new MultipleChoiceQuestion();
                     List<Option> originalOptions = mcq.getOptions();
                     for(Option opt: originalOptions)
-                        tmp.getOptions().add(new Option(opt.getOption(),opt.isSelected(),opt.isCorrect()));
+                        tmp.getOptions().add(new Option(opt.getOption(),opt.isSelected()));
                     tmp.setQuestion(mcq.getQuestion());
                     Question new_question = questionService.addQuestion(tmp);
                     answer.getQuestions().add(new_question.getId());
