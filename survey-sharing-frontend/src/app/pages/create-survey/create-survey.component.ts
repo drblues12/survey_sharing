@@ -44,7 +44,7 @@ export class CreateSurveyComponent implements OnInit {
 
   onInputChange(event: Event): void{
     if(this.surveyTitle==null || this.surveyTitle.trim()==''){
-      this.available = false;
+      this.available = undefined;
       return;
     }
     const target = event.target as HTMLInputElement;
@@ -63,7 +63,7 @@ export class CreateSurveyComponent implements OnInit {
   onInputChange2(event: Event): void{
     if(this.questionPartial[this.currQuestion].question.question==null
       || this.questionPartial[this.currQuestion].question.question.trim()==''){
-        this.available2 = false;
+        this.available2 = undefined;
         return;
     }
     const target = event.target as HTMLInputElement;
@@ -79,7 +79,7 @@ export class CreateSurveyComponent implements OnInit {
   getInputStatus(x: boolean | undefined): string{
     switch(x){
       case undefined:
-        return "basic";
+        return "danger";
       case true:
         return "success";
       case false:
@@ -92,11 +92,24 @@ export class CreateSurveyComponent implements OnInit {
   getInputTooltip(x: boolean | undefined): string{
     switch(x){
       case undefined:
-        return "";
+        return "Title cannot be blank";
       case true:
-        return "This title is available";
+        return "Title available";
       case false:
-        return "This title is not available";
+        return "Title already in use";
+      default:
+        return "basic";
+    }
+  }
+
+  getInputTooltip2(x: boolean | undefined): string{
+    switch(x){
+      case undefined:
+        return "Question cannot be blank";
+      case true:
+        return "Question available";
+      case false:
+        return "Question already defined";
       default:
         return "basic";
     }
@@ -105,7 +118,7 @@ export class CreateSurveyComponent implements OnInit {
   getTooltipIcon(): string{
     switch(this.available){
       case undefined:
-        return "";
+        return "close-circle";
       case true:
         return "checkmark-circle-2";
       case false:

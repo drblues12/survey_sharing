@@ -14,7 +14,7 @@
               <div class="item-1">
                 <input nbInput fullWidth [(ngModel)]="surveyTitle" (input)="onInputChange($event)" [status]="getInputStatus(available)"
                         [nbTooltip]="getInputTooltip(available)" [nbTooltipStatus]="getInputStatus(available)" [nbTooltipIcon]="getTooltipIcon()"
-                        [nbTooltipDisabled]="available==undefined" [nbTooltipTrigger]="tooltipTrigger">
+                        [nbTooltipTrigger]="tooltipTrigger">
               </div>
             </div>
           </nb-card-header>
@@ -82,8 +82,8 @@
                     <div class="item-1">
                       <input nbInput fullWidth [(ngModel)]="questionPartial[currQuestion].question.question"
                         (input)="onInputChange2($event)" [status]="getInputStatus(available2)"
-                        [nbTooltip]="getInputTooltip(available2)" [nbTooltipStatus]="getInputStatus(available2)" [nbTooltipIcon]="getTooltipIcon()"
-                        [nbTooltipDisabled]="available==undefined" [nbTooltipTrigger]="tooltipTrigger">
+                        [nbTooltip]="getInputTooltip2(available2)" [nbTooltipStatus]="getInputStatus(available2)" [nbTooltipIcon]="getTooltipIcon()"
+                        [nbTooltipTrigger]="tooltipTrigger">
                     </div>
                   </div>
                 </nb-card-header>
