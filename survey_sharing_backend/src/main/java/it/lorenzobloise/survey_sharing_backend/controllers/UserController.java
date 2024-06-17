@@ -70,6 +70,14 @@ public class UserController {
         return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
     }
 
+    @GetMapping("/search/single/by_username")
+    public ResponseEntity findUserByUsername(@RequestParam String username){
+        Optional<User> result = userService.getUserByUsername(username);
+        if(result.isEmpty())
+            return new ResponseEntity(new ResponseMessage("No result"), HttpStatus.OK);
+        return new ResponseEntity(new ResponseMessage("", result), HttpStatus.OK);
+    }
+
     //TODO
     // Authentication (every role)
     @GetMapping("/search/by_email")
@@ -78,6 +86,14 @@ public class UserController {
         if(result.size()==0)
             return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
         return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
+    }
+
+    @GetMapping("/search/single/by_email")
+    public ResponseEntity findUserByEmail(@RequestParam String email){
+        Optional<User> result = userService.getUserByEmail(email);
+        if(result.isEmpty())
+            return new ResponseEntity(new ResponseMessage("No result"), HttpStatus.OK);
+        return new ResponseEntity(new ResponseMessage("", result), HttpStatus.OK);
     }
 
     @GetMapping("/search/by_id")

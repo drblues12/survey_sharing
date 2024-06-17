@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NbTrigger } from '@nebular/theme';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-register',
@@ -8,40 +10,29 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterComponent implements OnInit {
 
-  showPassword = true;
-  emailForm!: FormGroup;
-  anagraphicsForm!: FormGroup;
-  userPassForm!: FormGroup;
+  showPassword = false;
+  fields: {email: {email: string, correct: boolean | undefined, error: string},
+            username: {username: string, correct: boolean | undefined, error: string},
+            password: {password: string, correct: boolean | undefined, error: string},
+            name: {name: string, correct: boolean | undefined, error: string},
+            surname: {surname: string, correct: boolean | undefined, error: string},
+            age: {age: number | undefined, correct: boolean | undefined, error: string},
+            gender: {gender: string, correct: boolean | undefined, error: string},
+            country: {country: string, correct: boolean | undefined, error: string}}
+            =
+            {email: {email: "", correct: undefined, error: ""},
+            username: {username: "", correct: undefined, error: ""},
+            password: {password: "", correct: undefined, error: ""},
+            name: {name: "", correct: undefined, error: ""},
+            surname: {surname: "", correct: undefined, error: ""},
+            age: {age: undefined, correct: undefined, error: ""},
+            gender: {gender: "", correct: undefined, error: ""},
+            country: {country: "", correct: undefined, error: ""}};
+  tooltipTrigger: NbTrigger = NbTrigger.HOVER;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(public appComponent: AppComponent) { }
 
   ngOnInit(): void {
-    this.emailForm = this.fb.group({
-      emailCtrl: ['', Validators.required],
-    });
-    this.anagraphicsForm = this.fb.group({
-      nameCtrl: ['', Validators.required],
-      surnameCtrl: ['', Validators.required],
-      ageCtrl: ['', Validators.required],
-      genderCtrl: ['', Validators.required],
-      countryCtrl: ['', Validators.required],
-    });
-    this.userPassForm = this.fb.group({
-      usernameCtrl: ['', Validators.required],
-      passwordCtrl: ['', Validators.required]
-    });
-  }
-
-  onFirstSubmit(){
-    this.emailForm.markAsDirty();
-  }
-
-  onSecondSubmit(){
-    this.anagraphicsForm.markAsDirty();
-  }
-
-  onThirdSubmit(){
-    this.userPassForm.markAsDirty();
   }
 
   getInputType() {
@@ -56,14 +47,164 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
-    // TODO
+    this.appComponent.userService.createUser(this.fields.username.username, this.fields.email.email,
+      this.fields.name.name, this.fields.surname.surname, this.fields.age.age+'', this.fields.gender.gender,
+      this.fields.country.country).subscribe(responseMessage => {
+        alert(responseMessage.message);
+        this.appComponent.navigate('login',null);
+    })
   }
 
-  login(){
-    // TODO
+  onInputChangeEmail(event: Event): void{
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(this.fields.email.email.trim()==""){
+      this.fields.email.correct = false;
+      this.fields.email.error = "Email cannot be blank";
+      return;
+    }
+    if(!emailPattern.test(this.fields.email.email)){
+      this.fields.email.correct = false;
+      this.fields.email.error = "Invalid email format";
+      return;
+    }
+    this.appComponent.userService.findUserByEmail(this.fields.email.email).subscribe(responseMessage => {
+      if(responseMessage.object!=null){
+        this.fields.email.correct = false;
+        this.fields.email.error = "Email already in use";
+        return;
+      }
+      this.fields.email.correct = true;
+      this.fields.email.error = "";
+    })
   }
 
-  selected_country: string = '';
+  onInputChangeUsername(event: Event): void{
+    if(this.fields.username.username==""){
+      this.fields.username.correct = false;
+      this.fields.username.error = "Username cannot be blank";
+      return;
+    }
+    if (this.fields.username.username.length < 3 || this.fields.username.username.length > 15) {
+      this.fields.username.correct = false;
+      this.fields.username.error = "Username must be between 3 and 15 characters";
+      return;
+    }
+    this.appComponent.userService.findUserByUsername(this.fields.username.username).subscribe(responseMessage => {
+      if(responseMessage.object!=null){
+        this.fields.username.correct = false;
+        this.fields.username.error = "Username already in use";
+        return;
+      }
+      this.fields.username.correct = true;
+      this.fields.username.error = "";
+    })
+  }
+
+  onInputChangePassword(event: Event): void{
+    const passwordPattern = /^(?=.*\d).{8,}$/;
+    if (!passwordPattern.test(this.fields.password.password)) {
+      this.fields.password.correct = false;
+      this.fields.password.error = "Password must be at least 8 characters long and contain at least one number";
+      return;
+    }
+    this.fields.password.correct = true;
+      this.fields.password.error = "";
+  }
+
+  onInputChangeName(event: Event): void{
+    const namePattern = /^[A-Za-z]+$/;
+    if(this.fields.name.name==""){
+      this.fields.name.correct = false;
+      this.fields.name.error = "Name cannot be blank";
+      return;
+    }
+    if(!namePattern.test(this.fields.name.name)){
+      this.fields.name.correct = false;
+      this.fields.name.error = "Invalid name format";
+      return;
+    }
+    this.fields.name.correct = true;
+    this.fields.name.error = "";
+  }
+
+  onInputChangeSurname(event: Event): void{
+    const surnamePattern = /^[A-Za-z]+$/;
+    if(this.fields.surname.surname==""){
+      this.fields.surname.correct = false;
+      this.fields.surname.error = "Surname cannot be blank";
+      return;
+    }
+    if(!surnamePattern.test(this.fields.surname.surname)){
+      this.fields.surname.correct = false;
+      this.fields.surname.error = "Invalid surname format";
+      return;
+    }
+    this.fields.surname.correct = true;
+    this.fields.surname.error = "";
+  }
+
+  onInputChangeAge(event: Event): void{
+    const agePattern = /^[0-9]+$/;
+    if(this.fields.age.age==undefined){
+      this.fields.age.correct = false;
+      this.fields.age.error = "Age cannot be blank";
+      return;
+    }
+    if(!agePattern.test(this.fields.age.age+'')){
+      this.fields.age.correct = false;
+      this.fields.age.error = "Invalid age format";
+      return;
+    }
+    this.fields.age.correct = true;
+    this.fields.age.error = "";
+  }
+
+  onInputChangeGender(event: Event): void{
+    if(this.fields.gender.gender==""){
+      this.fields.gender.correct = false;
+      this.fields.gender.error = "Gender cannot be blank";
+      return;
+    }
+    this.fields.gender.correct = true;
+    this.fields.gender.error = "";
+  }
+
+  onInputChangeCountry(event: Event): void{
+    if(this.fields.country.country==""){
+      this.fields.country.correct = false;
+      this.fields.country.error = "Country cannot be blank";
+      return;
+    }
+    this.fields.country.correct = true;
+    this.fields.country.error = "";
+  }
+
+  getStatus(correct: boolean | undefined): string {
+    switch(correct){
+      case undefined:
+        return "basic";
+      case true:
+        return "success";
+      case false:
+        return "danger";
+      default:
+        return "basic";
+    }
+  }
+
+  getTooltipIcon(correct: boolean | undefined): string {
+    switch(correct){
+      case undefined:
+        return "";
+      case true:
+        return "checkmark-circle-2";
+      case false:
+        return "close-circle";
+      default:
+        return "";
+    }
+  }
+
   countries: { code: string, name: string }[] = [
     { code: 'AF', name: 'Afghanistan' },
     { code: 'AL', name: 'Albania' },
@@ -308,7 +449,7 @@ export class RegisterComponent implements OnInit {
     { code: 'YE', name: 'Yemen' },
     { code: 'ZM', name: 'Zambia' },
     { code: 'ZW', name: 'Zimbabwe' }
-  ];
+    ];
 
 
 }

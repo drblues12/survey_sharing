@@ -54,8 +54,16 @@ public class UserService {
         return new TreeSet<>(userRepository.findUsersByUsernameContainingIgnoreCase(username));
     }
 
+    public Optional<User> getUserByUsername(String username){
+        return userRepository.findUserByIdOrUsernameOrEmail(username, username, username);
+    }
+
     public Set<User> getUsersByEmail(String email){
         return new TreeSet<>(userRepository.findUsersByEmailContainingIgnoreCase(email));
+    }
+
+    public Optional<User> getUserByEmail(String email){
+        return userRepository.findUserByIdOrUsernameOrEmail(email, email, email);
     }
 
     public Optional<User> getUserById(String id){

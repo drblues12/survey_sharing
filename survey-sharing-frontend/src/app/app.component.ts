@@ -41,6 +41,12 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const loggedIn: string | null = localStorage.getItem('loggedIn');
+    if(loggedIn==null)
+      this.navigate('login', null);
+    else if(loggedIn!='true'){
+      this.navigate('login', null);
+    }
     const theme: string | null = localStorage.getItem('theme');
     if(theme!=null){
       this.themeService.changeTheme(theme);
@@ -161,6 +167,11 @@ export class AppComponent implements OnInit {
     if(date!=undefined)
       return date[3]+':'+date[4]+':'+date[5];
     return null;
+  }
+
+  logout(){
+    localStorage.setItem('loggedIn', 'false');
+    this.navigate('login', null);
   }
 
 }

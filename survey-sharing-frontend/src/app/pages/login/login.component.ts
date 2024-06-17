@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
 
   login(){
     // TODO
+    localStorage.setItem('loggedIn', 'true');
     this.appComponent.navigate('',null);
   }
 

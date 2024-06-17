@@ -32,12 +32,20 @@ export class UserService{
     return this.http.get<ResponseMessage>(this.base_url+'/search/by_email?email='+email);
   }
 
+  public findUserByEmail(email: string){
+    return this.http.get<ResponseMessage>(this.base_url+'/search/single/by_email?email='+email);
+  }
+
   public findUserById(id: string){
     return this.http.get<ResponseMessage>(this.base_url+'/search/by_id?id='+id);
   }
 
   public findUsersByUsername(username: string){
     return this.http.get<ResponseMessage>(this.base_url+'/search/by_username?username='+username);
+  }
+
+  public findUserByUsername(username: string){
+    return this.http.get<ResponseMessage>(this.base_url+'/search/single/by_username?username='+username);
   }
 
   // DELETE
