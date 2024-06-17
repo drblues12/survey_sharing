@@ -2,7 +2,7 @@
   <nb-layout-column>
     <nb-card>
       <nb-card-header>
-        <h1>{{user.name}} {{user.surname}}</h1>
+        <h1>{{appComponent.getUser().name}} {{appComponent.getUser().surname}}</h1>
       </nb-card-header>
       <nb-card-body>
         <nb-card>
@@ -14,10 +14,10 @@
               <nb-list-item>
                 <div class="item-container">
                   <div class="item-1">
-                    <b>Name</b>: {{user.name}}
+                    <b>Name</b>: {{appComponent.getUser().name}}
                   </div>
                   <div class="item-1">
-                    <b>Surname</b>: {{user.surname}}
+                    <b>Surname</b>: {{appComponent.getUser().surname}}
                   </div>
                   <div class="item-1"></div>
                   <div class="item-1"></div>
@@ -27,10 +27,10 @@
               <nb-list-item>
                 <div class="item-container">
                   <div class="item-1">
-                    <b>Username</b>: {{user.username}}
+                    <b>Username</b>: {{appComponent.getUser().username}}
                   </div>
                   <div class="item-1">
-                    <b>Email</b>: {{user.email}}
+                    <b>Email</b>: {{appComponent.getUser().email}}
                   </div>
                   <div class="item-1"></div>
                   <div class="item-1"></div>
@@ -40,10 +40,10 @@
               <nb-list-item>
                 <div class="item-container">
                   <div class="item-1">
-                    <b>Age</b>: {{user.age}}
+                    <b>Age</b>: {{appComponent.getUser().age}}
                   </div>
                   <div class="item-1">
-                    <b>Gender</b>: {{user.gender}}
+                    <b>Gender</b>: {{appComponent.getUser().gender}}
                   </div>
                   <div class="item-1"></div>
                   <div class="item-1"></div>
@@ -52,10 +52,14 @@
               </nb-list-item>
               <nb-list-item>
                 <div class="item-1">
-                  <b>Country</b>: {{user.country}}
+                  <b>Country</b>: {{appComponent.getUser().country}}
                 </div>
-                <div class="item-1">
-                  <b>Registered since</b>: {{user.registrationDate[0]}}/{{user.registrationDate[1]}}/{{user.registrationDate[2]}} {{user.registrationDate[3]}}:{{user.registrationDate[4]}}:{{user.registrationDate[5]}}
+                <div class="item-left">
+                  <b>Registered since</b>:
+                </div>
+                <div class="item-left">
+                  {{appComponent.getUser().registrationDate[0]}}/{{appComponent.getUser().registrationDate[1]}}/{{appComponent.getUser().registrationDate[2]}}
+                  <br>{{appComponent.getUser().registrationDate[3]}}:{{appComponent.getUser().registrationDate[4]}}:{{appComponent.getUser().registrationDate[5]}}
                 </div>
                 <div class="item-1"></div>
                 <div class="item-1"></div>
@@ -79,12 +83,11 @@
                     <div class="item-2">
                       <b>Average rating</b>
                     </div>
-                    <div class="item-2"></div>
                     <div class="item-3"></div>
                     <div class="item-3"></div>
                   </div>
                 </nb-list-item>
-                <nb-list-item *ngFor="let survey of user.createdSurveys">
+                <nb-list-item *ngFor="let survey of appComponent.getUser().createdSurveys">
                   <div class="item-container">
                     <div class="item-1">
                       {{survey}}
@@ -96,14 +99,11 @@
                     <div class="item-2">
                       <!--TODO Average Rating-->
                     </div>
-                    <div class="item-2">
-                      <button nbButton>Answers</button>
+                    <div class="item-3">
+                      <button nbButton (click)="goToSurveyDetailsPage(survey)">Details<nb-icon icon="file-text"></nb-icon></button>
                     </div>
                     <div class="item-3">
-                      <button nbButton>Statistics</button>
-                    </div>
-                    <div class="item-3">
-                      <button nbButton>Delete</button>
+                      <button nbButton (click)="deleteCreatedSurvey(survey)">Delete<nb-icon icon="trash-2"></nb-icon></button>
                     </div>
                   </div>
                 </nb-list-item>
@@ -161,13 +161,14 @@
                     <div class="item-2">
                       <b>Invitation date</b>
                     </div>
-                    <div class="item-3">
+                    <div class="item-2">
                       <b>Message</b>
                     </div>
                     <div class="item-3"></div>
+                    <div class="item-3"></div>
                   </div>
                 </nb-list-item>
-                <nb-list-item *ngFor="let invitation of user.invitations">
+                <nb-list-item *ngFor="let invitation of appComponent.getUser().invitations">
                   <div class="item-container">
                     <div class="item-1">
                       {{invitations.get(invitation)?.survey}}
@@ -179,11 +180,14 @@
                       {{appComponent.getParsedDate(invitations.get(invitation)?.invitationDate)}}
                       <br>{{appComponent.getParsedHour(invitations.get(invitation)?.invitationDate)}}
                     </div>
-                    <div class="item-3">
+                    <div class="item-2">
                       {{invitations.get(invitation)?.message}}
                     </div>
                     <div class="item-3">
-                      <button nbButton>Accept</button>
+                      <button nbButton>Accept<nb-icon icon="checkmark-circle-2"></nb-icon></button>
+                    </div>
+                    <div class="item-3">
+                      <button nbButton (click)="deleteInvitation(invitation)">Delete<nb-icon icon="trash-2"></nb-icon></button>
                     </div>
                   </div>
                 </nb-list-item>

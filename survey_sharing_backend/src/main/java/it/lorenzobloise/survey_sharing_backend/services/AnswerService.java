@@ -39,19 +39,19 @@ public class AnswerService {
         try {
             for (String original_question_id : s.get().getQuestions()) {
                 Question original_question = questionService.getQuestion(original_question_id);
-                if(original_question instanceof ImageQuestion) {
+                if(original_question.getType().equals("ImageQuestion")) {
                     ImageQuestion tmp = new ImageQuestion((ImageQuestion) original_question);
                     Question new_question = questionService.addQuestion(tmp);
                     answer.getQuestions().add(new_question.getId());
                 }
-                else if(original_question instanceof OpenEndedQuestion) {
+                else if(original_question.getType().equals("OpenEndedQuestion")) {
                     OpenEndedQuestion tmp = new OpenEndedQuestion((OpenEndedQuestion) original_question);
                     Question new_question = questionService.addQuestion(tmp);
                     answer.getQuestions().add(new_question.getId());
                 }
-                else { // original_question instanceof MultipleChoiceQuestion
+                else { // original_question.getType().equals("MultipleChoiceQuestion")
                     MultipleChoiceQuestion mcq = (MultipleChoiceQuestion) original_question;
-                    MultipleChoiceQuestion tmp = new MultipleChoiceQuestion();
+                    MultipleChoiceQuestion tmp = new MultipleChoiceQuestion(mcq);
                     List<Option> originalOptions = mcq.getOptions();
                     for(Option opt: originalOptions)
                         tmp.getOptions().add(new Option(opt.getOption(),opt.isSelected()));

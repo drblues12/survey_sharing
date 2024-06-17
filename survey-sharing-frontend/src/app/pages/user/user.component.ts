@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AppComponent } from 'src/app/app.component';
 import { Answer } from 'src/app/entities/answer';
 import { Invitation } from 'src/app/entities/invitation';
@@ -17,9 +19,8 @@ import { ResponseMessage } from 'src/app/support/response-message';
 })
 export class UserComponent implements OnInit {
 
-  constructor(public appComponent: AppComponent) { }
+  constructor(public appComponent: AppComponent, private router: Router) { }
 
-  user: User = this.appComponent.user_tmp;
   createdSurveys: Map<string, Survey> = this.appComponent.createdSurveys;
   answers: Map<string, Answer> = this.appComponent.answers;
   answer_surveys: string[] = this.appComponent.answer_surveys;
@@ -28,10 +29,25 @@ export class UserComponent implements OnInit {
   invitationSenders: Map<string, User> = this.appComponent.invitationSenders;
 
   ngOnInit(): void {
-    if(this.appComponent.reloadUser){
-      this.appComponent.reloadUser = false;
+    this.appComponent.reloadWindow();
+  }
+
+  goToSurveyDetailsPage(surveyTitle: string){
+    this.appComponent.navigate('survey-details', surveyTitle);
+  }
+
+  deleteCreatedSurvey(surveyTitle: string){
+    this.appComponent.surveyService.deleteCreatedSurvey(this.appComponent.user.username, surveyTitle).subscribe(responseMessage => {
+      alert(responseMessage.message);
       window.location.reload();
-    }
+    })
+  }
+
+  deleteInvitation(invitation: string){
+    this.appComponent.invitationService.deleteInvitation(this.appComponent.getUser().username, invitation).subscribe(ResponseMessage => {
+      alert(ResponseMessage.message);
+      window.location.reload();
+    })
   }
 
 }

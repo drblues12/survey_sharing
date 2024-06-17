@@ -30,7 +30,7 @@ public class InvitationController {
             Set<Invitation> result = invitationService.addNewInvitationsToSurvey(surveyTitle, invitations);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-            return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
+            return new ResponseEntity(new ResponseMessage("Invitations sent correctly",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -52,19 +52,32 @@ public class InvitationController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity findInvitationById(@RequestParam String invitationId){
+        try{
+            Invitation result = invitationService.getInvitationById(invitationId);
+            return new ResponseEntity(new ResponseMessage("", result), HttpStatus.OK);
+        }catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+    }
+
+    // DELETE
+
     //TODO
     // Authentication as this user
     @DeleteMapping("/{user}")
     public ResponseEntity deleteInvitation(@PathVariable(value = "user") String user, @RequestParam String invitation){
         try {
             Invitation result = invitationService.removeInvitation(invitation);
-            return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
+            return new ResponseEntity(new ResponseMessage("Invitation deleted correctly",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
 
     // PUT
+
     //TODO
     // Authentication as this user
     @PutMapping("/{user}")

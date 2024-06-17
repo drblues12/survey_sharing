@@ -17,11 +17,12 @@ export class SurveyListComponent implements OnInit {
   public search_results: Survey[] = [];
   public owners_details: Map<string, User> = new Map<string, User>();
 
-  constructor(private appComponent: AppComponent) {
+  constructor(public appComponent: AppComponent) {
     this.query = appComponent.query;
   }
 
   ngOnInit(): void {
+    this.appComponent.reloadWindow();
     this.search_results = [];
     if(this.query===""){
       this.appComponent.surveyService.findAllSurveys().subscribe(responseMessage => {

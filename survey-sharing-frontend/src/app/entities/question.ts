@@ -3,10 +3,14 @@ import { Option } from "./option";
 export class Question{
   question!: string;
   type!: string;
+  questionDate!: string[];
 
   constructor(){
     this.question = "";
     this.type = "";
+    const now: Date = new Date();
+    this.questionDate = [now.getDate()+'', (now.getMonth()+1)+'', now.getFullYear()+'',
+                        now.getHours()+'',now.getMinutes()+'',(now.getSeconds()+'').padStart(2, '0')];
   }
 
   setQuestion(question: string){

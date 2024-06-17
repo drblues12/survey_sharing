@@ -38,7 +38,9 @@
                 <br>{{survey.creationDate[3]}}:{{survey.creationDate[4]}}:{{survey.creationDate[5]}}
               </div>
               <div class="item-button">
-                <button nbButton>Answer</button>
+                <div *ngIf="survey.owner!=appComponent.getUser().username">
+                  <button nbButton>Answer</button>
+                </div>
               </div>
             </div>
           </nb-list-item>

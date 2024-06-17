@@ -29,7 +29,7 @@ public class Survey implements Comparable<Survey> {
     @NotBlank(message = "Survey title shall not be blank")
     @Indexed(unique = true)
     private String title;
-    private List<String> questions;
+    private Set<String> questions;
     private String owner; // Username of the owner
     private Set<String> answers; // Answers id
     private Set<String> invitations; // Invitations id
@@ -44,7 +44,7 @@ public class Survey implements Comparable<Survey> {
     public Survey(String owner, String title){
         this.owner = owner;
         this.title = title;
-        this.questions = new LinkedList<>();
+        this.questions = new TreeSet<>();
         this.creationDateObj = LocalDateTime.now();
         this.creationDate = Utils.parseDate(this.creationDateObj.toString());
         this.answers = new TreeSet<>();

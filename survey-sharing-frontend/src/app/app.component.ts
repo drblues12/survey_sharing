@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Injectable, OnInit } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { NbMenuItem, NbThemeService } from '@nebular/theme';
 import { User } from './entities/user';
 import { Survey } from './entities/survey';
@@ -10,6 +10,9 @@ import { InvitationService } from './services/invitation.service';
 import { StatisticsService } from './services/statistics.service';
 import { Answer } from './entities/answer';
 import { Invitation } from './entities/invitation';
+import { QuestionService } from './services/question.service';
+import { filter } from 'rxjs/operators';
+import { SupportService } from './support/support.service';
 
 @Component({
   selector: 'app-root',
@@ -18,43 +21,72 @@ import { Invitation } from './entities/invitation';
 })
 export class AppComponent implements OnInit {
 
-  public user_tmp: User = new User('666d94dffd18ee202199c8cf', 'dr.blues.__', 'Lorenzo', 'Bloise',
-    'l.bloise@outlook.it', 23, 'MALE', 'Italy', ['15','06','2024','15','19','27']);
-  user: User = this.user_tmp;
+  public username: string = 'dr.blues.__';
+  user!: User;
   createdSurveys: Map<string, Survey> = new Map<string,Survey>();
   answers: Map<string, Answer> = new Map<string, Answer>();
   answer_surveys!: string[];
   invitations: Map<string, Invitation> = new Map<string, Invitation>();
   surveysOwners: Map<string, User> = new Map<string, User>();
   invitationSenders: Map<string, User> = new Map<string, User>();
-  mail = false;
-  router: Router;
   searchType!: string;
   query: string = "";
-  reloadUser: boolean = false;
+  refresh: boolean = false;
+  darkMode: boolean = false;
 
-  constructor(public r: Router, public userService: UserService, public surveyService: SurveyService,
-              public answerService: AnswerService, public invitationService: InvitationService, public statisticsService: StatisticsService){
-    this.router = r;
-    this.userService.findUsersByUsername(this.user_tmp.username).subscribe(responseMessage => {
-      this.user_tmp.setCreatedSurveys(responseMessage.object[0].createdSurveys);
-      this.user_tmp.setAnswers(responseMessage.object[0].answers);
-      this.user_tmp.setInvitations(responseMessage.object[0].invitations);
-    })
-    var tmp_answers: Map<string,string> = new Map<string, string>();
-    //tmp_answers.set('My first survey', '666b620e6d9fb635b7d9ca40');
-    this.user_tmp.setAnswers(tmp_answers);
-    //this.user_tmp.setInvitations(['666b628c6d9fb635b7d9ca41']);
+  constructor(public router: Router, public userService: UserService, public surveyService: SurveyService,
+              public answerService: AnswerService, public invitationService: InvitationService,
+              public statisticsService: StatisticsService, public questionService: QuestionService,
+              private themeService: NbThemeService){
   }
 
   ngOnInit(): void {
-    this.getCreatedSurveys(this.user.username);
-    this.getAnswers(this.user.username);
-    this.getInvitations(this.user.username);
+    const theme: string | null = localStorage.getItem('theme');
+    if(theme!=null){
+      this.themeService.changeTheme(theme);
+      if(theme=='default')
+        this.darkMode = false;
+      else
+        this.darkMode = true;
+    }
+    this.userService.findUsersByUsername(this.username).subscribe(responseMessage => {
+      this.user = responseMessage.object[0];
+      this.getCreatedSurveys(this.user.username);
+      this.getAnswers(this.user.username);
+      this.getInvitations(this.user.username);
+    })
   }
 
-  hasMail(): boolean{
-    return this.mail;
+  switchTheme(){
+    if(this.darkMode){
+      this.themeService.changeTheme('dark');
+      localStorage.setItem('theme','dark');
+    }
+    else{
+      this.themeService.changeTheme('default');
+      localStorage.setItem('theme','default');
+    }
+  }
+
+  getUser(): User{
+    if(this.user!=null)
+      return this.user;
+    return new User("","","","","",-1,"","",[]);
+  }
+
+  navigate(route: string, parameters: string | null){
+    this.refresh = true;
+    if(parameters==null)
+      this.router.navigate([route]);
+    else
+      this.router.navigate([route, parameters]);
+  }
+
+  reloadWindow(){
+    if(this.refresh){
+      this.refresh = false;
+      window.location.reload();
+    }
   }
 
   notLoginNorRegister(): boolean{

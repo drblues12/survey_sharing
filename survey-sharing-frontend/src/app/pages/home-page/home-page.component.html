@@ -2,7 +2,7 @@
   <nb-layout-column>
     <nb-card>
       <nb-card-header>
-        <h3>Welcome, {{user.name}} {{user.surname}}</h3>
+        <h3>Welcome, {{appComponent.getUser().name}} {{appComponent.getUser().surname}}</h3>
       </nb-card-header>
     </nb-card>
     <nb-card>
@@ -44,7 +44,7 @@
                 <!--Average rating-->
               </div>
               <div class="item-3">
-                <button nbButton>Answer</button>
+                <div *ngIf="survey.owner!=appComponent.getUser().username"></div>
               </div>
             </div>
           </nb-list-item>

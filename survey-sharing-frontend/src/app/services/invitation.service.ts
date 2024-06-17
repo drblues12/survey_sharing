@@ -24,6 +24,10 @@ export class InvitationService{
     return this.http.get<ResponseMessage>(this.base_url+'/'+user);
   }
 
+  public findInvitationById(invitationId: string){
+    return this.http.get<ResponseMessage>(this.base_url+'?invitationId='+invitationId);
+  }
+
   // DELETE
 
   public deleteInvitation(user: string, invitation: string){

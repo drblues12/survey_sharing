@@ -4,7 +4,7 @@ import { FormGroup, FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbMenuModule, NbActionsModule, NbInputModule, NbCardModule, NbContextMenuModule, NbIconModule, NbSearchModule, NbSelectModule, NbToggleModule, NbButtonModule, NbFormFieldModule, NbStepperModule, NbListModule, NbUserModule, NbTabsetModule, NbBadgeModule, NbPopoverModule, NbPosition, NbRadioModule, NbTooltipModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbMenuModule, NbActionsModule, NbInputModule, NbCardModule, NbContextMenuModule, NbIconModule, NbSearchModule, NbSelectModule, NbToggleModule, NbButtonModule, NbFormFieldModule, NbStepperModule, NbListModule, NbUserModule, NbTabsetModule, NbBadgeModule, NbPopoverModule, NbPosition, NbRadioModule, NbTooltipModule, NbWindowModule, NbCheckboxModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { LoginComponent } from './pages/login/login.component';
 import { UserComponent } from './pages/user/user.component';
@@ -19,6 +19,8 @@ import { RegisterComponent } from './pages/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SingleUserComponent } from './pages/search/users/single-user/single-user.component';
+import { SurveyDetailsComponent } from './pages/survey-details/survey-details.component';
+import { InvitationComponent } from './pages/invitation/invitation.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import { SingleUserComponent } from './pages/search/users/single-user/single-use
     CreateSurveyComponent,
     RegisterComponent,
     SingleUserComponent,
+    SurveyDetailsComponent,
+    InvitationComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,9 +68,11 @@ import { SingleUserComponent } from './pages/search/users/single-user/single-use
     NbBadgeModule,
     NbPopoverModule,
     NbRadioModule,
-    NbTooltipModule
+    NbTooltipModule,
+    NbWindowModule.forRoot(),
+    NbCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

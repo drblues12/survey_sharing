@@ -34,6 +34,7 @@ export class CreateSurveyComponent implements OnInit {
   tooltipTrigger: NbTrigger = NbTrigger.HOVER;
 
   ngOnInit(): void {
+    this.appComponent.reloadWindow();
     this.nbMenuService.onItemClick()
     .pipe(
       filter(({ tag }) => tag === 'my-context-menu'),
@@ -229,17 +230,14 @@ export class CreateSurveyComponent implements OnInit {
       alert("Survey must contain at least one question");
       return;
     }
-    console.log(this.appComponent.user.username);
-    console.log(this.surveyTitle);
-    console.log(questionList);
     var jsonObj = JSON.stringify(questionList.map(q => ({
       ...q,
       '@type': q.type
     })))
+    console.log(jsonObj);
     this.appComponent.surveyService.createSurvey(this.appComponent.user.username, this.surveyTitle, jsonObj).subscribe(responseMessage => {
       alert(responseMessage.message);
-      this.appComponent.reloadUser = true;
-      this.router.navigate(['user']);
+      this.appComponent.navigate('survey-details', this.surveyTitle);
     })
   }
 

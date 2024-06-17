@@ -12,13 +12,13 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(private appComponent: AppComponent) { }
+  constructor(public appComponent: AppComponent) { }
 
-  user: User = this.appComponent.user_tmp;
   trending: Survey[] = [];
   user_details: Map<string,User> = new Map<string,User>();
 
   ngOnInit(): void {
+    this.appComponent.reloadWindow();
     this.getTrending();
   }
 
@@ -27,10 +27,10 @@ export class HomePageComponent implements OnInit {
     // Tmp: just showing survey list
     this.appComponent.surveyService.findAllSurveys().subscribe(responseMessage => {
       this.trending = responseMessage.object;
-      if(this.trending.length==0) alert (responseMessage.message);
-      this.trending.forEach(survey => {
-        this.getUserDetails(survey.owner);
-      })
+      if(this.trending!=null && this.trending.length>0)
+        this.trending.forEach(survey => {
+          this.getUserDetails(survey.owner);
+        })
     })
   }
 

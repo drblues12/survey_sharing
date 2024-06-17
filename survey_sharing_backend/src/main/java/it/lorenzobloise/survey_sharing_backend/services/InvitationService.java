@@ -71,6 +71,13 @@ public class InvitationService {
         return result;
     }
 
+    public Invitation getInvitationById(String invitationId){
+        Optional<Invitation> result = invitationRepository.findById(invitationId);
+        if(result.isEmpty())
+            throw new RuntimeException("No results");
+        return result.get();
+    }
+
     // DELETE
 
     public Invitation removeInvitation(String invitation){

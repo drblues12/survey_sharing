@@ -1,37 +1,45 @@
 <nb-layout>
   <nb-layout-header *ngIf="notLoginNorRegister()" class="header-section" subheader fixed="false">
-    <div class="header-container">
-      <div class="header-logo">
-        <a style="text-decoration:none;" routerLink=""><h1>Survey Sharing</h1></a>
+    <div class="item-container">
+      <div class="item-1">
+        <a href="#" style="text-decoration:none;" (click)="navigate('', null)"><h1>Survey Sharing</h1></a>
       </div>
-      <div class="Search bar">
-        <div style="display:inline-block">
-          <nb-actions size="medium">
-            <nb-action icon="search" link="search/{{searchType}}" style="top: 5px; left: 15px;"></nb-action>
-          </nb-actions>
+      <div class="item-2">
+        <div class="item-container">
+          <div class="item-right">
+            <nb-actions size="medium">
+              <nb-action icon="search" (click)="navigate('search/'+searchType, null)"></nb-action>
+            </nb-actions>
+          </div>
+          <div class="item-2">
+            <input type="text" nbInput placeholder="Search" [(ngModel)]="query">
+          </div>
+          <div class="item-left">
+            <nb-select [(ngModel)]="searchType" placeholder="Search type">
+              <nb-option value="surveys">Surveys</nb-option>
+              <nb-option value="users">Users</nb-option>
+            </nb-select>
+          </div>
+          <div class="item-left">
+            <div class="item-container">
+              <div class="item-left" *ngIf="!darkMode">
+                <nb-icon icon="sun"></nb-icon>
+              </div>
+              <div class="item-left" *ngIf="darkMode">
+                <nb-icon icon="moon"></nb-icon>
+              </div>
+              <div class="item-left">
+                <nb-toggle [(checked)]="darkMode" (checkedChange)="switchTheme()"></nb-toggle>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style="display:inline-block"><input type="text" nbInput placeholder="Search" [(ngModel)]="query"></div>
-        <div style="display:inline-block;">
-          <nb-select [(ngModel)]="searchType" placeholder="Search type">
-            <nb-option value="surveys">Surveys</nb-option>
-            <nb-option value="users">Users</nb-option>
-          </nb-select>
-        </div>
       </div>
-      <div *ngIf="this.mail" class="actions" style="float: right;">
+      <div class="item-3">
         <nb-actions size="medium">
-          <nb-action icon="plus" link="create-survey" title="Create survey"></nb-action>
-          <nb-action icon="person" link="user" title="Yuor profile"></nb-action>
-          <nb-action icon="email" link="messages" badgeDot badgePosition="top right" badgeStatus="danger" title="Messages"></nb-action>
-          <nb-action icon="log-out" link="login" title="Log out"></nb-action>
-        </nb-actions>
-      </div>
-      <div *ngIf="!this.mail" class="actions" style="float: right;">
-        <nb-actions size="medium">
-          <nb-action icon="plus" link="create-survey" title="Create survey"></nb-action>
-          <nb-action icon="person" link="user" title="Your profile"></nb-action>
-          <nb-action icon="email" link="messages" title="Messages"></nb-action>
-          <nb-action icon="log-out" link="login" title="Log out"></nb-action>
+          <nb-action icon="plus" (click)="navigate('create-survey', null)" title="Create survey"></nb-action>
+          <nb-action icon="person" (click)="navigate('user', null)" title="Your profile"></nb-action>
+          <nb-action icon="log-out" (click)="navigate('login', null)" title="Log out"></nb-action>
         </nb-actions>
       </div>
     </div>

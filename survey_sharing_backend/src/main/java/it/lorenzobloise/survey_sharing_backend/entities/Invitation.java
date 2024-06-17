@@ -41,6 +41,10 @@ public class Invitation implements Comparable<Invitation> {
 
     public Invitation(Invitation i){
         this(i.getUser(), i.getSurvey(), i.getMessage());
+        this.invitationDate = i.getInvitationDate();
+        this.invitationDateObj = LocalDateTime.of(Integer.parseInt(this.invitationDate[2]), Integer.parseInt(this.invitationDate[1]),
+                                                    Integer.parseInt(this.invitationDate[0]), Integer.parseInt(this.invitationDate[3]),
+                                                    Integer.parseInt(this.invitationDate[4]), Integer.parseInt(this.invitationDate[5]));
     }
 
     public boolean equals(Object o){

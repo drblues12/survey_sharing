@@ -19,6 +19,7 @@ export class SingleUserComponent implements OnInit {
   createdSurveys: Survey[] = [];
 
   ngOnInit(): void{
+    this.appComponent.reloadWindow();
     var username = this.route.snapshot.paramMap.get('username');
     if(username!=null){
       this.appComponent.userService.findUsersByUsername(username).subscribe(responseMessage => {

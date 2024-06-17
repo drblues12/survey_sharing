@@ -21,13 +21,13 @@ public class ImageQuestion extends Question {
     public ImageQuestion(String url){
         super();
         this.url = url;
-        this.type = QuestionType.Image.toString();
+        this.type = QuestionType.ImageQuestion.toString();
     }
 
     public ImageQuestion(ImageQuestion iq){
-        super(iq.getQuestion());
+        super(iq);
         this.url = iq.getUrl();
-        this.type = QuestionType.Image.toString();
+        this.type = QuestionType.ImageQuestion.toString();
     }
 
 }

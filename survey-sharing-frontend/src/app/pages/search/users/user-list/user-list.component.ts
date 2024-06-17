@@ -22,23 +22,32 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.appComponent.reloadWindow();
     this.search_results = [];
     if(this.query===""){
       this.appComponent.userService.findAllUsers().subscribe(responseMessage => {
         this.search_results = responseMessage.object
         if(this.search_results.length==0) alert (responseMessage.message);
+        else{
+          const indexToRemove: number = this.search_results.findIndex(x => x.username==this.appComponent.getUser().username);
+          this.search_results.splice(indexToRemove, 1);
+        }
       })
     }
     else{
       this.appComponent.userService.findUsersByNameAndSurname(this.query).subscribe(responseMessage => {
         this.search_results = responseMessage.object;
         if(this.search_results.length==0) alert (responseMessage.message);
+        else{
+          const indexToRemove: number = this.search_results.findIndex(x => x.username==this.appComponent.getUser().username);
+          this.search_results.splice(indexToRemove, 1);
+        }
       })
     }
   }
 
   goToSingleUserPage(username: string): void{
-    this.router.navigate(['search/users/single-user', username]);
+    this.appComponent.navigate('search/users/single-user', username);
   }
 
 }

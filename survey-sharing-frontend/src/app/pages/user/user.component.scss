@@ -6,6 +6,20 @@
   padding: 10px;
 }
 
+.item-left {
+  flex: 0 0 auto;
+  display: flex;
+  margin-right: 15px;
+  justify-content: flex-start;
+}
+
+.item-right {
+  flex: 0 0 auto;
+  display: flex;
+  margin-left: 15px;
+  justify-content: flex-end;
+}
+
 .item-1 {
   flex: 1;
   display: flex;
