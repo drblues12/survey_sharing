@@ -41,12 +41,27 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.checkLogin();
+    this.themeCheck();
+    this.userService.findUsersByUsername(this.username).subscribe(responseMessage => {
+      this.user = responseMessage.object[0];
+      this.getCreatedSurveys(this.user.username);
+      this.getAnswers(this.user.username);
+      this.getInvitations(this.user.username);
+    })
+  }
+
+  checkLogin(): void {
     const loggedIn: string | null = localStorage.getItem('loggedIn');
-    if(loggedIn==null)
-      this.navigate('login', null);
-    else if(loggedIn!='true'){
-      this.navigate('login', null);
+    if(loggedIn==null){
+      this.logout();
+      return;
     }
+    if(loggedIn=='true') return;
+    this.logout();
+  }
+
+  themeCheck(): void {
     const theme: string | null = localStorage.getItem('theme');
     if(theme!=null){
       this.themeService.changeTheme(theme);
@@ -55,12 +70,6 @@ export class AppComponent implements OnInit {
       else
         this.darkMode = true;
     }
-    this.userService.findUsersByUsername(this.username).subscribe(responseMessage => {
-      this.user = responseMessage.object[0];
-      this.getCreatedSurveys(this.user.username);
-      this.getAnswers(this.user.username);
-      this.getInvitations(this.user.username);
-    })
   }
 
   switchTheme(){

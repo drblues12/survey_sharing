@@ -55,7 +55,7 @@ const routes: Routes = [
     component: SurveyListComponent
   },
   {
-    path: 'answer',
+    path: 'answer/:surveyTitle',
     component: AnswerComponent
   },
   {

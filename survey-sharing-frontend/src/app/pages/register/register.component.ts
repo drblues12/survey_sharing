@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbTrigger } from '@nebular/theme';
 import { AppComponent } from 'src/app/app.component';
+import { SupportService } from 'src/app/support/support.service';
 
 @Component({
   selector: 'app-register',

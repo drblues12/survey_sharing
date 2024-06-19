@@ -39,15 +39,11 @@
         <input nbInput type="text" placeholder="Age" [(ngModel)]="fields.age.age" (input)="onInputChangeAge($event)"
         [status]="getStatus(fields.age.correct)" [nbTooltip]="fields.age.error" [nbTooltipStatus]="getStatus(fields.age.correct)"
         [nbTooltipIcon]="getTooltipIcon(fields.age.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.age.correct==undefined">
-        <nb-select placeholder="Gender" [(selected)]="fields.gender.gender" (input)="onInputChangeGender($event)"
-        [status]="getStatus(fields.gender.correct)" [nbTooltip]="fields.gender.error" [nbTooltipStatus]="getStatus(fields.gender.correct)"
-        [nbTooltipIcon]="getTooltipIcon(fields.gender.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.gender.correct==undefined">
+        <nb-select placeholder="Gender" [(selected)]="fields.gender.gender">
           <nb-option value="Male">Male</nb-option>
           <nb-option value="Female">Female</nb-option>
         </nb-select>
-        <nb-select placeholder="Country" [(selected)]="fields.country.country" (input)="onInputChangeCountry($event)"
-        [status]="getStatus(fields.country.correct)" [nbTooltip]="fields.country.error" [nbTooltipStatus]="getStatus(fields.country.correct)"
-        [nbTooltipIcon]="getTooltipIcon(fields.country.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.country.correct==undefined">
+        <nb-select placeholder="Country" [(selected)]="fields.country.country">
           <nb-option *ngFor="let country of countries" [value]="country.name">{{country.name}}</nb-option>
         </nb-select>
       </nb-form-field>
