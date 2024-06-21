@@ -59,4 +59,14 @@ export class SurveyListComponent implements OnInit {
     this.appComponent.navigate('answer', survey);
   }
 
+  hasAnswered(survey: string): boolean {
+    return this.appComponent.getAnswers().find(a => a.answer.survey==survey)!=undefined;
+  }
+
+  getTooltip(survey: string): string {
+    if(this.hasAnswered(survey))
+      return "You have already answered this survey";
+    return "";
+  }
+
 }

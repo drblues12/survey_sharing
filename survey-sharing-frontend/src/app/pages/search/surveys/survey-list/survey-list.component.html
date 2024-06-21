@@ -39,7 +39,8 @@
               </div>
               <div class="item-button">
                 <div *ngIf="survey.owner!=appComponent.getUser().username">
-                  <button nbButton (click)="answerSurvey(survey.title)">Answer</button>
+                  <button nbButton disabled="{{hasAnswered(survey.title)}}" (click)="answerSurvey(survey.title)" [nbTooltip]="getTooltip(survey.title)"
+                  [nbTooltipDisabled]="!hasAnswered(survey.title)">Answer</button>
                 </div>
               </div>
             </div>
