@@ -23,11 +23,9 @@ export class AppComponent implements OnInit {
 
   public username: string = 'dr.blues.__';
   user!: User;
-  createdSurveys: Map<string, Survey> = new Map<string,Survey>();
-  answers: Map<string, Answer> = new Map<string, Answer>();
-  invitations: Map<string, Invitation> = new Map<string, Invitation>();
-  surveysOwners: Map<string, User> = new Map<string, User>();
-  invitationSenders: Map<string, User> = new Map<string, User>();
+  createdSurveys: Survey[] = [];
+  answers: {answer: Answer, surveyOwner: User}[] = [];
+  invitations: {invitation: Invitation, surveyOwner: User}[] = [];
   searchType!: string;
   query: string = "";
   refresh: boolean = false;
@@ -44,9 +42,9 @@ export class AppComponent implements OnInit {
     this.themeCheck();
     this.userService.findUsersByUsername(this.username).subscribe(responseMessage => {
       this.user = responseMessage.object[0];
-      this.getCreatedSurveys(this.user.username);
-      this.getAnswers(this.user.username);
-      this.getInvitations(this.user.username);
+      this.fetchCreatedSurveys();
+      this.fetchAnswers();
+      this.fetchInvitations();
     })
   }
 
@@ -107,62 +105,61 @@ export class AppComponent implements OnInit {
     return this.router.url !== '/login' && this.router.url !== '/register';
   }
 
-  getCreatedSurveys(username: string): void {
-    this.surveyService.findAllCreatedSurveys(username).subscribe(responseMessage => {
-      var result: Survey[] = responseMessage.object;
-      if(result!=null && result.length>0)
-        result.forEach(survey => {
-          if(!this.createdSurveys.has(survey.title))
-            this.createdSurveys.set(survey.title, survey);
-        })
+  fetchCreatedSurveys(): void {
+    this.surveyService.findAllCreatedSurveys(this.username).subscribe(responseMessage => {
+      if(responseMessage.object)
+        this.createdSurveys = responseMessage.object;
     })
   }
 
-  getAnswers(username: string): void {
-    this.answerService.findAllAnswers(username).subscribe(responseMessage => {
+  getCreatedSurveys(): Survey[] {
+    if(this.createdSurveys)
+      return this.createdSurveys;
+    return [];
+  }
+
+  fetchAnswers(): void {
+    this.answerService.findAllAnswers(this.username).subscribe(responseMessage => {
       var result: Answer[] = responseMessage.object;
       if(result!=null && result.length>0)
         result.forEach(answer => {
-          if(!this.answers.has(answer.survey)){
-            this.answers.set(answer.survey, answer);
-          }
-          this.getSurveyOwnerDetails(answer.survey);
+          this.surveyService.findSurveyByTitle(answer.survey).subscribe(responseMessage2 => {
+            if(responseMessage2.object)
+              this.userService.findUserByUsername(responseMessage2.object.owner).subscribe(responseMessage3 => {
+                if(responseMessage3.object)
+                  this.answers.push({answer: answer, surveyOwner: responseMessage3.object});
+              })
+          })
         })
     })
   }
 
-  getInvitations(username: string): void {
-    this.invitationService.findAllInvitations(username).subscribe(responseMessage => {
+  getAnswers(): {answer: Answer, surveyOwner: User}[] {
+    if(this.answers)
+      return this.answers;
+    return [];
+  }
+
+  fetchInvitations(): void {
+    this.invitationService.findAllInvitations(this.username).subscribe(responseMessage => {
       var result: Invitation[] = responseMessage.object;
       if(result!=null && result.length>0)
         result.forEach(invitation => {
-          if(!this.invitations.has(invitation.id))
-            this.invitations.set(invitation.id, invitation);
-          this.getInvitationSender(invitation);
+          this.surveyService.findSurveyByTitle(invitation.survey).subscribe(responseMessage2 => {
+            if(responseMessage2.object)
+              this.userService.findUserByUsername(responseMessage2.object.owner).subscribe(responseMessage3 => {
+                if(responseMessage3.object)
+                  this.invitations.push({invitation: invitation, surveyOwner: responseMessage3.object});
+              })
+          })
         })
     })
   }
 
-  getSurveyOwnerDetails(surveyTitle: string): void {
-    this.surveyService.findSurveysByTitle(surveyTitle).subscribe(responseMessage => {
-      var result: Survey = responseMessage.object[0];
-      this.userService.findUsersByUsername(result.owner).subscribe(responseMessage2 => {
-        var result2: User = responseMessage2.object[0];
-        if(!this.surveysOwners.has(surveyTitle))
-          this.surveysOwners.set(surveyTitle, result2);
-      })
-    })
-  }
-
-  getInvitationSender(invitation: Invitation): void {
-    this.surveyService.findSurveysByTitle(invitation.survey).subscribe(responseMessage => {
-      var result: Survey = responseMessage.object[0];
-      this.userService.findUsersByUsername(result.owner).subscribe(responseMessage2 => {
-        var result2: User = responseMessage2.object[0];
-        if(!this.invitationSenders.has(invitation.id))
-          this.invitationSenders.set(invitation.id, result2);
-      })
-    })
+  getInvitations(): {invitation: Invitation, surveyOwner: User}[] {
+    if(this.invitations)
+      return this.invitations;
+    return [];
   }
 
   getParsedDate(date: string[] | undefined): string | null {

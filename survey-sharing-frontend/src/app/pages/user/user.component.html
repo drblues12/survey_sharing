@@ -87,23 +87,23 @@
                     <div class="item-3"></div>
                   </div>
                 </nb-list-item>
-                <nb-list-item *ngFor="let survey of appComponent.getUser().createdSurveys">
+                <nb-list-item *ngFor="let survey of appComponent.getCreatedSurveys()">
                   <div class="item-container">
                     <div class="item-1">
-                      {{survey}}
+                      {{survey.title}}
                     </div>
                     <div class="item-1">
-                      {{appComponent.getParsedDate(createdSurveys.get(survey)?.creationDate)}}
-                      <br>{{appComponent.getParsedHour(createdSurveys.get(survey)?.creationDate)}}
+                      {{appComponent.getParsedDate(survey.creationDate)}}
+                      <br>{{appComponent.getParsedHour(survey.creationDate)}}
                     </div>
                     <div class="item-2">
                       <!--TODO Average Rating-->
                     </div>
                     <div class="item-3">
-                      <button nbButton (click)="goToSurveyDetailsPage(survey)">Details<nb-icon icon="file-text"></nb-icon></button>
+                      <button nbButton (click)="goToSurveyDetailsPage(survey.title)">Details<nb-icon icon="file-text"></nb-icon></button>
                     </div>
                     <div class="item-3">
-                      <button nbButton (click)="deleteCreatedSurvey(survey)">Delete<nb-icon icon="trash-2"></nb-icon></button>
+                      <button nbButton (click)="deleteCreatedSurvey(survey.title)">Delete<nb-icon icon="trash-2"></nb-icon></button>
                     </div>
                   </div>
                 </nb-list-item>
@@ -126,10 +126,10 @@
                     <div class="item-3"></div>
                   </div>
                 </nb-list-item>
-                <nb-list-item *ngFor="let answer of answers">
+                <nb-list-item *ngFor="let answer of appComponent.getAnswers()">
                   <div class="item-container">
                     <div class="item-1">
-                      {{answer.survey}}
+                      {{answer.answer.survey}}
                     </div>
                     <div class="item-1">
                       <nb-user name="{{answer.surveyOwner.name}} {{answer.surveyOwner.surname}}" title="{{answer.surveyOwner.username}}"></nb-user>
@@ -168,26 +168,26 @@
                     <div class="item-3"></div>
                   </div>
                 </nb-list-item>
-                <nb-list-item *ngFor="let invitation of appComponent.getUser().invitations">
+                <nb-list-item *ngFor="let invitation of appComponent.getInvitations()">
                   <div class="item-container">
                     <div class="item-1">
-                      {{invitations.get(invitation)?.survey}}
+                      {{invitation.invitation.survey}}
                     </div>
                     <div class="item-1">
-                      <nb-user name="{{invitationSenders.get(invitation)?.name}} {{invitationSenders.get(invitation)?.surname}}" title="{{invitationSenders.get(invitation)?.username}}"></nb-user>
+                      <nb-user name="{{invitation.surveyOwner.name}} {{invitation.surveyOwner.surname}}" title="{{invitation.surveyOwner.username}}"></nb-user>
                     </div>
                     <div class="item-2">
-                      {{appComponent.getParsedDate(invitations.get(invitation)?.invitationDate)}}
-                      <br>{{appComponent.getParsedHour(invitations.get(invitation)?.invitationDate)}}
+                      {{appComponent.getParsedDate(invitation.invitation.invitationDate)}}
+                      <br>{{appComponent.getParsedHour(invitation.invitation.invitationDate)}}
                     </div>
                     <div class="item-2">
-                      {{invitations.get(invitation)?.message}}
+                      {{invitation.invitation.message}}
                     </div>
                     <div class="item-3">
                       <button nbButton>Accept<nb-icon icon="checkmark-circle-2"></nb-icon></button>
                     </div>
                     <div class="item-3">
-                      <button nbButton (click)="deleteInvitation(invitation)">Delete<nb-icon icon="trash-2"></nb-icon></button>
+                      <button nbButton (click)="deleteInvitation(invitation.invitation.id)">Delete<nb-icon icon="trash-2"></nb-icon></button>
                     </div>
                   </div>
                 </nb-list-item>

@@ -22,33 +22,8 @@ export class UserComponent implements OnInit {
 
   constructor(public appComponent: AppComponent, private router: Router, private supportService: SupportService) { }
 
-  user!: User;
-  createdSurveys: Map<string, Survey> = this.appComponent.createdSurveys;
-  //answers: Map<string, Answer> = this.appComponent.answers;
-  answers: {survey: string, surveyOwner: User, answer: Answer}[] = [];
-  invitations: Map<string, Invitation> = this.appComponent.invitations;
-  surveysOwners: Map<string, User> = this.appComponent.surveysOwners;
-  invitationSenders: Map<string, User> = this.appComponent.invitationSenders;
-
   ngOnInit(): void {
     this.appComponent.reloadWindow();
-    /*
-    this.appComponent.answerService.findAllAnswers(this.appComponent.getUser().username).subscribe(responseMessage => {
-      if(responseMessage.object!=null){
-        var ans: Answer[] = responseMessage.object;
-        ans.forEach(a => {
-          this.appComponent.surveyService.findSurveyByTitle(a.survey).subscribe(responseMessage2 => {
-            if(responseMessage2.object!=null)
-              this.appComponent.userService.findUserByUsername(responseMessage2.object.owner).subscribe(responseMessage3 => {
-                if(responseMessage3.object!=null){
-                  this.answers.push({survey: a.survey, surveyOwner: responseMessage3.object, answer: a});
-                }
-              })
-          })
-        })
-      }
-    })
-    */
   }
 
   goToSurveyDetailsPage(surveyTitle: string){
