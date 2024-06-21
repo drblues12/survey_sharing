@@ -102,4 +102,10 @@ export class AnswerSummaryComponent implements OnInit {
     }
     return null;
   }
+
+  getRating(): number {
+    if(this.getAnswer().rating)
+      return this.getAnswer().rating as number;
+    return 0;
+  }
 }

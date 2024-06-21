@@ -23,6 +23,7 @@ import { SurveyDetailsComponent } from './pages/survey-details/survey-details.co
 import { InvitationComponent } from './pages/invitation/invitation.component';
 import { AnswerDetailsComponent } from './pages/answer-details/answer-details.component';
 import { AnswerSummaryComponent } from './pages/answer-summary/answer-summary.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,8 @@ import { AnswerSummaryComponent } from './pages/answer-summary/answer-summary.co
     NbRadioModule,
     NbTooltipModule,
     NbWindowModule.forRoot(),
-    NbCheckboxModule
+    NbCheckboxModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

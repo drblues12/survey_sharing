@@ -38,7 +38,7 @@
                     <b>Rating:</b>
                   </div>
                   <div class="item-1">
-                    {{getAnswer().rating}}
+                    <ngb-rating [readonly]="true" [rate]="getRating()" [max]="5" style="font-size: 2rem; color: orange;"></ngb-rating>
                   </div>
                 </div>
               </nb-list-item>

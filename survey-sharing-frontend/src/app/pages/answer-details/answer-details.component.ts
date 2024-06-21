@@ -111,4 +111,11 @@ export class AnswerDetailsComponent implements OnInit {
     return null;
   }
 
+  getRating(): number {
+    if(this.getAnswer().rating)
+      return this.getAnswer().rating as number;
+    else
+      return 0;
+  }
+
 }

@@ -50,11 +50,15 @@
       </nb-card-body>
       <nb-card>
         <nb-card-header>
-          <h5>Rate this survey</h5>
+          <div class="item-container">
+            <div class="item-left">
+              <b><h5>Rate this survey:</h5></b>
+            </div>
+            <div class="item-1">
+              <ngb-rating [(rate)]="rating" [max]="5" style="font-size: 2rem; color: orange;"></ngb-rating>
+            </div>
+          </div>
         </nb-card-header>
-        <nb-card-body>
-          <!--TODO-->
-        </nb-card-body>
         <nb-card-header>
           <h5>Give your feedback on this survey</h5>
         </nb-card-header>

@@ -179,4 +179,10 @@ export class SurveyDetailsComponent implements OnInit {
     })
   }
 
+  getRating(answer: Answer): number {
+    if(answer.rating)
+      return answer.rating as number;
+    return 0;
+  }
+
 }
