@@ -30,6 +30,10 @@ export class AnswerService{
     return this.http.get<ResponseMessage>(this.base_url+'/'+user+'/search/by_survey_title?surveyTitle='+surveyTitle);
   }
 
+  public findAnswerById(answer: string){
+    return this.http.get<ResponseMessage>(this.base_url+'/search/by_id?answer_id='+answer);
+  }
+
   // DELETE
 
   public deleteAnswer(user: string, answer: string){

@@ -92,6 +92,10 @@ public class AnswerService {
         return result;
     }
 
+    public Optional<Answer> getAnswerById(String answerId){
+        return answerRepository.findById(answerId);
+    }
+
     // DELETE
 
     public Optional<Answer> removeAnswer(String answer){

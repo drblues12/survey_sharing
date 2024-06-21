@@ -139,10 +139,10 @@
                       <br>{{appComponent.getParsedHour(answer.answer.answerDate)}}
                     </div>
                     <div class="item-3">
-                      <button nbButton>See details</button>
+                      <button nbButton (click)="goToAnswerDetailsPage(answer.answer.survey)">Details<nb-icon icon="file-text"></nb-icon></button>
                     </div>
                     <div class="item-3">
-                      <button nbButton>Delete</button>
+                      <button nbButton (click)="deleteAnswer(answer.answer.id)">Delete<nb-icon icon="trash-2"></nb-icon></button>
                     </div>
                   </div>
                 </nb-list-item>
@@ -184,7 +184,10 @@
                       {{invitation.invitation.message}}
                     </div>
                     <div class="item-3">
-                      <button nbButton>Accept<nb-icon icon="checkmark-circle-2"></nb-icon></button>
+                      <button nbButton disabled="{{checkAccepted(invitation.invitation.survey)}}" (click)="answerSurvey(invitation.invitation.survey)"
+                      [nbTooltip]="getTooltip(invitation.invitation)" [nbTooltipDisabled]="!checkAccepted(invitation.invitation.survey)">
+                        Accept<nb-icon icon="checkmark-circle-2"></nb-icon>
+                      </button>
                     </div>
                     <div class="item-3">
                       <button nbButton (click)="deleteInvitation(invitation.invitation.id)">Delete<nb-icon icon="trash-2"></nb-icon></button>

@@ -13,6 +13,7 @@ import { Invitation } from './entities/invitation';
 import { QuestionService } from './services/question.service';
 import { filter } from 'rxjs/operators';
 import { SupportService } from './support/support.service';
+import { Question } from './entities/question';
 
 @Component({
   selector: 'app-root',
@@ -172,6 +173,22 @@ export class AppComponent implements OnInit {
     if(date!=undefined)
       return date[3]+':'+date[4]+':'+date[5];
     return null;
+  }
+
+  compareQuestions(q1: Question, q2: Question): number {
+    if(q1.questionDate[2]<q2.questionDate[2]) return -1;
+    if(q1.questionDate[2]>q2.questionDate[2]) return 1;
+    if(q1.questionDate[1]<q2.questionDate[1]) return -1;
+    if(q1.questionDate[1]>q2.questionDate[1]) return 1;
+    if(q1.questionDate[0]<q2.questionDate[0]) return -1;
+    if(q1.questionDate[0]>q2.questionDate[0]) return 1;
+    if(q1.questionDate[3]<q2.questionDate[3]) return -1;
+    if(q1.questionDate[3]>q2.questionDate[3]) return 1;
+    if(q1.questionDate[4]<q2.questionDate[4]) return -1;
+    if(q1.questionDate[4]>q2.questionDate[4]) return 1;
+    if(q1.questionDate[5]<q2.questionDate[5]) return -1;
+    if(q1.questionDate[5]>q2.questionDate[5]) return 1;
+    return 0;
   }
 
   logout(){

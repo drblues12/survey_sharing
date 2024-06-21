@@ -20,6 +20,8 @@ import { Invitation } from "../entities/invitation";
 export class SupportService{
   public surveyTitle!: string;
   public username!: string;
+  public rating!: number;
+  public feedback!: string;
 
   constructor() { }
 

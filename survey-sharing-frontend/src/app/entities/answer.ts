@@ -6,7 +6,7 @@ export class Answer{
   id!: string;
   user!: string;
   survey!: string;
-  questions!: Question[];
+  questions!: string[];
   answerDate!: string[];
   feedback!: string;
   rating!: number | null;

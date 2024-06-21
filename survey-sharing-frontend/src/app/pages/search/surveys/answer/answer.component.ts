@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NbWindowService } from '@nebular/theme';
 import { AppComponent } from 'src/app/app.component';
 import { Answer } from 'src/app/entities/answer';
 import { Option } from 'src/app/entities/option';
@@ -16,9 +17,11 @@ export class AnswerComponent implements OnInit {
   answer!: Answer;
   survey!: Survey;
   questions: {question: Question, answer: string}[] = [];
+  rating!: number;
+  feedback!: string;
   nextIndex: number = 0;
 
-  constructor(private appComponent: AppComponent, private route: ActivatedRoute) { }
+  constructor(private appComponent: AppComponent, private route: ActivatedRoute, private windowService: NbWindowService) { }
 
   ngOnInit(): void {
     this.appComponent.reloadWindow();
@@ -52,7 +55,7 @@ export class AnswerComponent implements OnInit {
                   newQ3.setQuestionDate(responseMessage2.object.questionDate);
                   this.questions.push({question: newQ3, answer: ""});
                 }
-                this.questions.sort((q1, q2) => q1.question.compareTo(q2.question));
+                this.questions.sort((q1, q2) => this.appComponent.compareQuestions(q1.question, q2.question));
               }
             })
           })
@@ -87,7 +90,15 @@ export class AnswerComponent implements OnInit {
     return null;
   }
 
+  existsEmptyAnswer(): boolean {
+    return this.questions.find(q => q.answer=="")!=undefined;
+  }
+
   submit(): void {
+    if(this.existsEmptyAnswer()){
+      alert("All questions must have been answered");
+      return;
+    }
     this.questions.forEach(q => {
       if(this.isMultipleChoice(q.question)){
         var q2: MultipleChoiceQuestion = q.question as MultipleChoiceQuestion;
@@ -107,9 +118,9 @@ export class AnswerComponent implements OnInit {
       ...q,
       '@type': q.type
     })))
-    this.appComponent.answerService.createAnswer(this.appComponent.user.username, this.getSurvey().title, -1, ".", jsonObj).subscribe(responseMessage => {
+    this.appComponent.answerService.createAnswer(this.appComponent.user.username, this.getSurvey().title, this.rating, this.feedback, jsonObj).subscribe(responseMessage => {
       alert(responseMessage.message);
-      this.appComponent.navigate('user', null);
+      this.appComponent.navigate('answer-details', this.getSurvey().title);
     })
   }
 

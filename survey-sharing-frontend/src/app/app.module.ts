@@ -21,6 +21,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { SingleUserComponent } from './pages/search/users/single-user/single-user.component';
 import { SurveyDetailsComponent } from './pages/survey-details/survey-details.component';
 import { InvitationComponent } from './pages/invitation/invitation.component';
+import { AnswerDetailsComponent } from './pages/answer-details/answer-details.component';
+import { AnswerSummaryComponent } from './pages/answer-summary/answer-summary.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { InvitationComponent } from './pages/invitation/invitation.component';
     SingleUserComponent,
     SurveyDetailsComponent,
     InvitationComponent,
+    AnswerDetailsComponent,
+    AnswerSummaryComponent
   ],
   imports: [
     BrowserModule,

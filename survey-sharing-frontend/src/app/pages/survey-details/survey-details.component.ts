@@ -9,6 +9,7 @@ import { Survey } from 'src/app/entities/survey';
 import { User } from 'src/app/entities/user';
 import { InvitationComponent } from '../invitation/invitation.component';
 import { SupportService } from 'src/app/support/support.service';
+import { Answer } from 'src/app/entities/answer';
 
 @Component({
   selector: 'app-survey-details',
@@ -21,6 +22,7 @@ export class SurveyDetailsComponent implements OnInit {
   ownerDetails!: User;
   questions: { id: string, question: Question}[] = [];
   invitations: { id: string, invitation: Invitation, recipient: User }[] = [];
+  answers: { id: string, answer: Answer, user: User }[] = [];
   nullVariable: null = null;
 
   constructor(private appComponent: AppComponent, private route: ActivatedRoute,
@@ -66,6 +68,19 @@ export class SurveyDetailsComponent implements OnInit {
                         return 1;
                       return 0;
                     })
+                  }
+                })
+              }
+            })
+          })
+          this.survey.answers.forEach(a => {
+            this.appComponent.answerService.findAnswerById(a).subscribe(responseMessage2 => {
+              if(responseMessage2.object!=null){
+                const currAnswer: Answer = responseMessage2.object;
+                this.appComponent.userService.findUserByUsername(currAnswer.user).subscribe(responseMessage3 => {
+                  if(responseMessage3.object!=null){
+                    const currUser: User = responseMessage3.object;
+                    this.answers.push({id: currAnswer.id, answer: currAnswer, user: currUser});
                   }
                 })
               }
@@ -122,6 +137,10 @@ export class SurveyDetailsComponent implements OnInit {
       alert(responseMessage.message);
       this.appComponent.navigate('user', null);
     })
+  }
+
+  goToAnswerSummaryPage(answer: Answer){
+    this.appComponent.navigate('answer-summary', answer.id);
   }
 
   getInvitationAcceptedIcon(invitation: Invitation){

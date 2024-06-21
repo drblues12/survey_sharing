@@ -12,6 +12,8 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CreateSurveyComponent } from './pages/create-survey/create-survey.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { SurveyDetailsComponent } from './pages/survey-details/survey-details.component';
+import { AnswerDetailsComponent } from './pages/answer-details/answer-details.component';
+import { AnswerSummaryComponent } from './pages/answer-summary/answer-summary.component';
 
 const routes: Routes = [
   {
@@ -61,6 +63,14 @@ const routes: Routes = [
   {
     path: 'survey-details/:surveyTitle',
     component: SurveyDetailsComponent
+  },
+  {
+    path: 'answer-details/:surveyTitle',
+    component: AnswerDetailsComponent
+  },
+  {
+    path: 'answer-summary/:answer_id',
+    component: AnswerSummaryComponent
   }
 ];
 

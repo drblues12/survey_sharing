@@ -38,10 +38,36 @@ export class UserComponent implements OnInit {
   }
 
   deleteInvitation(invitation: string){
-    this.appComponent.invitationService.deleteInvitation(this.appComponent.getUser().username, invitation).subscribe(ResponseMessage => {
-      alert(ResponseMessage.message);
+    this.appComponent.invitationService.deleteInvitation(this.appComponent.getUser().username, invitation).subscribe(responseMessage => {
+      alert(responseMessage.message);
       window.location.reload();
     })
+  }
+
+  deleteAnswer(answer: string){
+    this.appComponent.answerService.deleteAnswer(this.appComponent.getUser().username, answer).subscribe(responseMessage => {
+      alert(responseMessage.message);
+      window.location.reload();
+    })
+  }
+
+  goToAnswerDetailsPage(survey: string){
+    this.appComponent.navigate('answer-details', survey);
+  }
+
+  answerSurvey(survey: string){
+    this.appComponent.navigate('answer', survey);
+  }
+
+  checkAccepted(survey: string): boolean {
+    const answerToThisInvitation: {answer: Answer, surveyOwner: User} | undefined = this.appComponent.getAnswers().find(a => a.answer.survey==survey);
+    return answerToThisInvitation!=undefined;
+  }
+
+  getTooltip(invitation: Invitation): string {
+    if(this.checkAccepted(invitation.survey))
+      return "You have already answered this survey";
+    return "";
   }
 
 }

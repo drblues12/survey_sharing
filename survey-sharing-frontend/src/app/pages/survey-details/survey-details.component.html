@@ -33,7 +33,9 @@
             </nb-list>
           </nb-card-body>
           <nb-card-footer>
-            <button nbButton (click)="deleteSurvey(getSurvey().title)">Delete<nb-icon icon="trash-2"></nb-icon></button>
+            <div class="item-right">
+              <button nbButton (click)="deleteSurvey(getSurvey().title)">Delete<nb-icon icon="trash-2"></nb-icon></button>
+            </div>
           </nb-card-footer>
         </nb-card>
         <nb-card>
@@ -83,7 +85,49 @@
               </ng-container>
             </nb-tab>
             <nb-tab tabTitle="Answers">
-
+              <nb-card>
+                <nb-card-body>
+                  <nb-list>
+                    <nb-list-item>
+                      <div class="item-container">
+                        <div class="item-1">
+                          <b>Answered by</b>
+                        </div>
+                        <div class="item-1">
+                          <b>Answer date</b>
+                        </div>
+                        <div class="item-2">
+                          <b>Rating</b>
+                        </div>
+                        <div class="item-3">
+                          <b>Feedback</b>
+                        </div>
+                        <div class="item-3"><!--BUTTON DETAILS--></div>
+                      </div>
+                    </nb-list-item>
+                    <nb-list-item *ngFor="let answer of answers">
+                      <div class="item-container">
+                        <div class="item-1">
+                          <nb-user name="{{answer.user.name}} {{answer.user.surname}}" title="{{answer.user.username}}"></nb-user>
+                        </div>
+                        <div class="item-1">
+                          {{answer.answer.answerDate[0]}}/{{answer.answer.answerDate[1]}}/{{answer.answer.answerDate[2]}}
+                          <br>{{answer.answer.answerDate[3]}}:{{answer.answer.answerDate[4]}}:{{answer.answer.answerDate[5]}}
+                        </div>
+                        <div class="item-2">
+                          {{answer.answer.rating}}
+                        </div>
+                        <div class="item-3">
+                          {{answer.answer.feedback}}
+                        </div>
+                        <div class="item-3">
+                          <button nbButton (click)="goToAnswerSummaryPage(answer.answer)">Details<nb-icon icon="file-text"></nb-icon></button>
+                        </div>
+                      </div>
+                    </nb-list-item>
+                  </nb-list>
+                </nb-card-body>
+              </nb-card>
             </nb-tab>
             <nb-tab tabTitle="Invitations">
               <nb-card>

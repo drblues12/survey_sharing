@@ -24,22 +24,6 @@ export class Question{
   setQuestionDate(questionDate: string[]){
     this.questionDate = questionDate;
   }
-
-  compareTo(q2: Question): number {
-    if(this.questionDate[2]<q2.questionDate[2]) return -1;
-    if(this.questionDate[2]>q2.questionDate[2]) return 1;
-    if(this.questionDate[1]<q2.questionDate[1]) return -1;
-    if(this.questionDate[1]>q2.questionDate[1]) return 1;
-    if(this.questionDate[0]<q2.questionDate[0]) return -1;
-    if(this.questionDate[0]>q2.questionDate[0]) return 1;
-    if(this.questionDate[3]<q2.questionDate[3]) return -1;
-    if(this.questionDate[3]>q2.questionDate[3]) return 1;
-    if(this.questionDate[4]<q2.questionDate[4]) return -1;
-    if(this.questionDate[4]>q2.questionDate[4]) return 1;
-    if(this.questionDate[5]<q2.questionDate[5]) return -1;
-    if(this.questionDate[5]>q2.questionDate[5]) return 1;
-    return 0;
-  }
 }
 
 export class MultipleChoiceQuestion extends Question{

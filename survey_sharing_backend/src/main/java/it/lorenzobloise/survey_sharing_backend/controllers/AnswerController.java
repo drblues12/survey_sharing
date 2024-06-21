@@ -1,6 +1,7 @@
 package it.lorenzobloise.survey_sharing_backend.controllers;
 
 import it.lorenzobloise.survey_sharing_backend.entities.Answer;
+import it.lorenzobloise.survey_sharing_backend.entities.Option;
 import it.lorenzobloise.survey_sharing_backend.entities.Question;
 import it.lorenzobloise.survey_sharing_backend.services.AnswerService;
 import it.lorenzobloise.survey_sharing_backend.support.ResponseMessage;
@@ -62,6 +63,18 @@ public class AnswerController {
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
             return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
+        }catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+    }
+
+    @GetMapping("/search/by_id")
+    public ResponseEntity findAnswerById(@RequestParam String answer_id){
+        try{
+            Optional<Answer> result = answerService.getAnswerById(answer_id);
+            if(result.isEmpty())
+                return new ResponseEntity(new ResponseMessage("No result"), HttpStatus.OK);
+            return new ResponseEntity(new ResponseMessage("", result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
