@@ -148,7 +148,7 @@ export class SurveyDetailsComponent implements OnInit {
 
   openInvitationWindow(){
     this.supportService.surveyTitle = this.survey.title;
-    this.supportService.user = this.appComponent.getUser().username;
+    this.supportService.username = this.appComponent.getUser().username;
     this.windowService.open(InvitationComponent,
       { title: 'Invite other users to answer your survey', windowClass: 'custom-window' });
   }

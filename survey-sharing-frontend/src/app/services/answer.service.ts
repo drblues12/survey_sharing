@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { ResponseMessage } from "../support/response-message";
+import { Question } from "../entities/question";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,10 @@ export class AnswerService{
 
   // PUT
 
-  public createAnswer(user: string, surveyTitle: string){
-    return this.http.put<ResponseMessage>(this.base_url+'/'+user+'/create?surveyTitle='+surveyTitle, null);
+  public createAnswer(user: string, survey: string, rating: number, feedback: string, questions: string){
+    return this.http.post<ResponseMessage>(this.base_url+'/'+user+'/create?survey='+survey+'&rating='+rating+'&feedback='+feedback, questions, {
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 
   // GET

@@ -14,7 +14,7 @@
               <div class="item-1">
                 <nb-card-body>
                   <nb-radio-group [(ngModel)]="question.answer">
-                    <nb-radio *ngFor="let option of getOptions(question.question)">
+                    <nb-radio *ngFor="let option of getOptions(question.question)" value="{{option.option}}">
                       {{option.option}}
                     </nb-radio>
                   </nb-radio-group>

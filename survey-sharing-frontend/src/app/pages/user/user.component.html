@@ -126,17 +126,17 @@
                     <div class="item-3"></div>
                   </div>
                 </nb-list-item>
-                <nb-list-item *ngFor="let survey of answer_surveys">
+                <nb-list-item *ngFor="let answer of answers">
                   <div class="item-container">
                     <div class="item-1">
-                      {{answers.get(survey)?.survey}}
+                      {{answer.survey}}
                     </div>
                     <div class="item-1">
-                      <nb-user name="{{surveysOwners.get(survey)?.name}} {{surveysOwners.get(survey)?.surname}}" title="{{surveysOwners.get(survey)?.username}}"></nb-user>
+                      <nb-user name="{{answer.surveyOwner.name}} {{answer.surveyOwner.surname}}" title="{{answer.surveyOwner.username}}"></nb-user>
                     </div>
                     <div class="item-2">
-                      {{appComponent.getParsedDate(answers.get(survey)?.answerDate)}}
-                      <br>{{appComponent.getParsedHour(answers.get(survey)?.answerDate)}}
+                      {{appComponent.getParsedDate(answer.answer.answerDate)}}
+                      <br>{{appComponent.getParsedHour(answer.answer.answerDate)}}
                     </div>
                     <div class="item-3">
                       <button nbButton>See details</button>

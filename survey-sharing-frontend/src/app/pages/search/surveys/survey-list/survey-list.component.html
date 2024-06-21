@@ -39,7 +39,7 @@
               </div>
               <div class="item-button">
                 <div *ngIf="survey.owner!=appComponent.getUser().username">
-                  <button nbButton>Answer</button>
+                  <button nbButton (click)="answerSurvey(survey.title)">Answer</button>
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 package it.lorenzobloise.survey_sharing_backend.controllers;
 
 import it.lorenzobloise.survey_sharing_backend.entities.Answer;
+import it.lorenzobloise.survey_sharing_backend.entities.Question;
 import it.lorenzobloise.survey_sharing_backend.services.AnswerService;
 import it.lorenzobloise.survey_sharing_backend.support.ResponseMessage;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,9 +26,11 @@ public class AnswerController {
     //TODO
     // Authentication as this user
     @PostMapping("/{user}/create")
-    public ResponseEntity createAnswer(@PathVariable(value = "user") String user, @RequestParam String surveyTitle){
+    public ResponseEntity createAnswer(@PathVariable(value = "user") String user, @RequestParam String survey,
+                                       @RequestParam double rating, @RequestParam String feedback,
+                                       @RequestBody List<Question> questions){
         try{
-            Answer result = answerService.addAnswer(user, surveyTitle);
+            Answer result = answerService.addAnswer(user, survey, rating, feedback, questions);
             return new ResponseEntity(new ResponseMessage("Added successfully", result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);

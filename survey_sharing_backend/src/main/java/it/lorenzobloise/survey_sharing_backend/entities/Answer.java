@@ -23,7 +23,6 @@ public class Answer implements Comparable<Answer> {
     @Id
     private String id;
     private String survey; // Survey's title
-    @JsonIgnore
     private List<String> questions; // Questions id
     private String user; // User's username
     private Double rating;

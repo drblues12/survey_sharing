@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
   user!: User;
   createdSurveys: Map<string, Survey> = new Map<string,Survey>();
   answers: Map<string, Answer> = new Map<string, Answer>();
-  answer_surveys!: string[];
   invitations: Map<string, Invitation> = new Map<string, Invitation>();
   surveysOwners: Map<string, User> = new Map<string, User>();
   invitationSenders: Map<string, User> = new Map<string, User>();
@@ -124,11 +123,11 @@ export class AppComponent implements OnInit {
       var result: Answer[] = responseMessage.object;
       if(result!=null && result.length>0)
         result.forEach(answer => {
-          if(!this.answers.has(answer.survey))
+          if(!this.answers.has(answer.survey)){
             this.answers.set(answer.survey, answer);
+          }
           this.getSurveyOwnerDetails(answer.survey);
         })
-        this.answer_surveys = [...this.answers.keys()];
     })
   }
 

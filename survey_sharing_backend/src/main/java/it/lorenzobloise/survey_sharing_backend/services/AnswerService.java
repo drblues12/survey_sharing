@@ -23,7 +23,7 @@ public class AnswerService {
 
     // POST
 
-    public Answer addAnswer(String user, String survey){
+    public Answer addAnswer(String user, String survey, double rating, String feedback, List<Question> questions){
         Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user, user, user);
         if(u.isEmpty())
             throw new RuntimeException("User "+user+" does not exist");
@@ -34,44 +34,26 @@ public class AnswerService {
             throw new RuntimeException("Users cannot answer their own surveys");
         if(u.get().getAnswers().containsKey(survey))
             throw new RuntimeException("User has already answered this survey");
-        Answer answer = new Answer(user, survey);
-        // Create new questions copying the survey's questions and add them in this answer's questions
-        try {
-            for (String original_question_id : s.get().getQuestions()) {
-                Question original_question = questionService.getQuestion(original_question_id);
-                if(original_question.getType().equals("ImageQuestion")) {
-                    ImageQuestion tmp = new ImageQuestion((ImageQuestion) original_question);
-                    Question new_question = questionService.addQuestion(tmp);
-                    answer.getQuestions().add(new_question.getId());
-                }
-                else if(original_question.getType().equals("OpenEndedQuestion")) {
-                    OpenEndedQuestion tmp = new OpenEndedQuestion((OpenEndedQuestion) original_question);
-                    Question new_question = questionService.addQuestion(tmp);
-                    answer.getQuestions().add(new_question.getId());
-                }
-                else { // original_question.getType().equals("MultipleChoiceQuestion")
-                    MultipleChoiceQuestion mcq = (MultipleChoiceQuestion) original_question;
-                    MultipleChoiceQuestion tmp = new MultipleChoiceQuestion(mcq);
-                    List<Option> originalOptions = mcq.getOptions();
-                    for(Option opt: originalOptions)
-                        tmp.getOptions().add(new Option(opt.getOption(),opt.isSelected()));
-                    tmp.setQuestion(mcq.getQuestion());
-                    Question new_question = questionService.addQuestion(tmp);
-                    answer.getQuestions().add(new_question.getId());
-                }
+        try{
+            // Create answer
+            Answer answer = new Answer(user, survey, feedback, rating);
+            // Save this answer's questions
+            for(Question q: questions){
+                Question q_saved = questionService.addQuestion(q);
+                answer.getQuestions().add(q_saved.getId());
             }
-        }catch (RuntimeException e){
+            // Add this answer in the answers repository
+            Answer result = answerRepository.save(answer);
+            // Add this answer in the survey's answers
+            s.get().getAnswers().add(result.getId());
+            surveyRepository.save(s.get());
+            // Add this answer in the user's answers
+            u.get().getAnswers().put(s.get().getTitle(),result.getId());
+            userRepository.save(u.get());
+            return result;
+        }catch (RuntimeException e) {
             throw new RuntimeException(e.getMessage());
         }
-        // Add this answer in the answers repository
-        Answer result = answerRepository.save(answer);
-        // Add this answer in the survey's answers
-        s.get().getAnswers().add(result.getId());
-        surveyRepository.save(s.get());
-        // Add this answer in the user's answers
-        u.get().getAnswers().put(s.get().getTitle(),result.getId());
-        userRepository.save(u.get());
-        return result;
     }
 
     // GET

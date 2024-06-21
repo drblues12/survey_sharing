@@ -21,7 +21,7 @@ export class InvitationComponent implements OnInit {
   constructor(private userService: UserService, private invitationService: InvitationService,
               private supportService: SupportService) {
     this.surveyTitle = this.supportService.surveyTitle;
-    this.user = this.supportService.user;
+    this.user = this.supportService.username;
   }
 
   ngOnInit(): void {

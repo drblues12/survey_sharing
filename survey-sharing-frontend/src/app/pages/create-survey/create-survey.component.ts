@@ -234,7 +234,6 @@ export class CreateSurveyComponent implements OnInit {
       ...q,
       '@type': q.type
     })))
-    console.log(jsonObj);
     this.appComponent.surveyService.createSurvey(this.appComponent.user.username, this.surveyTitle, jsonObj).subscribe(responseMessage => {
       alert(responseMessage.message);
       this.appComponent.navigate('survey-details', this.surveyTitle);

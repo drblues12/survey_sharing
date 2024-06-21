@@ -55,4 +55,8 @@ export class SurveyListComponent implements OnInit {
     }
   }
 
+  answerSurvey(survey: string){
+    this.appComponent.navigate('answer', survey);
+  }
+
 }
