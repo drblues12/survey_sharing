@@ -4,6 +4,7 @@ import { Survey } from 'src/app/entities/survey';
 import { User } from 'src/app/entities/user';
 import { SurveyService } from 'src/app/services/survey.service';
 import { UserService } from 'src/app/services/user.service';
+import { SupportService } from 'src/app/support/support.service';
 
 @Component({
   selector: 'app-home-page',
@@ -14,8 +15,7 @@ export class HomePageComponent implements OnInit {
 
   constructor(public appComponent: AppComponent) { }
 
-  trending: Survey[] = [];
-  user_details: Map<string,User> = new Map<string,User>();
+  trending: {survey: Survey, owner: User}[] = [];
 
   ngOnInit(): void {
     this.appComponent.reloadWindow();
@@ -26,21 +26,25 @@ export class HomePageComponent implements OnInit {
     // TODO: sort surveys by ratings
     // Tmp: just showing survey list
     this.appComponent.surveyService.findAllSurveys().subscribe(responseMessage => {
-      this.trending = responseMessage.object;
-      if(this.trending!=null && this.trending.length>0)
-        this.trending.forEach(survey => {
-          this.getUserDetails(survey.owner);
+      if(responseMessage.object!=null && responseMessage.object.length>0){
+        const surveys: Survey[] = responseMessage.object;
+        surveys.forEach(survey => {
+          this.appComponent.userService.findUserByUsername(survey.owner).subscribe(responseMessage2 => {
+            if(responseMessage2.object){
+              const owner: User = responseMessage2.object;
+              this.trending.push({survey: survey, owner: owner});
+            }
+          })
         })
+      }
     })
   }
 
-  getUserDetails(username: string): void {
-    if(!this.user_details.has(username)){
-      this.appComponent.userService.findUsersByUsername(username).subscribe(responseMessage => {
-        var result = responseMessage.object[0];
-        this.user_details.set(username, result);
-      })
-    }
+  getAverageRating(surveyTitle: string): number {
+    const entry: {surveyTitle: string, averageRating: number} | undefined = this.appComponent.getAverageRatings().find(x => x.surveyTitle==surveyTitle);
+    if(entry!=undefined)
+      return entry.averageRating;
+    return 0;
   }
 
 }

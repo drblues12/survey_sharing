@@ -12,7 +12,6 @@ import { SupportService } from 'src/app/support/support.service';
 import { Answer } from 'src/app/entities/answer';
 import { Statistics } from 'src/app/entities/statistics';
 import { StarTemplateContext } from '@ng-bootstrap/ng-bootstrap/rating/rating';
-import { StarTemplate } from 'src/app/support/star-template';
 
 @Component({
   selector: 'app-survey-details',
@@ -28,8 +27,6 @@ export class SurveyDetailsComponent implements OnInit {
   answers: { id: string, answer: Answer, user: User }[] = [];
   statistics!: Statistics;
   nullVariable: null = null;
-  stars: number[] = [1,2,3,4,5];
-  myStarTemplate: StarTemplateContext = new StarTemplate(0,50);
 
   constructor(private appComponent: AppComponent, private route: ActivatedRoute,
               private windowService: NbWindowService, private supportService: SupportService) {}
@@ -199,17 +196,6 @@ export class SurveyDetailsComponent implements OnInit {
     if(this.statistics)
       return this.statistics;
     return new Statistics("",this.getSurvey().title, -1, -1, [], -1, -1, [], -1, -1, -1, [], -1, -1, -1);
-  }
-
-  getStarWidth(star: number): string {
-    if (this.getStatistics().averageRating >= star) {
-      return '100%';
-    } else if (this.getStatistics().averageRating + 1 > star) {
-      const fractionalPart = (this.getStatistics().averageRating + 1 - star) * 100;
-      return `${fractionalPart}%`;
-    } else {
-      return '0%';
-    }
   }
 
 }

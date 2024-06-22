@@ -97,7 +97,7 @@
                       <br>{{appComponent.getParsedHour(survey.creationDate)}}
                     </div>
                     <div class="item-2">
-                      <!--TODO Average Rating-->
+                      <app-rating [averageRating]="getAverageRating(survey.title)"></app-rating>
                     </div>
                     <div class="item-3">
                       <button nbButton (click)="goToSurveyDetailsPage(survey.title)">Details<nb-icon icon="file-text"></nb-icon></button>

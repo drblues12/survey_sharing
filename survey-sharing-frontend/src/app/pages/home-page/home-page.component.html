@@ -31,20 +31,20 @@
           <nb-list-item *ngFor="let survey of trending">
             <div class="item-container">
               <div class="item-1">
-                {{survey.title}}
+                {{survey.survey.title}}
               </div>
               <div class="item-2">
-                <nb-user name="{{user_details.get(survey.owner)?.name}} {{user_details.get(survey.owner)?.surname}}" title="{{survey.owner}}"></nb-user>
+                <nb-user name="{{survey.owner.name}} {{survey.owner.surname}}" title="{{survey.owner.username}}"></nb-user>
               </div>
               <div class="item-2">
-                {{survey.creationDate[0]}}/{{survey.creationDate[1]}}/{{survey.creationDate[2]}}
-                <br>{{survey.creationDate[3]}}:{{survey.creationDate[4]}}:{{survey.creationDate[5]}}
+                {{survey.survey.creationDate[0]}}/{{survey.survey.creationDate[1]}}/{{survey.survey.creationDate[2]}}
+                <br>{{survey.survey.creationDate[3]}}:{{survey.survey.creationDate[4]}}:{{survey.survey.creationDate[5]}}
               </div>
               <div class="item-2">
-                <!--Average rating-->
+                <app-rating [averageRating]="getAverageRating(survey.survey.title)"></app-rating>
               </div>
               <div class="item-3">
-                <div *ngIf="survey.owner!=appComponent.getUser().username"></div>
+                <div *ngIf="survey.survey.owner!=appComponent.getUser().username"></div>
               </div>
             </div>
           </nb-list-item>

@@ -36,6 +36,8 @@ public class StatisticsService {
     // and returning a Statistics object that will replace the one present in the repository.
     // Also make a system to verify survey's version: if version is the same from previous
     // invocation of this method, simply return the Statistics object from the repository
+    //TODO
+    // Divide in multiple methods for each statistic
     public Statistics getStatistics(String surveyTitle){
         Optional<Survey> s = surveyRepository.findSurveyByTitle(surveyTitle);
         if(s.isEmpty())
@@ -69,7 +71,7 @@ public class StatisticsService {
                 String curr_feedback = curr_a.get().getFeedback();
                 if(!curr_feedback.equals("")) {
                     feedbacks.add(curr_feedback);
-                    if (Utils.isPositive(curr_feedback)) positiveFeedbacks++;
+                    if (Utils.feedbackIsPositive(curr_feedback)) positiveFeedbacks++;
                     else negativeFeedbacks++;
                 }
                 Double curr_rating = curr_a.get().getRating();
@@ -101,6 +103,23 @@ public class StatisticsService {
             result.setPercentOfInvitationsAccepted(((double) (numAccepted) / (invitationsList.size()))*100);
         }
         return addStatistics(result);
+    }
+
+    public double getAverageRating(String surveyTitle){
+        Optional<Survey> s = surveyRepository.findSurveyByTitle(surveyTitle);
+        if(s.isEmpty())
+            throw new RuntimeException("Survey does not exist");
+        LinkedList<Double> ratings = new LinkedList<>();
+        for(String a: s.get().getAnswers()) {
+            Optional<Answer> curr_a = answerService.getAnswerById(a);
+            if (curr_a.isPresent()) {
+                Double curr_rating = curr_a.get().getRating();
+                if(curr_rating!=0d) ratings.add(curr_rating);
+            }
+        }
+        int sum_ratings = 0;
+        for(Double r: ratings) sum_ratings += r;
+        return (double)(sum_ratings)/(ratings.size());
     }
 
     // DELETE

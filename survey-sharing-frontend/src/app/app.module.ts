@@ -23,7 +23,8 @@ import { SurveyDetailsComponent } from './pages/survey-details/survey-details.co
 import { InvitationComponent } from './pages/invitation/invitation.component';
 import { AnswerDetailsComponent } from './pages/answer-details/answer-details.component';
 import { AnswerSummaryComponent } from './pages/answer-summary/answer-summary.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
+import { RatingComponent } from './support/rating/rating.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SurveyDetailsComponent,
     InvitationComponent,
     AnswerDetailsComponent,
-    AnswerSummaryComponent
+    AnswerSummaryComponent,
+    RatingComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +78,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NbTooltipModule,
     NbWindowModule.forRoot(),
     NbCheckboxModule,
-    NgbModule
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

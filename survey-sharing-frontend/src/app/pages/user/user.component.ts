@@ -70,4 +70,12 @@ export class UserComponent implements OnInit {
     return "";
   }
 
+  getAverageRating(surveyTitle: string): number {
+    const result: {surveyTitle: string, averageRating: number} | undefined = this.appComponent.getAverageRatings().find(x => x.surveyTitle==surveyTitle);
+    if(result!=undefined)
+      return result.averageRating;
+    else
+      return 0;
+  }
+
 }

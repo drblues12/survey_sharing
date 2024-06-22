@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
   user!: User;
   createdSurveys: Survey[] = [];
   answers: {answer: Answer, surveyOwner: User}[] = [];
+  averageRatings: {surveyTitle: string, averageRating: number}[] = [];
   invitations: {invitation: Invitation, surveyOwner: User}[] = [];
   searchType!: string;
   query: string = "";
@@ -35,7 +36,7 @@ export class AppComponent implements OnInit {
   constructor(public router: Router, public userService: UserService, public surveyService: SurveyService,
               public answerService: AnswerService, public invitationService: InvitationService,
               public statisticsService: StatisticsService, public questionService: QuestionService,
-              private themeService: NbThemeService){
+              private themeService: NbThemeService, private supportService: SupportService){
   }
 
   ngOnInit(): void {
@@ -108,8 +109,17 @@ export class AppComponent implements OnInit {
 
   fetchCreatedSurveys(): void {
     this.surveyService.findAllCreatedSurveys(this.username).subscribe(responseMessage => {
-      if(responseMessage.object)
+      if(responseMessage.object){
         this.createdSurveys = responseMessage.object;
+        this.createdSurveys.forEach(s => {
+          const surveyTitle: string = s.title;
+          this.statisticsService.computeAverageRating(this.getUser().username, surveyTitle).subscribe(responseMessage => {
+            if(responseMessage.object){
+              this.averageRatings.push({surveyTitle: surveyTitle, averageRating: responseMessage.object});
+            }
+          })
+        })
+      }
     })
   }
 
@@ -160,6 +170,12 @@ export class AppComponent implements OnInit {
   getInvitations(): {invitation: Invitation, surveyOwner: User}[] {
     if(this.invitations)
       return this.invitations;
+    return [];
+  }
+
+  getAverageRatings(){
+    if(this.averageRatings)
+      return this.averageRatings;
     return [];
   }
 

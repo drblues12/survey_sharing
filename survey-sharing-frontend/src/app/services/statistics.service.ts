@@ -17,4 +17,8 @@ export class StatisticsService{
     return this.http.get<ResponseMessage>(this.base_url+'?user='+user+'&surveyTitle='+survey);
   }
 
+  public computeAverageRating(user: string, survey: string){
+    return this.http.get<ResponseMessage>(this.base_url+'/averageRating?user='+user+'&surveyTitle='+survey);
+  }
+
 }
