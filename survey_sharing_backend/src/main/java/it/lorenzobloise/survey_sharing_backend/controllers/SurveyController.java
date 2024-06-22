@@ -22,7 +22,6 @@ import java.util.Set;
 public class SurveyController {
 
     private final SurveyService surveyService;
-    private final StatisticsService statisticsService;
 
     // POST
 
@@ -122,18 +121,6 @@ public class SurveyController {
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
             return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
-        }catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-        }
-    }
-
-    //TODO
-    // Authentication as this user
-    @GetMapping("/{user}/{survey}/statistics")
-    public ResponseEntity findStatistics(@PathVariable(value = "user") String user, @PathVariable(value = "survey") String surveyTitle){
-        try{
-            Statistics result = statisticsService.getStatistics(surveyTitle);
-            return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

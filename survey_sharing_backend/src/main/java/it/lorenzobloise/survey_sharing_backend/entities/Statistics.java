@@ -25,14 +25,13 @@ public class Statistics {
     private String survey;
     private int numberOfAnswers;
     private double percentOfUsersWhoAnswered;
-    private int minimumAge;
-    private int maximumAge;
-    private double averageAge;
+    private List<Integer> ageList;
     private int numberOfMaleUsersWhoAnswered;
     private int numberOfFemaleUsersWhoAnswered;
+    private List<String> countriesList;
+    private int numberOfDifferentCountries;
     private int numberOfInvitationsSent;
     private double percentOfInvitationsAccepted;
-    private int numberOfDifferentCountries;
     private List<String> listOfFeedbacks;
     private int numberOfPositiveFeedbacks;
     private int numberOfNegativeFeedbacks;

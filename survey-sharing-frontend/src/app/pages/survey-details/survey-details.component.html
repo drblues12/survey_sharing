@@ -184,7 +184,62 @@
               </nb-card>
             </nb-tab>
             <nb-tab tabTitle="Statistics">
-
+              <nb-card>
+                <nb-card-body>
+                  <nb-list>
+                    <nb-list-item>
+                      <div class="item-container">
+                        <div class="item-1">
+                          <div class="item-left">
+                            <b><h5>Number of answers:</h5></b>
+                          </div>
+                          <div class="item-left">
+                            <h5>{{getStatistics().numberOfAnswers}}</h5>
+                          </div>
+                        </div>
+                        <div class="item-3">
+                          <div class="item-left">
+                            <b><h5>Percent of users who answered:</h5></b>
+                          </div>
+                          <div class="item-left">
+                            <h5>{{getStatistics().percentOfUsersWhoAnswered}}%</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </nb-list-item>
+                    <nb-list-item>
+                      <div class="item-container">
+                        <div class="item-1">
+                          <div class="item-left">
+                            <b><h5>Number of invitations sent:</h5></b>
+                          </div>
+                          <div class="item-left">
+                            <h5>{{getStatistics().numberOfInvitationsSent}}</h5>
+                          </div>
+                        </div>
+                        <div class="item-3">
+                          <div class="item-left">
+                            <b><h5>Percent of invitations accepted:</h5></b>
+                          </div>
+                          <div class="item-left">
+                            <h5>{{getStatistics().percentOfInvitationsAccepted}}%</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </nb-list-item>
+                  </nb-list>
+                </nb-card-body>
+                <nb-card-body>
+                  <div class="item-2">
+                    <div class="item-left">
+                      <b><h5>Average rating:</h5></b>
+                    </div>
+                    <div class="item-left">
+                      <ngb-rating [readonly]="true" [rate]="getStatistics().averageRating" [max]="5" style="font-size: 2rem; color: orange;"></ngb-rating>
+                    </div>
+                  </div>
+                </nb-card-body>
+              </nb-card>
             </nb-tab>
           </nb-tabset>
         </nb-card>

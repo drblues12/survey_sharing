@@ -7,14 +7,14 @@ import { ResponseMessage } from "../support/response-message";
 })
 export class StatisticsService{
 
-  private base_url = "http://localhost:8080/surveys";
+  private base_url = "http://localhost:8080/statistics";
 
   constructor(private http:HttpClient) { }
 
   // GET
 
-  public findStatistics(user: string, survey: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/'+user+'/'+survey+'/statistics');
+  public computeStatistics(user: string, survey: string){
+    return this.http.get<ResponseMessage>(this.base_url+'?user='+user+'&surveyTitle='+survey);
   }
 
 }

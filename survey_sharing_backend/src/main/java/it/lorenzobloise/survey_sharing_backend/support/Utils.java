@@ -19,11 +19,8 @@ public class Utils {
         return ret;
     }
 
-    // Test
-    public static void main(String[] args){
-        String date = LocalDateTime.now().toString();
-        System.out.println(date);
-        System.out.println(Arrays.toString(parseDate(date)));
+    public static boolean isPositive(String feedback){
+        return true;
     }
 
 }

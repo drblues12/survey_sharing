@@ -5,16 +5,36 @@ export class Statistics{
   survey!: string;
   numberOfAnswers!: number;
   percentOfUsersWhoAnswered!: number;
-  minimumAge!: number;
-  maximumAge!: number;
-  averageAge!: number;
+  ageList!: number[];
   numberOfMaleUsersWhoAnswered!: number;
   numberOfFemaleUsersWhoAnswered!: number;
+  countriesList!: string[];
+  numberOfDifferentCountries!: number;
   numberOfInvitationsSent!: number;
   percentOfInvitationsAccepted!: number;
-  numberOfDifferentCountries!: number;
   listOfFeedbacks!: string[];
   numberOfPositiveFeedbacks!: number;
   numberOfNegativeFeedbacks!: number;
   averageRating!: number;
+
+  constructor(id: string, survey: string, numberOfAnswers: number, percentOfUsersWhoAnswered: number, ageList: number[],
+              numberOfMaleUsersWhoAnswered: number, numberOfFemaleUsersWhoAnswered: number, countriesList: string[],
+              numberOfDifferentCountries: number, numberOfInvitationsSent: number, percentOfInvitationsAccepted: number,
+              listOfFeedbacks: string[], numberOfPositiveFeedbacks: number, numberOfNegativeFeedbacks: number, averageRating: number) {
+    this.id = id;
+    this.survey = survey;
+    this.numberOfAnswers = numberOfAnswers;
+    this.percentOfUsersWhoAnswered = percentOfUsersWhoAnswered;
+    this.ageList = ageList;
+    this.numberOfMaleUsersWhoAnswered = numberOfMaleUsersWhoAnswered;
+    this.numberOfFemaleUsersWhoAnswered = numberOfFemaleUsersWhoAnswered;
+    this.countriesList = countriesList;
+    this.numberOfDifferentCountries = numberOfDifferentCountries;
+    this.numberOfInvitationsSent = numberOfInvitationsSent;
+    this.percentOfInvitationsAccepted = percentOfInvitationsAccepted;
+    this.listOfFeedbacks = listOfFeedbacks;
+    this.numberOfPositiveFeedbacks = numberOfPositiveFeedbacks;
+    this.numberOfNegativeFeedbacks = numberOfNegativeFeedbacks;
+    this.averageRating = averageRating;
+  }
 }

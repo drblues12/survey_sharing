@@ -1,7 +1,7 @@
 .item-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
   padding: 10px;
 }
@@ -9,6 +9,14 @@
 .item-left {
   flex: 0 0 auto;
   display: flex;
+  margin-right: 15px;
+  justify-content: flex-start;
+}
+
+.item-center {
+  flex: 0 0 auto;
+  display: flex;
+  margin-left: 15px;
   margin-right: 15px;
   justify-content: flex-start;
 }
@@ -36,4 +44,16 @@
   flex: 1;
   display: flex;
   justify-content: flex-end;
+}
+
+.rating {
+  display: flex;
+}
+
+.bi-star, .bi-star-fill {
+  font-size: 2rem;
+}
+
+.filled {
+  color: orange;
 }
