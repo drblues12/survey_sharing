@@ -7,8 +7,8 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 })
 export class PieChartComponent implements OnChanges {
 
-  @Input() numberOfPositiveFeedbacks: number = 0;
-  @Input() numberOfNegativeFeedbacks: number = 0;
+  @Input() data: number[] = [];
+  @Input() type: string = "";
 
   chartOptions: any;
 
@@ -19,10 +19,9 @@ export class PieChartComponent implements OnChanges {
   }
 
   updateChartOptions(): void {
-    const pieChartData = [
-      { name: 'Positive feedbacks', value: this.numberOfPositiveFeedbacks },
-      { name: 'Negative feedbacks', value: this.numberOfNegativeFeedbacks }
-    ];
+    const color = this.getLabelColor();
+    const pieChartData = this.getPieChartData();
+    const pieChartColor = this.getPieChartColor();
     this.chartOptions = {
       tooltip: {
         trigger: 'item',
@@ -35,12 +34,9 @@ export class PieChartComponent implements OnChanges {
         top: 10,
         containLabel: true
       },
-      textStyle: {
-        color: this.getLabelColor()
-      },
       series: [
         {
-          name: 'Feedbacks',
+          name: this.type,
           type: 'pie',
           radius: '90%',
           center: ['50%', '50%'],
@@ -55,16 +51,38 @@ export class PieChartComponent implements OnChanges {
           },
           label: {
             show: true,
+            color: color,
             formatter: '{b}: {d}%',
-            color: this.getLabelColor()
           },
           labelLine: {
             show: true
           },
-          color: ['#4CAF50', '#F44336']
+          color: pieChartColor
         }
       ]
     };
+  }
+
+  getPieChartData(): {name: string, value: number}[] {
+    var result: {name: string, value: number}[] = [];
+    if(this.type=='Feedbacks'){
+      result.push({name: 'Positive feedbacks', value: this.data[0]});
+      result.push({name: 'Negative feedbacks', value: this.data[1]});
+    }
+    if(this.type=='Gender'){
+      result.push({name: 'Male', value: this.data[0]});
+      result.push({name: 'Female', value: this.data[1]});
+    }
+    return result;
+  }
+
+  getPieChartColor(): string[] {
+    var result: string[] = [];
+    if(this.type=='Feedbacks')
+      result = ['#4CAF50', '#F44336'];
+    if(this.type=='Gender')
+      result = ['#2196F3', '#FF69B4'];
+    return result;
   }
 
   getLabelColor(): string {

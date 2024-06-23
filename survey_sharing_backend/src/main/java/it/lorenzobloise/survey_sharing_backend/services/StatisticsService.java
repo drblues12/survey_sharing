@@ -78,6 +78,9 @@ public class StatisticsService {
                 if(curr_rating!=null && curr_rating!=0d) ratings.add(curr_rating);
             }
         }
+        int sumAges = 0;
+        for(Integer age: ages) sumAges+=age;
+        result.setAverageAge((double)(sumAges)/ages.size());
         result.setAgeList(ages);
         result.setNumberOfMaleUsersWhoAnswered(males);
         result.setNumberOfFemaleUsersWhoAnswered(females);

@@ -25,6 +25,7 @@ public class Statistics {
     private String survey;
     private int numberOfAnswers;
     private double percentOfUsersWhoAnswered;
+    private double averageAge;
     private List<Integer> ageList;
     private int numberOfMaleUsersWhoAnswered;
     private int numberOfFemaleUsersWhoAnswered;

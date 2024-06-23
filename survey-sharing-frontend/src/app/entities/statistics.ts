@@ -5,6 +5,7 @@ export class Statistics{
   survey!: string;
   numberOfAnswers!: number;
   percentOfUsersWhoAnswered!: number;
+  averageAge!: number;
   ageList!: number[];
   numberOfMaleUsersWhoAnswered!: number;
   numberOfFemaleUsersWhoAnswered!: number;
@@ -18,7 +19,7 @@ export class Statistics{
   ratings!: number[];
   averageRating!: number;
 
-  constructor(id: string, survey: string, numberOfAnswers: number, percentOfUsersWhoAnswered: number, ageList: number[],
+  constructor(id: string, survey: string, numberOfAnswers: number, percentOfUsersWhoAnswered: number, averageAge: number, ageList: number[],
               numberOfMaleUsersWhoAnswered: number, numberOfFemaleUsersWhoAnswered: number, countriesList: string[],
               numberOfDifferentCountries: number, numberOfInvitationsSent: number, percentOfInvitationsAccepted: number,
               listOfFeedbacks: string[], numberOfPositiveFeedbacks: number, numberOfNegativeFeedbacks: number, ratings: number[], averageRating: number) {
@@ -26,6 +27,7 @@ export class Statistics{
     this.survey = survey;
     this.numberOfAnswers = numberOfAnswers;
     this.percentOfUsersWhoAnswered = percentOfUsersWhoAnswered;
+    this.averageAge = averageAge;
     this.ageList = ageList;
     this.numberOfMaleUsersWhoAnswered = numberOfMaleUsersWhoAnswered;
     this.numberOfFemaleUsersWhoAnswered = numberOfFemaleUsersWhoAnswered;

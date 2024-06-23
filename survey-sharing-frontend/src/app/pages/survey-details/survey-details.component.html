@@ -205,7 +205,7 @@
                                 <b><h5>Percent of users who answered:</h5></b>
                               </div>
                               <div class="item-left">
-                                <h5>{{getStatistics().percentOfUsersWhoAnswered}}%</h5>
+                                <h5>{{getStatistics().percentOfUsersWhoAnswered.toFixed(2)}}%</h5>
                               </div>
                             </div>
                           </div>
@@ -237,14 +237,51 @@
                     <nb-accordion-item-header><b><h4>Users</h4></b></nb-accordion-item-header>
                     <nb-accordion-item-body>
                       <nb-card>
-                        <nb-card-body>
-                          <div class="item-2">
-                            <b><h5>Gender distribution</h5></b>
-                          </div>
-                        </nb-card-body>
-                        <nb-card-body>
-                          
-                        </nb-card-body>
+                        <nb-card>
+                          <nb-card-body>
+                            <div class="item-2">
+                              <b><h5>Gender distribution</h5></b>
+                            </div>
+                            <app-pie-chart type="Gender" [data]="[getStatistics().numberOfMaleUsersWhoAnswered, getStatistics().numberOfFemaleUsersWhoAnswered]"></app-pie-chart>
+                          </nb-card-body>
+                        </nb-card>
+                        <nb-card>
+                          <nb-card-header>
+                            <div class="item-2">
+                              <div class="item-center">
+                                <b><h5>Average age:</h5></b>
+                              </div>
+                              <div class="item-left">
+                                <b><h5>{{getStatistics().averageAge}}</h5></b>
+                              </div>
+                            </div>
+                          </nb-card-header>
+                          <nb-card-body>
+                            <div class="item-2">
+                              <b><h5>Age distribution</h5></b>
+                            </div>
+                            <app-bar-chart type="Age" [data]="getDistribution(getStatistics().ageList, linspace(getStatistics().ageList).numberArray,'Age')"
+                            [categories]="linspace(getStatistics().ageList).stringArray"></app-bar-chart>
+                          </nb-card-body>
+                        </nb-card>
+                        <nb-card>
+                          <nb-card-header>
+                            <div class="item-2">
+                              <div class="item-center">
+                                <b><h5>Number of different countries:</h5></b>
+                              </div>
+                              <div class="item-left">
+                                <b><h5>{{getStatistics().numberOfDifferentCountries}}</h5></b>
+                              </div>
+                            </div>
+                          </nb-card-header>
+                          <nb-card-body>
+                            <div class="item-2">
+                              <b><h5>Countries distribution</h5></b>
+                            </div>
+                            <!--WORLD MAP-->
+                          </nb-card-body>
+                        </nb-card>
                       </nb-card>
                     </nb-accordion-item-body>
                   </nb-accordion-item>
@@ -267,7 +304,7 @@
                             <b><h5>Rating distribution</h5></b>
                           </div>
                           <div class="item-2">
-                            <app-bar-chart [data]="getDistribution(getStatistics().ratings)" class="echart"></app-bar-chart>
+                            <app-bar-chart type="Ratings" [data]="getDistribution(getStatistics().ratings,[1,2,3,4,5],'Ratings')" [categories]="['1','2','3','4','5']" class="echart"></app-bar-chart>
                           </div>
                         </nb-card-body>
                       </nb-card>
@@ -283,8 +320,7 @@
                           </div>
                         </nb-card-body>
                         <nb-card-body>
-                          <app-pie-chart [numberOfPositiveFeedbacks]="getStatistics().numberOfPositiveFeedbacks"
-                          [numberOfNegativeFeedbacks]="getStatistics().numberOfNegativeFeedbacks"></app-pie-chart>
+                          <app-pie-chart type="Feedbacks" [data]="[getStatistics().numberOfPositiveFeedbacks, getStatistics().numberOfNegativeFeedbacks]"></app-pie-chart>
                         </nb-card-body>
                         <nb-card-body>
                           <div *ngFor="let answer of answersWithFeedback">

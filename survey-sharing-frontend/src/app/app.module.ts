@@ -43,7 +43,7 @@ import { BarChartComponent } from './support/charts/bar-chart/bar-chart.componen
     AnswerSummaryComponent,
     RatingComponent,
     PieChartComponent,
-    BarChartComponent
+    BarChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,7 +81,7 @@ import { BarChartComponent } from './support/charts/bar-chart/bar-chart.componen
     NgxEchartsModule.forRoot({
       echarts: () => import('echarts'),
     }),
-    NbAccordionModule
+    NbAccordionModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

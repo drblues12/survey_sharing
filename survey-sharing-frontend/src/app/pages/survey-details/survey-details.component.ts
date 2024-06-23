@@ -12,7 +12,7 @@ import { SupportService } from 'src/app/support/support.service';
 import { Answer } from 'src/app/entities/answer';
 import { Statistics } from 'src/app/entities/statistics';
 import { StarTemplateContext } from '@ng-bootstrap/ng-bootstrap/rating/rating';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, min } from 'rxjs';
 
 @Component({
   selector: 'app-survey-details',
@@ -29,10 +29,6 @@ export class SurveyDetailsComponent implements OnInit {
   answersWithFeedback: { id: string, answer: Answer, user: User }[] = [];
   statistics!: Statistics;
   nullVariable: null = null;
-  categories: string[] = ['0','1','2','3','4','5'];
-  data: any[] = [0,3,1,4,2,5];
-
-  chartOptions: any;
 
   constructor(public appComponent: AppComponent, private route: ActivatedRoute,
               private windowService: NbWindowService, private supportService: SupportService) {}
@@ -98,10 +94,8 @@ export class SurveyDetailsComponent implements OnInit {
             })
           })
           this.appComponent.statisticsService.computeStatistics(this.appComponent.getUser().username, this.survey.title).subscribe(responseMessage2 => {
-            if(responseMessage2.object){
+            if(responseMessage2.object)
               this.statistics = responseMessage2.object;
-              this.updateChartOptions();
-            }
           })
         }
         else
@@ -205,36 +199,52 @@ export class SurveyDetailsComponent implements OnInit {
   getStatistics(): Statistics {
     if(this.statistics)
       return this.statistics;
-    return new Statistics("",this.getSurvey().title, -1, -1, [], -1, -1, [], -1, -1, -1, [], -1, -1, [], -1);
+    return new Statistics("",this.getSurvey().title, -1, -1, -1, [], -1, -1, [], -1, -1, -1, [], -1, -1, [], -1);
   }
 
-  getDistribution(ratings: number[]): number[] {
-    const categories: number[] = [1,2,3,4,5];
-    var distribution: number[] = [0,0,0,0,0];
-    ratings.forEach(r => { distribution[r-1]++ })
+  getDistribution(data: number[], categories: number[], type: string): number[] {
+    var support: {category: number, count: number}[] = [];
+    var distribution: number[] = [];
+    categories.forEach(c => {
+      support.push({category: c, count: 0});
+      distribution.push(0);
+    });
+    data.forEach(d => {
+      const entry: {category: number, count: number} | undefined = support.find(x => x.category==d);
+      if(entry!=undefined) entry.count++;
+    })
+    if(type=='Ratings')
+      support.forEach(x => distribution[x.category-1]=x.count);
+    if(type=='Age'){
+      const minValue: number = Math.min(...data);
+      support.forEach(x => distribution[x.category-minValue]=x.count);
+    }
     return distribution;
   }
 
-  updateChartOptions(): void {
-    this.chartOptions = {
-      title: {
-        text: ''
-      },
-      tooltip: {
-        trigger: 'axis'
-      },
-      xAxis: {
-        type: 'category' as const,
-        data: ['1','2','3','4','5']
-      },
-      yAxis: {
-        type: 'value' as const
-      },
-      series: [{
-        data: this.getDistribution(this.statistics.ratings),
-        type: 'bar' as const
-      }]
-    };
+  linspace(data: number[]): {numberArray: number[], stringArray: string[]} {
+    const minValue: number = Math.min(...data);
+    const maxValue: number = Math.max(...data);
+    var numberArray: number[] = [];
+    var stringArray: string[] = [];
+    for(let i=minValue; i<=maxValue; i++){
+      numberArray.push(i);
+      stringArray.push(i+'');
+    }
+    return {numberArray: numberArray, stringArray: stringArray};
+  }
+
+  //TODO WORLD MAP
+  getDictionary(data: string[]): {name: string, value: number}[] {
+    var result: {name: string, value: number}[] = [];
+    data.forEach(x => {
+      const index: number = result.findIndex(y => y.name==x);
+      if(index==-1)
+        result.push({name: x, value: 1});
+      else
+        result[index].value++;
+    })
+    return result;
   }
 
 }

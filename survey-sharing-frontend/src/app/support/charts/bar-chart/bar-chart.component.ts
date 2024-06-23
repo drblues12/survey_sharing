@@ -10,7 +10,8 @@ import { Statistics } from 'src/app/entities/statistics';
 export class BarChartComponent implements OnChanges {
 
   @Input() data: any[] = [0,0,0,0,0];
-  @Input() categories: string[] = ['1','2','3','4','5'];
+  @Input() categories: string[] = [];
+  @Input() type: string = "";
 
   chartOptions: any;
 
@@ -67,10 +68,19 @@ export class BarChartComponent implements OnChanges {
         data: this.data,
         type: 'bar',
         itemStyle: {
-          color: 'orange'
+          color: this.getChartColor()
         }
       }]
     };
+  }
+
+  getChartColor(): string {
+    var result: string = "";
+    if(this.type=='Ratings')
+      result = 'orange';
+    if(this.type=='Age')
+      result = 'orange'; // TODO
+    return result;
   }
 
   getAxisColor(): string {
