@@ -75,7 +75,7 @@ public class StatisticsService {
                     else negativeFeedbacks++;
                 }
                 Double curr_rating = curr_a.get().getRating();
-                if(curr_rating!=0d) ratings.add(curr_rating);
+                if(curr_rating!=null && curr_rating!=0d) ratings.add(curr_rating);
             }
         }
         result.setAgeList(ages);
@@ -86,6 +86,7 @@ public class StatisticsService {
         result.setListOfFeedbacks(feedbacks);
         result.setNumberOfPositiveFeedbacks(positiveFeedbacks);
         result.setNumberOfNegativeFeedbacks(negativeFeedbacks);
+        result.setRatings(ratings);
         int sum_ratings = 0;
         for(Double r: ratings) sum_ratings += r;
         result.setAverageRating((double)(sum_ratings)/(ratings.size()));
@@ -114,7 +115,7 @@ public class StatisticsService {
             Optional<Answer> curr_a = answerService.getAnswerById(a);
             if (curr_a.isPresent()) {
                 Double curr_rating = curr_a.get().getRating();
-                if(curr_rating!=0d) ratings.add(curr_rating);
+                if(curr_rating!=null && curr_rating!=0d) ratings.add(curr_rating);
             }
         }
         int sum_ratings = 0;

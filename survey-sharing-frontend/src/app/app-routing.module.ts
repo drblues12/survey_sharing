@@ -6,9 +6,6 @@ import { SurveyListComponent } from './pages/search/surveys/survey-list/survey-l
 import { AnswerComponent } from './pages/search/surveys/answer/answer.component';
 import { UserListComponent } from './pages/search/users/user-list/user-list.component';
 import { SingleUserComponent } from './pages/search/users/single-user/single-user.component';
-import { StatisticsComponent } from './pages/statistics/statistics.component';
-import { MessagesComponent } from './pages/messages/messages.component';
-import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CreateSurveyComponent } from './pages/create-survey/create-survey.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { SurveyDetailsComponent } from './pages/survey-details/survey-details.component';
@@ -18,7 +15,8 @@ import { AnswerSummaryComponent } from './pages/answer-summary/answer-summary.co
 const routes: Routes = [
   {
     path: '',
-    component: HomePageComponent
+    redirectTo: 'user',
+    pathMatch: 'full'
   },
   {
     path: 'user',
@@ -27,14 +25,6 @@ const routes: Routes = [
   {
     path: 'create-survey',
     component: CreateSurveyComponent
-  },
-  {
-    path: 'statistics',
-    component: StatisticsComponent
-  },
-  {
-    path: 'messages',
-    component: MessagesComponent
   },
   {
     path: 'login',

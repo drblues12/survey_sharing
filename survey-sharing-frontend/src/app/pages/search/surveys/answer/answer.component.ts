@@ -17,8 +17,8 @@ export class AnswerComponent implements OnInit {
   answer!: Answer;
   survey!: Survey;
   questions: {question: Question, answer: string}[] = [];
-  rating!: number;
-  feedback!: string;
+  rating: number = 0;
+  feedback: string = "";
   nextIndex: number = 0;
 
   constructor(private appComponent: AppComponent, private route: ActivatedRoute, private windowService: NbWindowService) { }

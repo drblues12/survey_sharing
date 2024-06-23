@@ -4,16 +4,13 @@ import { FormGroup, FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbMenuModule, NbActionsModule, NbInputModule, NbCardModule, NbContextMenuModule, NbIconModule, NbSearchModule, NbSelectModule, NbToggleModule, NbButtonModule, NbFormFieldModule, NbStepperModule, NbListModule, NbUserModule, NbTabsetModule, NbBadgeModule, NbPopoverModule, NbPosition, NbRadioModule, NbTooltipModule, NbWindowModule, NbCheckboxModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbMenuModule, NbActionsModule, NbInputModule, NbCardModule, NbContextMenuModule, NbIconModule, NbSearchModule, NbSelectModule, NbToggleModule, NbButtonModule, NbFormFieldModule, NbStepperModule, NbListModule, NbUserModule, NbTabsetModule, NbBadgeModule, NbPopoverModule, NbPosition, NbRadioModule, NbTooltipModule, NbWindowModule, NbCheckboxModule, NbAccordionModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { LoginComponent } from './pages/login/login.component';
 import { UserComponent } from './pages/user/user.component';
 import { SurveyListComponent } from './pages/search/surveys/survey-list/survey-list.component';
 import { AnswerComponent } from './pages/search/surveys/answer/answer.component';
 import { UserListComponent } from './pages/search/users/user-list/user-list.component';
-import { StatisticsComponent } from './pages/statistics/statistics.component';
-import { MessagesComponent } from './pages/messages/messages.component';
-import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CreateSurveyComponent } from './pages/create-survey/create-survey.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +22,9 @@ import { AnswerDetailsComponent } from './pages/answer-details/answer-details.co
 import { AnswerSummaryComponent } from './pages/answer-summary/answer-summary.component';
 import { NgbModule, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { RatingComponent } from './support/rating/rating.component';
+import { NgxEchartsModule } from 'ngx-echarts';
+import { PieChartComponent } from './support/charts/pie-chart/pie-chart.component';
+import { BarChartComponent } from './support/charts/bar-chart/bar-chart.component';
 
 @NgModule({
   declarations: [
@@ -34,9 +34,6 @@ import { RatingComponent } from './support/rating/rating.component';
     SurveyListComponent,
     AnswerComponent,
     UserListComponent,
-    StatisticsComponent,
-    MessagesComponent,
-    HomePageComponent,
     CreateSurveyComponent,
     RegisterComponent,
     SingleUserComponent,
@@ -44,7 +41,9 @@ import { RatingComponent } from './support/rating/rating.component';
     InvitationComponent,
     AnswerDetailsComponent,
     AnswerSummaryComponent,
-    RatingComponent
+    RatingComponent,
+    PieChartComponent,
+    BarChartComponent
   ],
   imports: [
     BrowserModule,
@@ -79,6 +78,10 @@ import { RatingComponent } from './support/rating/rating.component';
     NbWindowModule.forRoot(),
     NbCheckboxModule,
     NgbModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts'),
+    }),
+    NbAccordionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

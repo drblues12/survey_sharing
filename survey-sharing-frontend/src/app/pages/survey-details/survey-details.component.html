@@ -185,60 +185,130 @@
             </nb-tab>
             <nb-tab tabTitle="Statistics">
               <nb-card>
-                <nb-card-body>
-                  <nb-list>
-                    <nb-list-item>
-                      <div class="item-container">
-                        <div class="item-1">
-                          <div class="item-left">
-                            <b><h5>Number of answers:</h5></b>
+                <nb-accordion>
+                  <nb-accordion-item>
+                    <nb-accordion-item-header><b><h4>General statistics</h4></b></nb-accordion-item-header>
+                    <nb-accordion-item-body>
+                      <nb-list>
+                        <nb-list-item>
+                          <div class="item-container">
+                            <div class="item-1">
+                              <div class="item-left">
+                                <b><h5>Number of answers:</h5></b>
+                              </div>
+                              <div class="item-left">
+                                <h5>{{getStatistics().numberOfAnswers}}</h5>
+                              </div>
+                            </div>
+                            <div class="item-3">
+                              <div class="item-left">
+                                <b><h5>Percent of users who answered:</h5></b>
+                              </div>
+                              <div class="item-left">
+                                <h5>{{getStatistics().percentOfUsersWhoAnswered}}%</h5>
+                              </div>
+                            </div>
                           </div>
-                          <div class="item-left">
-                            <h5>{{getStatistics().numberOfAnswers}}</h5>
+                        </nb-list-item>
+                        <nb-list-item>
+                          <div class="item-container">
+                            <div class="item-1">
+                              <div class="item-left">
+                                <b><h5>Number of invitations sent:</h5></b>
+                              </div>
+                              <div class="item-left">
+                                <h5>{{getStatistics().numberOfInvitationsSent}}</h5>
+                              </div>
+                            </div>
+                            <div class="item-3">
+                              <div class="item-left">
+                                <b><h5>Percent of invitations accepted:</h5></b>
+                              </div>
+                              <div class="item-left">
+                                <h5>{{getStatistics().percentOfInvitationsAccepted}}%</h5>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div class="item-3">
-                          <div class="item-left">
-                            <b><h5>Percent of users who answered:</h5></b>
+                        </nb-list-item>
+                      </nb-list>
+                    </nb-accordion-item-body>
+                  </nb-accordion-item>
+                  <nb-accordion-item>
+                    <nb-accordion-item-header><b><h4>Users</h4></b></nb-accordion-item-header>
+                    <nb-accordion-item-body>
+                      <nb-card>
+                        <nb-card-body>
+                          <div class="item-2">
+                            <b><h5>Gender distribution</h5></b>
                           </div>
-                          <div class="item-left">
-                            <h5>{{getStatistics().percentOfUsersWhoAnswered}}%</h5>
+                        </nb-card-body>
+                        <nb-card-body>
+                          
+                        </nb-card-body>
+                      </nb-card>
+                    </nb-accordion-item-body>
+                  </nb-accordion-item>
+                  <nb-accordion-item>
+                    <nb-accordion-item-header><b><h4>Ratings</h4></b></nb-accordion-item-header>
+                    <nb-accordion-item-body>
+                      <nb-card>
+                        <nb-card-header>
+                          <div class="item-2">
+                            <div class="item-left">
+                              <b><h5>Average rating:</h5></b>
+                            </div>
+                            <div class="item-left">
+                              <app-rating [averageRating]="getStatistics().averageRating"></app-rating>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </nb-list-item>
-                    <nb-list-item>
-                      <div class="item-container">
-                        <div class="item-1">
-                          <div class="item-left">
-                            <b><h5>Number of invitations sent:</h5></b>
+                        </nb-card-header>
+                        <nb-card-body>
+                          <div class="item-2">
+                            <b><h5>Rating distribution</h5></b>
                           </div>
-                          <div class="item-left">
-                            <h5>{{getStatistics().numberOfInvitationsSent}}</h5>
+                          <div class="item-2">
+                            <app-bar-chart [data]="getDistribution(getStatistics().ratings)" class="echart"></app-bar-chart>
                           </div>
-                        </div>
-                        <div class="item-3">
-                          <div class="item-left">
-                            <b><h5>Percent of invitations accepted:</h5></b>
+                        </nb-card-body>
+                      </nb-card>
+                    </nb-accordion-item-body>
+                  </nb-accordion-item>
+                  <nb-accordion-item>
+                    <nb-accordion-item-header><b><h4>Feedbacks</h4></b></nb-accordion-item-header>
+                    <nb-accordion-item-body>
+                      <nb-card>
+                        <nb-card-body>
+                          <div class="item-2">
+                            <b><h5>Feedback distribution</h5></b>
                           </div>
-                          <div class="item-left">
-                            <h5>{{getStatistics().percentOfInvitationsAccepted}}%</h5>
+                        </nb-card-body>
+                        <nb-card-body>
+                          <app-pie-chart [numberOfPositiveFeedbacks]="getStatistics().numberOfPositiveFeedbacks"
+                          [numberOfNegativeFeedbacks]="getStatistics().numberOfNegativeFeedbacks"></app-pie-chart>
+                        </nb-card-body>
+                        <nb-card-body>
+                          <div *ngFor="let answer of answersWithFeedback">
+                            <nb-card>
+                              <nb-card-header>
+                                <div class="item-container">
+                                  <div class="item-left">
+                                    <nb-user name="{{answer.user.name}} {{answer.user.surname}}" title="{{answer.user.username}}"></nb-user>
+                                  </div>
+                                  <div class="item-left">
+                                    <app-rating [averageRating]="getRating(answer.answer)"></app-rating>
+                                  </div>
+                                </div>
+                              </nb-card-header>
+                              <nb-card-body>
+                                {{answer.answer.feedback}}
+                              </nb-card-body>
+                            </nb-card>
                           </div>
-                        </div>
-                      </div>
-                    </nb-list-item>
-                  </nb-list>
-                </nb-card-body>
-                <nb-card-body>
-                  <div class="item-2">
-                    <div class="item-left">
-                      <b><h5>Average rating:</h5></b>
-                    </div>
-                    <div class="item-left">
-                      <app-rating [averageRating]="getStatistics().averageRating"></app-rating>
-                    </div>
-                  </div>
-                </nb-card-body>
+                        </nb-card-body>
+                      </nb-card>
+                    </nb-accordion-item-body>
+                  </nb-accordion-item>
+                </nb-accordion>
               </nb-card>
             </nb-tab>
           </nb-tabset>

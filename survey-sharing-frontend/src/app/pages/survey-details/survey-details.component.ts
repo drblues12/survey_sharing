@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbWindowService } from '@nebular/theme';
 import { AppComponent } from 'src/app/app.component';
@@ -12,6 +12,7 @@ import { SupportService } from 'src/app/support/support.service';
 import { Answer } from 'src/app/entities/answer';
 import { Statistics } from 'src/app/entities/statistics';
 import { StarTemplateContext } from '@ng-bootstrap/ng-bootstrap/rating/rating';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-survey-details',
@@ -25,10 +26,15 @@ export class SurveyDetailsComponent implements OnInit {
   questions: { id: string, question: Question}[] = [];
   invitations: { id: string, invitation: Invitation, recipient: User }[] = [];
   answers: { id: string, answer: Answer, user: User }[] = [];
+  answersWithFeedback: { id: string, answer: Answer, user: User }[] = [];
   statistics!: Statistics;
   nullVariable: null = null;
+  categories: string[] = ['0','1','2','3','4','5'];
+  data: any[] = [0,3,1,4,2,5];
 
-  constructor(private appComponent: AppComponent, private route: ActivatedRoute,
+  chartOptions: any;
+
+  constructor(public appComponent: AppComponent, private route: ActivatedRoute,
               private windowService: NbWindowService, private supportService: SupportService) {}
 
   ngOnInit(): void {
@@ -84,14 +90,18 @@ export class SurveyDetailsComponent implements OnInit {
                   if(responseMessage3.object!=null){
                     const currUser: User = responseMessage3.object;
                     this.answers.push({id: currAnswer.id, answer: currAnswer, user: currUser});
+                    if(currAnswer.feedback!="")
+                      this.answersWithFeedback.push({id: currAnswer.id, answer: currAnswer, user: currUser});
                   }
                 })
               }
             })
           })
           this.appComponent.statisticsService.computeStatistics(this.appComponent.getUser().username, this.survey.title).subscribe(responseMessage2 => {
-            if(responseMessage2.object)
+            if(responseMessage2.object){
               this.statistics = responseMessage2.object;
+              this.updateChartOptions();
+            }
           })
         }
         else
@@ -195,7 +205,36 @@ export class SurveyDetailsComponent implements OnInit {
   getStatistics(): Statistics {
     if(this.statistics)
       return this.statistics;
-    return new Statistics("",this.getSurvey().title, -1, -1, [], -1, -1, [], -1, -1, -1, [], -1, -1, -1);
+    return new Statistics("",this.getSurvey().title, -1, -1, [], -1, -1, [], -1, -1, -1, [], -1, -1, [], -1);
+  }
+
+  getDistribution(ratings: number[]): number[] {
+    const categories: number[] = [1,2,3,4,5];
+    var distribution: number[] = [0,0,0,0,0];
+    ratings.forEach(r => { distribution[r-1]++ })
+    return distribution;
+  }
+
+  updateChartOptions(): void {
+    this.chartOptions = {
+      title: {
+        text: ''
+      },
+      tooltip: {
+        trigger: 'axis'
+      },
+      xAxis: {
+        type: 'category' as const,
+        data: ['1','2','3','4','5']
+      },
+      yAxis: {
+        type: 'value' as const
+      },
+      series: [{
+        data: this.getDistribution(this.statistics.ratings),
+        type: 'bar' as const
+      }]
+    };
   }
 
 }

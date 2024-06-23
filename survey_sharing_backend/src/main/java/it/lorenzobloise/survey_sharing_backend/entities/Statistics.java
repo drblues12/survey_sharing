@@ -35,6 +35,7 @@ public class Statistics {
     private List<String> listOfFeedbacks;
     private int numberOfPositiveFeedbacks;
     private int numberOfNegativeFeedbacks;
+    private List<Double> ratings;
     private double averageRating;
     @JsonIgnore
     @Version
