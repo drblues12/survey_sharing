@@ -53,6 +53,7 @@ public class StatisticsService {
         LinkedList<Integer> ages = new LinkedList<>();
         int males = 0;
         int females = 0;
+        LinkedList<String> countries = new LinkedList<>();
         HashSet<String> differentCountries = new HashSet<>();
         LinkedList<String> feedbacks = new LinkedList<>();
         int positiveFeedbacks = 0;
@@ -67,6 +68,7 @@ public class StatisticsService {
                     if(curr_u.get().getGender().equals(User.Gender.Male)) males++;
                     else females++;
                     differentCountries.add(curr_u.get().getCountry());
+                    countries.add(curr_u.get().getCountry());
                 }
                 String curr_feedback = curr_a.get().getFeedback();
                 if(!curr_feedback.equals("")) {
@@ -84,7 +86,7 @@ public class StatisticsService {
         result.setAgeList(ages);
         result.setNumberOfMaleUsersWhoAnswered(males);
         result.setNumberOfFemaleUsersWhoAnswered(females);
-        result.setCountriesList(differentCountries.stream().toList());
+        result.setCountriesList(countries);
         result.setNumberOfDifferentCountries(differentCountries.size());
         result.setListOfFeedbacks(feedbacks);
         result.setNumberOfPositiveFeedbacks(positiveFeedbacks);

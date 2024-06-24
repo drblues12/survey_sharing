@@ -1,18 +1,16 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NbWindowService } from '@nebular/theme';
 import { AppComponent } from 'src/app/app.component';
 import { Invitation } from 'src/app/entities/invitation';
 import { Option } from 'src/app/entities/option';
-import { ImageQuestion, MultipleChoiceQuestion, OpenEndedQuestion, Question } from 'src/app/entities/question';
+import { MultipleChoiceQuestion, Question } from 'src/app/entities/question';
 import { Survey } from 'src/app/entities/survey';
 import { User } from 'src/app/entities/user';
 import { InvitationComponent } from '../invitation/invitation.component';
 import { SupportService } from 'src/app/support/support.service';
 import { Answer } from 'src/app/entities/answer';
 import { Statistics } from 'src/app/entities/statistics';
-import { StarTemplateContext } from '@ng-bootstrap/ng-bootstrap/rating/rating';
-import { Observable, Subject, min } from 'rxjs';
 
 @Component({
   selector: 'app-survey-details',
@@ -216,7 +214,7 @@ export class SurveyDetailsComponent implements OnInit {
     if(type=='Ratings')
       support.forEach(x => distribution[x.category-1]=x.count);
     if(type=='Age'){
-      const minValue: number = Math.min(...data);
+      const minValue: number = Math.min(...data as number[]);
       support.forEach(x => distribution[x.category-minValue]=x.count);
     }
     return distribution;
@@ -234,16 +232,30 @@ export class SurveyDetailsComponent implements OnInit {
     return {numberArray: numberArray, stringArray: stringArray};
   }
 
-  //TODO WORLD MAP
-  getDictionary(data: string[]): {name: string, value: number}[] {
-    var result: {name: string, value: number}[] = [];
-    data.forEach(x => {
-      const index: number = result.findIndex(y => y.name==x);
-      if(index==-1)
-        result.push({name: x, value: 1});
-      else
-        result[index].value++;
+  getDistributionCountries(data: string[], categories: string[]): number[] {
+    var result: number[] = [];
+    var support: {name: string, value: number}[] = [];
+    categories.forEach(c => {
+      support.push({name: c, value: 0});
+    });
+    data.forEach(d => {
+      const index: number | undefined = support.findIndex(x => x.name==d);
+      if(index!=undefined)
+        support[index].value++;
     })
+    support.forEach(x => {
+      result.push(x.value);
+    })
+    return result;
+  }
+
+  getCountries(data: string[]): string[] {
+    var result: string[] = [];
+    data.forEach(d => {
+      if(!result.find(x => x==d))
+        result.push(d);
+    })
+    result.sort();
     return result;
   }
 

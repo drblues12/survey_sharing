@@ -40,6 +40,7 @@ export class BarChartComponent implements OnChanges {
       },
       yAxis: {
         type: 'value',
+        min: 0,
         axisLabel: {
           color: color,
           formatter: (value: number) => {
@@ -79,7 +80,9 @@ export class BarChartComponent implements OnChanges {
     if(this.type=='Ratings')
       result = 'orange';
     if(this.type=='Age')
-      result = 'orange'; // TODO
+      result = '#4CAF50';
+    if(this.type=='World')
+      result = '#F44336';
     return result;
   }
 

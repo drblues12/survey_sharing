@@ -279,7 +279,8 @@
                             <div class="item-2">
                               <b><h5>Countries distribution</h5></b>
                             </div>
-                            <!--WORLD MAP-->
+                            <app-bar-chart type="World" [data]="getDistributionCountries(getStatistics().countriesList, getCountries(getStatistics().countriesList))"
+                            [categories]="getCountries(getStatistics().countriesList)"></app-bar-chart>
                           </nb-card-body>
                         </nb-card>
                       </nb-card>
