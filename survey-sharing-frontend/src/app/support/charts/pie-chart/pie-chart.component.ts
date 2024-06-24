@@ -68,6 +68,8 @@ export class PieChartComponent implements OnChanges {
     if(this.type=='Feedbacks'){
       result.push({name: 'Positive feedbacks', value: this.data[0]});
       result.push({name: 'Negative feedbacks', value: this.data[1]});
+      result.push({name: 'Mixed feedbacks', value: this.data[2]});
+      result.push({name: 'Neutral feedbacks', value: this.data[3]});
     }
     if(this.type=='Gender'){
       result.push({name: 'Male', value: this.data[0]});
@@ -79,7 +81,7 @@ export class PieChartComponent implements OnChanges {
   getPieChartColor(): string[] {
     var result: string[] = [];
     if(this.type=='Feedbacks')
-      result = ['#4CAF50', '#F44336'];
+      result = ['#4CAF50', '#F44336', 'gold', '#2196F3'];
     if(this.type=='Gender')
       result = ['#2196F3', '#FF69B4'];
     return result;

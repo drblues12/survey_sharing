@@ -197,7 +197,7 @@ export class SurveyDetailsComponent implements OnInit {
   getStatistics(): Statistics {
     if(this.statistics)
       return this.statistics;
-    return new Statistics("",this.getSurvey().title, -1, -1, -1, [], -1, -1, [], -1, -1, -1, [], -1, -1, [], -1);
+    return new Statistics("",this.getSurvey().title, -1, -1, -1, [], -1, -1, [], -1, -1, -1, [], -1, -1, -1, -1, [], -1);
   }
 
   getDistribution(data: number[], categories: number[], type: string): number[] {

@@ -16,13 +16,16 @@ export class Statistics{
   listOfFeedbacks!: string[];
   numberOfPositiveFeedbacks!: number;
   numberOfNegativeFeedbacks!: number;
+  numberOfMixedFeedbacks!: number;
+  numberOfNeutralFeedbacks!: number;
   ratings!: number[];
   averageRating!: number;
 
   constructor(id: string, survey: string, numberOfAnswers: number, percentOfUsersWhoAnswered: number, averageAge: number, ageList: number[],
               numberOfMaleUsersWhoAnswered: number, numberOfFemaleUsersWhoAnswered: number, countriesList: string[],
               numberOfDifferentCountries: number, numberOfInvitationsSent: number, percentOfInvitationsAccepted: number,
-              listOfFeedbacks: string[], numberOfPositiveFeedbacks: number, numberOfNegativeFeedbacks: number, ratings: number[], averageRating: number) {
+              listOfFeedbacks: string[], numberOfPositiveFeedbacks: number, numberOfNegativeFeedbacks: number, numberOfMixedFeedbacks: number,
+              numberOfNeutralFeedbacks: number, ratings: number[], averageRating: number) {
     this.id = id;
     this.survey = survey;
     this.numberOfAnswers = numberOfAnswers;
@@ -38,6 +41,8 @@ export class Statistics{
     this.listOfFeedbacks = listOfFeedbacks;
     this.numberOfPositiveFeedbacks = numberOfPositiveFeedbacks;
     this.numberOfNegativeFeedbacks = numberOfNegativeFeedbacks;
+    this.numberOfMixedFeedbacks = numberOfMixedFeedbacks;
+    this.numberOfNeutralFeedbacks = numberOfNeutralFeedbacks;
     this.ratings = ratings;
     this.averageRating = averageRating;
   }

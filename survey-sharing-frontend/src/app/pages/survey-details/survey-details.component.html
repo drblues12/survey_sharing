@@ -321,7 +321,8 @@
                           </div>
                         </nb-card-body>
                         <nb-card-body>
-                          <app-pie-chart type="Feedbacks" [data]="[getStatistics().numberOfPositiveFeedbacks, getStatistics().numberOfNegativeFeedbacks]"></app-pie-chart>
+                          <app-pie-chart type="Feedbacks" [data]="[getStatistics().numberOfPositiveFeedbacks, getStatistics().numberOfNegativeFeedbacks,
+                            getStatistics().numberOfMixedFeedbacks, getStatistics().numberOfNeutralFeedbacks]"></app-pie-chart>
                         </nb-card-body>
                         <nb-card-body>
                           <div *ngFor="let answer of answersWithFeedback">

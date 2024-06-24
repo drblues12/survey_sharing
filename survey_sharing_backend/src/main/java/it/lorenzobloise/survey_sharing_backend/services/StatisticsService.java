@@ -4,6 +4,7 @@ import it.lorenzobloise.survey_sharing_backend.entities.*;
 import it.lorenzobloise.survey_sharing_backend.repositories.StatisticsRepository;
 import it.lorenzobloise.survey_sharing_backend.repositories.SurveyRepository;
 import it.lorenzobloise.survey_sharing_backend.repositories.UserRepository;
+import it.lorenzobloise.survey_sharing_backend.support.SentimentAnalysis;
 import it.lorenzobloise.survey_sharing_backend.support.Utils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,6 +44,7 @@ public class StatisticsService {
         if(s.isEmpty())
             throw new RuntimeException("Survey does not exist");
         Statistics result = new Statistics();
+        SentimentAnalysis sentimentAnalysis = new SentimentAnalysis();
         // Number of answers
         result.setNumberOfAnswers(s.get().getAnswers().size());
         // Percent of users who answered
@@ -58,6 +60,8 @@ public class StatisticsService {
         LinkedList<String> feedbacks = new LinkedList<>();
         int positiveFeedbacks = 0;
         int negativeFeedbacks = 0;
+        int mixedFeedbacks = 0;
+        int neutralFeedbacks = 0;
         LinkedList<Double> ratings = new LinkedList<>();
         for(String a: s.get().getAnswers()){
             Optional<Answer> curr_a = answerService.getAnswerById(a);
@@ -73,8 +77,14 @@ public class StatisticsService {
                 String curr_feedback = curr_a.get().getFeedback();
                 if(!curr_feedback.equals("")) {
                     feedbacks.add(curr_feedback);
-                    if (Utils.feedbackIsPositive(curr_feedback)) positiveFeedbacks++;
-                    else negativeFeedbacks++;
+                    String sentiment = sentimentAnalysis.detectSentimentWithComprehend(curr_feedback);
+                    switch (sentiment) {
+                        case "POSITIVE" -> positiveFeedbacks++;
+                        case "NEGATIVE" -> negativeFeedbacks++;
+                        case "MIXED" -> mixedFeedbacks++;
+                        case "NEUTRAL" -> neutralFeedbacks++;
+                        default -> {}
+                    }
                 }
                 Double curr_rating = curr_a.get().getRating();
                 if(curr_rating!=null && curr_rating!=0d) ratings.add(curr_rating);
@@ -91,6 +101,8 @@ public class StatisticsService {
         result.setListOfFeedbacks(feedbacks);
         result.setNumberOfPositiveFeedbacks(positiveFeedbacks);
         result.setNumberOfNegativeFeedbacks(negativeFeedbacks);
+        result.setNumberOfMixedFeedbacks(mixedFeedbacks);
+        result.setNumberOfNeutralFeedbacks(neutralFeedbacks);
         result.setRatings(ratings);
         int sum_ratings = 0;
         for(Double r: ratings) sum_ratings += r;

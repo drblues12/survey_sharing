@@ -73,6 +73,18 @@
             <artifactId>javax.el</artifactId>
             <version>3.0.0</version>
         </dependency>
+        <!--Dependencies for AWS Lambda
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-lambda-java-core</artifactId>
+            <version>1.2.1</version>
+        </dependency>-->
+        <!--Dependencies for AWS Comprehend-->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-comprehend</artifactId>
+            <version>1.12.748</version>
+        </dependency>
 
     </dependencies>
 
