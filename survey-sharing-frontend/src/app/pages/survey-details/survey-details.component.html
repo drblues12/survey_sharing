@@ -144,10 +144,9 @@
                         <div class="item-2">
                           <b>Accepted</b>
                         </div>
-                        <div class="item-2">
+                        <div class="item-3">
                           <b>Message</b>
                         </div>
-                        <div class="item-3"></div> <!--Button SEE ANSWER-->
                         <div class="item-3"></div> <!--Button DELETE-->
                       </div>
                     </nb-list-item>
@@ -163,11 +162,8 @@
                         <div class="item-2">
                           <nb-icon icon="{{getInvitationAcceptedIcon(invitation.invitation)}}" status="{{getInvitationAcceptedStatus(invitation.invitation)}}"></nb-icon>
                         </div>
-                        <div class="item-2">
-                          {{invitation.invitation.message}}
-                        </div>
                         <div class="item-3">
-                          <button nbButton disabled="{{!invitation.invitation.accepted}}">See answer</button>
+                          {{invitation.invitation.message}}
                         </div>
                         <div class="item-3">
                           <button nbButton (click)="deleteInvitation(invitation.invitation.id)">Delete<nb-icon icon="trash-2"></nb-icon></button>
@@ -231,6 +227,24 @@
                           </div>
                         </nb-list-item>
                       </nb-list>
+                    </nb-accordion-item-body>
+                  </nb-accordion-item>
+                  <nb-accordion-item>
+                    <nb-accordion-item-header><b><h4>Answers</h4></b></nb-accordion-item-header>
+                    <nb-accordion-item-body>
+                      <ng-container *ngFor="let entry of answerCount">
+                          <nb-card>
+                            <nb-card-header>
+                              <div class="item-2">
+                                <b><h5>{{entry.question}}</h5></b>
+                              </div>
+                            </nb-card-header>
+                            <nb-card-body>
+                              <app-bar-chart type="Answers" [data]="entry.count"
+                               [categories]="entry.answers"></app-bar-chart>
+                            </nb-card-body>
+                          </nb-card>
+                      </ng-container>
                     </nb-accordion-item-body>
                   </nb-accordion-item>
                   <nb-accordion-item>

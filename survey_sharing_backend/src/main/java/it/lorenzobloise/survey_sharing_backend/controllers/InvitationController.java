@@ -82,9 +82,9 @@ public class InvitationController {
     // Authentication as this user
     @PutMapping("/{user}")
     public ResponseEntity updateInvitation(@PathVariable(value = "user") String user, @RequestParam String invitation,
-                                           @RequestParam boolean read, @RequestParam boolean accepted){
+                                           @RequestParam boolean accepted){
         try {
-            Invitation result = invitationService.updateInvitation(user, invitation, read, accepted);
+            Invitation result = invitationService.updateInvitation(user, invitation, accepted);
             return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);

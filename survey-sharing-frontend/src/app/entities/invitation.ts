@@ -6,7 +6,6 @@ export class Invitation{
   user!: string;
   survey!: string;
   message!: string;
-  read!: boolean;
   accepted!: boolean;
   invitationDate!: string[];
 
@@ -14,7 +13,6 @@ export class Invitation{
     this.user = user;
     this.survey = survey;
     this.message = message;
-    this.read = false;
     this.accepted = false;
     const now: Date = new Date();
     this.invitationDate = [now.getDate()+'', (now.getMonth()+1)+'', now.getFullYear()+'',

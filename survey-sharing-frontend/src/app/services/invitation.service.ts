@@ -36,8 +36,8 @@ export class InvitationService{
 
   // PUT
 
-  public updateInvitation(user: string, invitation: string, read: boolean, accepted: boolean){
-    return this.http.put<ResponseMessage>(this.base_url+'/'+user+'?invitation='+invitation+'&read='+read+'&accepted='+accepted,null);
+  public updateInvitation(user: string, invitation: string, accepted: boolean){
+    return this.http.put<ResponseMessage>(this.base_url+'/'+user+'?invitation='+invitation+'&accepted='+accepted,null);
   }
 
 }

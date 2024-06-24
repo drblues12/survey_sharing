@@ -103,14 +103,13 @@ public class InvitationService {
 
     // PUT
 
-    public Invitation updateInvitation(String user, String invitation, boolean read, boolean accepted){
+    public Invitation updateInvitation(String user, String invitation, boolean accepted){
         Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user, user, user);
         if(u.isEmpty())
             throw new RuntimeException("User does not exist");
         Optional<Invitation> i = invitationRepository.findById(invitation);
         if(i.isEmpty())
             throw new RuntimeException("Invitation does not exist");
-        i.get().setRead(read);
         i.get().setAccepted(accepted);
         invitationRepository.save(i.get());
         userRepository.save(u.get());

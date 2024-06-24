@@ -83,6 +83,8 @@ export class BarChartComponent implements OnChanges {
       result = '#4CAF50';
     if(this.type=='World')
       result = '#F44336';
+    if(this.type=='Answers')
+      result = '#2196F3';
     return result;
   }
 

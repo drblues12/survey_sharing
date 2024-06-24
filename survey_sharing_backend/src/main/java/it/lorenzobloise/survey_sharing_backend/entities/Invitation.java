@@ -25,7 +25,6 @@ public class Invitation implements Comparable<Invitation> {
     @NotBlank(message = "Survey shall not be blank")
     private String survey;
     private String message;
-    private boolean read;
     private boolean accepted;
     @JsonIgnore
     private LocalDateTime invitationDateObj;

@@ -24,6 +24,7 @@ export class SurveyDetailsComponent implements OnInit {
   questions: { id: string, question: Question}[] = [];
   invitations: { id: string, invitation: Invitation, recipient: User }[] = [];
   answers: { id: string, answer: Answer, user: User }[] = [];
+  answerCount: { question: string, answers: string[], count: number[] }[] = [];
   feedbacks: { id: string, answer: Answer, user: User }[] = [];
   statistics!: Statistics;
   nullVariable: null = null;
@@ -64,13 +65,7 @@ export class SurveyDetailsComponent implements OnInit {
                 this.appComponent.userService.findUsersByUsername(responseMessage2.object.user).subscribe(responseMessage3 => {
                   if(responseMessage3.object!=null && responseMessage3.object.length>0){
                     this.invitations.push({ id: i, invitation: responseMessage2.object, recipient: responseMessage3.object[0] });
-                    this.invitations.sort((i1, i2) => {
-                      if(i1.id < i2.id)
-                        return -1;
-                      if(i1.id > i2.id)
-                        return 1;
-                      return 0;
-                    })
+                    this.invitations.sort((i1, i2) => { return this.appComponent.compareInvitations(i2.invitation, i1.invitation) });
                   }
                 })
               }
@@ -86,13 +81,37 @@ export class SurveyDetailsComponent implements OnInit {
                     this.answers.push({id: currAnswer.id, answer: currAnswer, user: currUser});
                   }
                 })
+                currAnswer.questions.forEach(q => {
+                  this.appComponent.questionService.findQuestionById(q).subscribe(responseMessage3 => {
+                    if(responseMessage3.object!=null && this.isMultipleChoice(responseMessage3.object)){
+                      const currQuestion: Question = responseMessage3.object;
+                      const currOptions: Option[] | null = this.getOptions(currQuestion);
+                      if(currOptions!=null){
+                        const optionsString: string[] = [];
+                        currOptions.forEach(o => optionsString.push(o.option));
+                        const selected: number = currOptions.findIndex(o => o.selected==true);
+                        if(selected!=-1){
+                          const index: number = this.answerCount.findIndex(x => x.question==currQuestion.question);
+                          if(index==-1){
+                            var countOptions: number[] = [];
+                            currOptions.forEach(_ => countOptions.push(0));
+                            countOptions[selected]++;
+                            this.answerCount.push({question: currQuestion.question, answers: optionsString, count: countOptions});
+                          }
+                          else{
+                            this.answerCount[index].count[selected]++;
+                          }
+                        }
+                      }
+                    }
+                  })
+                });
               }
             })
           })
           this.appComponent.statisticsService.computeStatistics(this.appComponent.getUser().username, this.survey.title).subscribe(responseMessage2 => {
             if(responseMessage2.object){
               this.statistics = responseMessage2.object;
-
             }
           })
         }

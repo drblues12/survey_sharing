@@ -2,6 +2,7 @@ package it.lorenzobloise.survey_sharing_backend.services;
 
 import it.lorenzobloise.survey_sharing_backend.entities.*;
 import it.lorenzobloise.survey_sharing_backend.repositories.AnswerRepository;
+import it.lorenzobloise.survey_sharing_backend.repositories.InvitationRepository;
 import it.lorenzobloise.survey_sharing_backend.repositories.SurveyRepository;
 import it.lorenzobloise.survey_sharing_backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,8 @@ public class AnswerService {
     private final SurveyRepository surveyRepository;
     private final AnswerRepository answerRepository;
     private QuestionService questionService;
+    private InvitationService invitationService;
+    private InvitationRepository invitationRepository;
 
     // POST
 
@@ -44,6 +47,13 @@ public class AnswerService {
             }
             // Add this answer in the answers repository
             Answer result = answerRepository.save(answer);
+            //Accept all the invitations received by this user for this survey
+            Set<Invitation> invitations = invitationService.getAllInvitations(user);
+            for(Invitation i: invitations)
+                if(i.getSurvey().equals(survey)) {
+                    i.setAccepted(true);
+                    invitationRepository.save(i);
+                }
             // Add this answer in the survey's answers
             s.get().getAnswers().add(result.getId());
             surveyRepository.save(s.get());

@@ -207,6 +207,22 @@ export class AppComponent implements OnInit {
     return 0;
   }
 
+  compareInvitations(i1: Invitation, i2: Invitation): number {
+    if(i1.invitationDate[2]<i2.invitationDate[2]) return -1;
+    if(i1.invitationDate[2]>i2.invitationDate[2]) return 1;
+    if(i1.invitationDate[1]<i2.invitationDate[1]) return -1;
+    if(i1.invitationDate[1]>i2.invitationDate[1]) return 1;
+    if(i1.invitationDate[0]<i2.invitationDate[0]) return -1;
+    if(i1.invitationDate[0]>i2.invitationDate[0]) return 1;
+    if(i1.invitationDate[3]<i2.invitationDate[3]) return -1;
+    if(i1.invitationDate[3]>i2.invitationDate[3]) return 1;
+    if(i1.invitationDate[4]<i2.invitationDate[4]) return -1;
+    if(i1.invitationDate[4]>i2.invitationDate[4]) return 1;
+    if(i1.invitationDate[5]<i2.invitationDate[5]) return -1;
+    if(i1.invitationDate[5]>i2.invitationDate[5]) return 1;
+    return 0;
+  }
+
   logout(){
     localStorage.setItem('loggedIn', 'false');
     this.navigate('login', null);
