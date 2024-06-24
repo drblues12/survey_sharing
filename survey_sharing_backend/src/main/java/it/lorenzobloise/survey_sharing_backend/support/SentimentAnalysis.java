@@ -56,6 +56,7 @@ public class SentimentAnalysis {
     }
 
     // TEST
+    /*
     public static void main(String[] args){
         SentimentAnalysis sa = new SentimentAnalysis();
         String feedback = "This survey offers a series of questions that challenge you to do your best. For some people, it can be " +
@@ -69,5 +70,7 @@ public class SentimentAnalysis {
         String feedback4 = "This survey offers a series of questions. I don't have a positive or negative judgement";
         System.out.println(feedback4+": "+sa.detectSentimentWithComprehend(feedback4));
     }
+
+     */
 
 }

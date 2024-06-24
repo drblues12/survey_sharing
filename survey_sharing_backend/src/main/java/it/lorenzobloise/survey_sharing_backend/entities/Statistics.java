@@ -33,7 +33,7 @@ public class Statistics {
     private int numberOfDifferentCountries;
     private int numberOfInvitationsSent;
     private double percentOfInvitationsAccepted;
-    private List<String> listOfFeedbacks;
+    private List<List<String>> listOfFeedbacks;
     private int numberOfPositiveFeedbacks;
     private int numberOfNegativeFeedbacks;
     private int numberOfMixedFeedbacks;

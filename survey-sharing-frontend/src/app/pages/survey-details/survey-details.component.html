@@ -325,20 +325,23 @@
                             getStatistics().numberOfMixedFeedbacks, getStatistics().numberOfNeutralFeedbacks]"></app-pie-chart>
                         </nb-card-body>
                         <nb-card-body>
-                          <div *ngFor="let answer of answersWithFeedback">
+                          <div *ngFor="let feedback of getStatistics().listOfFeedbacks">
                             <nb-card>
                               <nb-card-header>
                                 <div class="item-container">
                                   <div class="item-left">
-                                    <nb-user name="{{answer.user.name}} {{answer.user.surname}}" title="{{answer.user.username}}"></nb-user>
+                                    <nb-icon class="custom-icon" [icon]="getFeedbackIcon(feedback[1])" [status]="getFeedbackStatus(feedback[1])"></nb-icon>
                                   </div>
                                   <div class="item-left">
-                                    <app-rating [averageRating]="getRating(answer.answer)"></app-rating>
+                                    <nb-user name="{{feedback[2]}} {{feedback[3]}}" title="{{feedback[4]}}"></nb-user>
+                                  </div>
+                                  <div class="item-left">
+                                    <app-rating [averageRating]="+feedback[5]"></app-rating>
                                   </div>
                                 </div>
                               </nb-card-header>
                               <nb-card-body>
-                                {{answer.answer.feedback}}
+                                {{feedback[0]}}
                               </nb-card-body>
                             </nb-card>
                           </div>

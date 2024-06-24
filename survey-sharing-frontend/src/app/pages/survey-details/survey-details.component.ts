@@ -24,7 +24,7 @@ export class SurveyDetailsComponent implements OnInit {
   questions: { id: string, question: Question}[] = [];
   invitations: { id: string, invitation: Invitation, recipient: User }[] = [];
   answers: { id: string, answer: Answer, user: User }[] = [];
-  answersWithFeedback: { id: string, answer: Answer, user: User }[] = [];
+  feedbacks: { id: string, answer: Answer, user: User }[] = [];
   statistics!: Statistics;
   nullVariable: null = null;
 
@@ -84,16 +84,16 @@ export class SurveyDetailsComponent implements OnInit {
                   if(responseMessage3.object!=null){
                     const currUser: User = responseMessage3.object;
                     this.answers.push({id: currAnswer.id, answer: currAnswer, user: currUser});
-                    if(currAnswer.feedback!="")
-                      this.answersWithFeedback.push({id: currAnswer.id, answer: currAnswer, user: currUser});
                   }
                 })
               }
             })
           })
           this.appComponent.statisticsService.computeStatistics(this.appComponent.getUser().username, this.survey.title).subscribe(responseMessage2 => {
-            if(responseMessage2.object)
+            if(responseMessage2.object){
               this.statistics = responseMessage2.object;
+
+            }
           })
         }
         else
@@ -257,6 +257,36 @@ export class SurveyDetailsComponent implements OnInit {
     })
     result.sort();
     return result;
+  }
+
+  getFeedbackIcon(sentiment: string): string {
+    switch(sentiment){
+      case 'POSITIVE':
+        return 'checkmark-circle-2';
+      case 'NEGATIVE':
+        return 'close-circle';
+      case 'MIXED':
+        return 'alert-circle';
+      case 'NEUTRAL':
+        return 'question-mark-circle';
+      default:
+        return '';
+    }
+  }
+
+  getFeedbackStatus(sentiment: string): string {
+    switch(sentiment){
+      case 'POSITIVE':
+        return 'success';
+      case 'NEGATIVE':
+        return 'danger';
+      case 'MIXED':
+        return 'warning';
+      case 'NEUTRAL':
+        return 'info';
+      default:
+        return '';
+    }
   }
 
 }

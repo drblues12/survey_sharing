@@ -57,7 +57,7 @@ public class StatisticsService {
         int females = 0;
         LinkedList<String> countries = new LinkedList<>();
         HashSet<String> differentCountries = new HashSet<>();
-        LinkedList<String> feedbacks = new LinkedList<>();
+        List<List<String>> feedbacks = new LinkedList<>();
         int positiveFeedbacks = 0;
         int negativeFeedbacks = 0;
         int mixedFeedbacks = 0;
@@ -76,8 +76,25 @@ public class StatisticsService {
                 }
                 String curr_feedback = curr_a.get().getFeedback();
                 if(!curr_feedback.equals("")) {
-                    feedbacks.add(curr_feedback);
                     String sentiment = sentimentAnalysis.detectSentimentWithComprehend(curr_feedback);
+                    LinkedList<String> entry = new LinkedList<>();
+                    entry.add(curr_feedback);
+                    entry.add(sentiment);
+                    String name = "";
+                    String surname = "";
+                    String username = "";
+                    String rating = "";
+                    if(curr_u.isPresent()){
+                        name = curr_u.get().getName();
+                        surname = curr_u.get().getSurname();
+                        username = curr_u.get().getUsername();
+                        rating = curr_a.get().getRating().toString();
+                    }
+                    entry.add(name);
+                    entry.add(surname);
+                    entry.add(username);
+                    entry.add(rating);
+                    feedbacks.add(entry);
                     switch (sentiment) {
                         case "POSITIVE" -> positiveFeedbacks++;
                         case "NEGATIVE" -> negativeFeedbacks++;
