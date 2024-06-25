@@ -14,6 +14,7 @@ import { QuestionService } from './services/question.service';
 import { filter } from 'rxjs/operators';
 import { SupportService } from './support/support.service';
 import { Question } from './entities/question';
+import { ImageService } from './services/image.service';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +37,7 @@ export class AppComponent implements OnInit {
   constructor(public router: Router, public userService: UserService, public surveyService: SurveyService,
               public answerService: AnswerService, public invitationService: InvitationService,
               public statisticsService: StatisticsService, public questionService: QuestionService,
-              private themeService: NbThemeService, private supportService: SupportService){
+              public imageService: ImageService, private themeService: NbThemeService){
   }
 
   ngOnInit(): void {

@@ -57,14 +57,14 @@ export class OpenEndedQuestion extends Question{
 }
 
 export class ImageQuestion extends Question{
-  url!: string;
+  image!: string;
 
   constructor(){
     super();
     this.type = "ImageQuestion";
   }
 
-  setUrl(url: string){
-    this.url = url;
+  setImage(image: string){
+    this.image = image;
   }
 }

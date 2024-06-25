@@ -40,7 +40,7 @@
                     <h5><b>Answer: </b></h5>
                   </div>
                   <div class="item-1">
-                    <textarea nbInput fullWidth="true" [(ngModel)]="question.answer"></textarea>
+                    <input #imageInput type="file" nbInput fullWidth="true" (change)="uploadImage(imageInput, question.id)">
                   </div>
                 </div>
               </nb-card-body>

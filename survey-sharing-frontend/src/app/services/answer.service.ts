@@ -12,7 +12,7 @@ export class AnswerService{
 
   constructor(private http:HttpClient) { }
 
-  // PUT
+  // POST
 
   public createAnswer(user: string, survey: string, rating: number, feedback: string, questions: string){
     return this.http.post<ResponseMessage>(this.base_url+'/'+user+'/create?survey='+survey+'&rating='+rating+'&feedback='+feedback, questions, {

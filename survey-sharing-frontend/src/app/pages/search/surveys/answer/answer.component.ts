@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NbWindowService } from '@nebular/theme';
 import { AppComponent } from 'src/app/app.component';
 import { Answer } from 'src/app/entities/answer';
+import { Image } from 'src/app/entities/image';
 import { Option } from 'src/app/entities/option';
 import { ImageQuestion, MultipleChoiceQuestion, OpenEndedQuestion, Question } from 'src/app/entities/question';
 import { Survey } from 'src/app/entities/survey';
@@ -16,7 +17,8 @@ export class AnswerComponent implements OnInit {
 
   answer!: Answer;
   survey!: Survey;
-  questions: {question: Question, answer: string}[] = [];
+  questions: {id: number, question: Question, answer: string}[] = [];
+  questionId: number = 0;
   rating: number = 0;
   feedback: string = "";
   nextIndex: number = 0;
@@ -39,21 +41,21 @@ export class AnswerComponent implements OnInit {
                   newQ.setOptions((responseMessage2.object as MultipleChoiceQuestion).options);
                   newQ.setQuestion(responseMessage2.object.question);
                   newQ.setQuestionDate(responseMessage2.object.questionDate);
-                  this.questions.push({question: newQ, answer: ""});
+                  this.questions.push({id: this.generateId(), question: newQ, answer: ""});
                 }
                 if(this.isOpenEnded(responseMessage2.object)){
                   var newQ2: OpenEndedQuestion = new OpenEndedQuestion();
                   newQ2.setAnswer((responseMessage2.object as OpenEndedQuestion).answer);
                   newQ2.setQuestion(responseMessage2.object.question);
                   newQ2.setQuestionDate(responseMessage2.object.questionDate);
-                  this.questions.push({question: newQ2, answer: ""});
+                  this.questions.push({id: this.generateId(), question: newQ2, answer: ""});
                 }
                 if(this.isImage(responseMessage2.object)){
                   var newQ3: ImageQuestion = new ImageQuestion();
-                  newQ3.setUrl((responseMessage2.object as ImageQuestion).url);
+                  newQ3.setImage((responseMessage2.object as ImageQuestion).image);
                   newQ3.setQuestion(responseMessage2.object.question);
                   newQ3.setQuestionDate(responseMessage2.object.questionDate);
-                  this.questions.push({question: newQ3, answer: ""});
+                  this.questions.push({id: this.generateId(), question: newQ3, answer: ""});
                 }
                 this.questions.sort((q1, q2) => this.appComponent.compareQuestions(q1.question, q2.question));
               }
@@ -63,6 +65,11 @@ export class AnswerComponent implements OnInit {
         else alert(responseMessage.message);
       })
     }
+  }
+
+  generateId(): number {
+    this.questionId++;
+    return this.questionId;
   }
 
   getSurvey(): Survey{
@@ -94,6 +101,54 @@ export class AnswerComponent implements OnInit {
     return this.questions.find(q => q.answer=="")!=undefined;
   }
 
+  uploadImage(image: HTMLInputElement, questionId: number): void {
+    if(image.files!=null && image.files.length>0){
+      const file: File = image.files[0];
+      const fileToByteArray = async(): Promise<number[]> => {
+        return new Promise((resolve, reject) => {
+          try{
+            let reader = new FileReader();
+            let fileByteArray: number[] = [];
+            reader.readAsArrayBuffer(file);
+            reader.onloadend = (evt) => {
+              if(evt.target?.readyState === FileReader.DONE){
+                const arrayBuffer = evt.target.result;
+                if(arrayBuffer!=null && typeof arrayBuffer!=='string'){
+                  const array = new Uint8Array(arrayBuffer);
+                  array.forEach((item) => fileByteArray.push(item));
+                }
+              }
+              resolve(fileByteArray);
+            };
+            reader.onerror = (error) => {
+              reject(error);
+            };
+          }catch(e){
+            reject(e);
+          }
+        })
+      };
+      (async() => {
+        try{
+          const byteArray = await fileToByteArray();
+          this.appComponent.imageService.uploadImage(byteArray, file.name).subscribe(responseMessage => {
+            if(responseMessage.object!=null){
+              const image: Image = responseMessage.object;
+              var index: number = this.questions.findIndex(q => q.id==questionId);
+              if(index!=-1){
+                this.questions[index].answer = image.id;
+                alert("Image uploaded");
+              }
+            }
+          })
+        }catch(e){
+          alert("There was an error uploading the image");
+          console.error(e);
+        }
+      })();
+    }
+  }
+
   submit(): void {
     if(this.existsEmptyAnswer()){
       alert("All questions must have been answered");
@@ -108,7 +163,7 @@ export class AnswerComponent implements OnInit {
       if(this.isOpenEnded(q.question))
         (q.question as OpenEndedQuestion).setAnswer(q.answer);
       if(this.isImage(q.question))
-        (q.question as ImageQuestion).setUrl(q.answer);
+        (q.question as ImageQuestion).setImage(q.answer);
     })
     var questionList: Question[] = [];
     this.questions.forEach(q => {

@@ -96,7 +96,8 @@
                       <h5><b>Answer: </b></h5>
                     </div>
                     <div class="item-1">
-                      {{question.answer}}
+                      <img *ngIf="getImage(question.question)!=null" [src]="getImage(question.question)?.src"
+                      alt="{{getImage(question.question)?.image?.fileName}}">
                     </div>
                   </div>
                 </nb-card-body>

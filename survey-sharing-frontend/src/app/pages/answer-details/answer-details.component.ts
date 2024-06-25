@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { Answer } from 'src/app/entities/answer';
+import { Image } from 'src/app/entities/image';
 import { Option } from 'src/app/entities/option';
 import { ImageQuestion, MultipleChoiceQuestion, OpenEndedQuestion, Question } from 'src/app/entities/question';
 import { Survey } from 'src/app/entities/survey';
@@ -18,8 +20,10 @@ export class AnswerDetailsComponent implements OnInit {
   survey!: Survey;
   surveyOwner!: User;
   questions: {question: Question, answer: string}[] = [];
+  images: {id: string, image: Image, src: SafeUrl}[] = [];
 
-  constructor(private appComponent: AppComponent, private route: ActivatedRoute) { }
+  constructor(private appComponent: AppComponent, private route: ActivatedRoute,
+              private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
     this.appComponent.reloadWindow();
@@ -45,7 +49,21 @@ export class AnswerDetailsComponent implements OnInit {
                 }
                 if(this.isImage(currQuestion)){
                   const iq: ImageQuestion = currQuestion as ImageQuestion;
-                  answer = iq.url;
+                  answer = iq.image;
+                  this.appComponent.imageService.findImageById(answer).subscribe(responseMessage3 => {
+                    if(responseMessage3.object){
+                      const byteArray: number[] = responseMessage3.object.image;
+                      try{
+                        const mimeType = this.getImageMimeType(responseMessage3.object.fileName);
+                        const blob = new Blob([new Uint8Array(byteArray)], { type: 'image/jpeg' });
+                        const imageUrl = URL.createObjectURL(blob);
+                        const sanitizedImageUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+                        this.images.push({id: answer, image: responseMessage3.object, src: sanitizedImageUrl});
+                      }catch(e){
+                        console.error(e);
+                      }
+                    }
+                  })
                 }
                 this.questions.push({question: currQuestion, answer: answer});
                 this.questions.sort((q1, q2) => this.appComponent.compareQuestions(q1.question,q2.question));
@@ -116,6 +134,38 @@ export class AnswerDetailsComponent implements OnInit {
       return this.getAnswer().rating as number;
     else
       return 0;
+  }
+
+  getImageMimeType(fileName: string): string {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      default:
+        throw new Error('Image format not supported');
+    }
+  }
+
+  arrayBufferToBase64(buffer: number[]): string {
+    let binary = '';
+    for (let i = 0; i < buffer.length; i++) {
+      binary += String.fromCharCode(buffer[i]);
+    }
+    return btoa(binary);
+  }
+
+  getImage(question: Question): {id: string, image: Image, src: SafeUrl} | null {
+    if(this.isImage(question)){
+      const iq: ImageQuestion = question as ImageQuestion;
+      const index: number = this.images.findIndex(i => i.id==iq.image);
+      if(index!=-1){
+        return this.images[index];
+      }
+    }
+    return null;
   }
 
 }

@@ -15,18 +15,18 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class ImageQuestion extends Question {
 
-    @NotBlank(message = "Url of the image shall not be blank")
-    private String url; // Url of the image uploaded by the user
+    @NotBlank(message = "Id of the image shall not be blank")
+    private String image; // Id of the image uploaded by the user
 
-    public ImageQuestion(String url){
+    public ImageQuestion(String image){
         super();
-        this.url = url;
+        this.image = image;
         this.type = QuestionType.ImageQuestion.toString();
     }
 
     public ImageQuestion(ImageQuestion iq){
         super(iq);
-        this.url = iq.getUrl();
+        this.image = iq.getImage();
         this.type = QuestionType.ImageQuestion.toString();
     }
 

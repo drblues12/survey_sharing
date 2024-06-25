@@ -53,7 +53,7 @@ export class AnswerSummaryComponent implements OnInit {
                 }
                 if(this.isImage(currQuestion)){
                   const iq: ImageQuestion = currQuestion as ImageQuestion;
-                  answer = iq.url;
+                  answer = iq.image;
                 }
                 this.questions.push({question: currQuestion, answer: answer});
                 this.questions.sort((q1, q2) => this.appComponent.compareQuestions(q1.question, q2.question));
