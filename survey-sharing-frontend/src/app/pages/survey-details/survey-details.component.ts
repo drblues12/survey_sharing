@@ -36,7 +36,7 @@ export class SurveyDetailsComponent implements OnInit {
     this.appComponent.reloadWindow();
     var surveyTitle = this.route.snapshot.paramMap.get('surveyTitle');
     if(surveyTitle!=null){
-      this.appComponent.surveyService.findSurveyByTitle(surveyTitle).subscribe(responseMessage => {
+      this.appComponent.surveyService.findSurveyByTitle(surveyTitle, true).subscribe(responseMessage => {
         if(responseMessage.object!=null){
           this.survey = responseMessage.object;
           this.appComponent.userService.findUsersByUsername(this.survey.owner).subscribe(responseMessage2 => {
@@ -130,7 +130,7 @@ export class SurveyDetailsComponent implements OnInit {
   getSurvey(): Survey{
     if(this.survey!=undefined)
       return this.survey;
-    return new Survey("","","",[],[],[],[],null);
+    return new Survey("","","",false,[],[],[],[],[],null);
   }
 
   getQuestion(question: string): Question{
@@ -158,6 +158,19 @@ export class SurveyDetailsComponent implements OnInit {
       return mcq.options;
     }
     return null;
+  }
+
+  getTooltip(survey: Survey): string {
+    if(survey.closed)
+      return "This survey is already closed";
+    return "";
+  }
+
+  closeSurvey(surveyTitle: string){
+    this.appComponent.surveyService.closeSurvey(surveyTitle).subscribe(responseMessage => {
+      alert(responseMessage.message);
+      window.location.reload();
+    })
   }
 
   deleteSurvey(surveyTitle: string){

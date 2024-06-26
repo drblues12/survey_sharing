@@ -3,6 +3,7 @@ package it.lorenzobloise.survey_sharing_backend.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import it.lorenzobloise.survey_sharing_backend.support.Utils;
 import lombok.*;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -33,9 +34,13 @@ public class Survey implements Comparable<Survey> {
     private String owner; // Username of the owner
     private Set<String> answers; // Answers id
     private Set<String> invitations; // Invitations id
+    private boolean closed;
     @JsonIgnore
     private LocalDateTime creationDateObj;
+    @JsonIgnore
+    private LocalDateTime closingDateObj;
     private String[] creationDate;
+    private String[] closingDate;
     private String statistics;
     @Version
     @JsonIgnore
@@ -45,11 +50,20 @@ public class Survey implements Comparable<Survey> {
         this.owner = owner;
         this.title = title;
         this.questions = new TreeSet<>();
+        this.closed = false;
         this.creationDateObj = LocalDateTime.now();
         this.creationDate = Utils.parseDate(this.creationDateObj.toString());
+        this.closingDateObj = null;
+        this.closingDate = null;
         this.answers = new TreeSet<>();
         this.invitations = new TreeSet<>();
         this.statistics = null;
+    }
+
+    public void close(){
+        this.closed = true;
+        this.closingDateObj = LocalDateTime.now();
+        this.closingDate = Utils.parseDate(closingDateObj.toString());
     }
 
     public boolean equals(Object o){

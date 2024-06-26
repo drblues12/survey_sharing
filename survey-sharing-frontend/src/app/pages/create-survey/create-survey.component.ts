@@ -51,7 +51,7 @@ export class CreateSurveyComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     this.surveyTitle = target.value;
     if(this.surveyTitle.trim() != ''){
-      this.appComponent.surveyService.findSurveyByTitle(this.surveyTitle).subscribe(responseMessage => {
+      this.appComponent.surveyService.findSurveyByTitle(this.surveyTitle, true).subscribe(responseMessage => {
         if(responseMessage.object!=null){
           this.available = false;
         }

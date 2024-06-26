@@ -13,7 +13,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class SingleUserComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private appComponent: AppComponent) { }
+  constructor(private route: ActivatedRoute, public appComponent: AppComponent) { }
 
   user!: User;
   createdSurveys: Survey[] = [];
@@ -33,11 +33,15 @@ export class SingleUserComponent implements OnInit {
   }
 
   findSurveys(){
-    this.appComponent.surveyService.findAllSurveysByOwner(this.user.username).subscribe(responseMessage => {
+    this.appComponent.surveyService.findAllSurveysByOwner(this.user.username, false).subscribe(responseMessage => {
       var search_results: Survey[] = responseMessage.object;
       if(search_results.length==0) alert (responseMessage.message);
       this.createdSurveys = search_results;
     })
+  }
+
+  surveyAlreadyAnswered(surveyTitle: string): boolean {
+    return this.appComponent.answers.find(a => a.answer.survey==surveyTitle)!=undefined;
   }
 
 }

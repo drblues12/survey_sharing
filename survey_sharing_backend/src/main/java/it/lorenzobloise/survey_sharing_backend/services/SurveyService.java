@@ -55,30 +55,69 @@ public class SurveyService {
 
     // GET
 
-    public Set<Survey> getAllSurveys(){
-        return new TreeSet<>(surveyRepository.findAll());
+    public Set<Survey> getAllSurveys(boolean returnClosedSurveys){
+        Set<Survey> partial = new TreeSet<>(surveyRepository.findAll());
+        Set<Survey> result = new TreeSet<>();
+        if(!returnClosedSurveys) {
+            for (Survey s : partial)
+                if (!s.isClosed())
+                    result.add(s);
+            return result;
+        }
+        return partial;
     }
 
-    public Set<Survey> getAllSurveysByOwner(String user){
+    public Set<Survey> getAllSurveysByOwner(String user, boolean returnClosedSurveys){
         Optional<User> opt_u = userRepository.findUserByIdOrUsernameOrEmail(user, user, user);
         if(opt_u.isEmpty())
             throw new RuntimeException("User "+user+" does not exist");
-        Set<Survey> result = new TreeSet<>();
+        Set<Survey> partial = new TreeSet<>();
         for(String surveyTitle: opt_u.get().getCreatedSurveys()){
             Optional<Survey> opt_s = surveyRepository.findSurveyByTitle(surveyTitle);
             if(opt_s.isEmpty())
                 throw new RuntimeException("Survey "+surveyTitle+" does not exist");
-            result.add(opt_s.get());
+            partial.add(opt_s.get());
         }
+        Set<Survey> result = new TreeSet<>();
+        if(!returnClosedSurveys) {
+            for (Survey s : partial)
+                if (!s.isClosed())
+                    result.add(s);
+            return result;
+        }
+        return partial;
+    }
+
+    public Set<Survey> getSurveysByTitle(String surveyTitle, boolean returnClosedSurveys){
+        Set<Survey> partial = new TreeSet<>(surveyRepository.findSurveysByTitleContaining(surveyTitle));
+        Set<Survey> result = new TreeSet<>();
+        if(!returnClosedSurveys) {
+            for (Survey s : partial)
+                if (!s.isClosed())
+                    result.add(s);
+            return result;
+        }
+        return partial;
+    }
+
+    public Optional<Survey> getSurveyByTitle(String surveyTitle, boolean returnClosedSurveys){
+        Optional<Survey> result = surveyRepository.findSurveyByTitle(surveyTitle);
+        if(!returnClosedSurveys && result.get().isClosed())
+            return null;
         return result;
     }
 
-    public Set<Survey> getSurveysByTitle(String surveyTitle){
-        return new TreeSet<>(surveyRepository.findSurveysByTitleContaining(surveyTitle));
-    }
+    // PUT
 
-    public Optional<Survey> getSurveyByTitle(String surveyTitle){
-        return surveyRepository.findSurveyByTitle(surveyTitle);
+    public Survey closeSurvey(String surveyTitle){
+        Optional<Survey> survey = surveyRepository.findSurveyByTitle(surveyTitle);
+        if(survey.isEmpty())
+            throw new RuntimeException("Survey does not exist");
+        if(survey.get().isClosed())
+            throw new RuntimeException("Survey is already closed");
+        survey.get().close();
+        Survey result = surveyRepository.save(survey.get());
+        return result;
     }
 
     // DELETE

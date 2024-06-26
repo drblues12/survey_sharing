@@ -20,7 +20,7 @@ import { SupportService } from 'src/app/support/support.service';
 })
 export class UserComponent implements OnInit {
 
-  constructor(public appComponent: AppComponent, private router: Router, private supportService: SupportService) { }
+  constructor(public appComponent: AppComponent) { }
 
   ngOnInit(): void {
     this.appComponent.reloadWindow();
@@ -65,6 +65,8 @@ export class UserComponent implements OnInit {
   }
 
   getTooltip(invitation: Invitation): string {
+    if(this.appComponent.invitations.find(i => i.invitation.id==invitation.id)?.survey.closed)
+      return "This survey is closed";
     if(this.checkAccepted(invitation.survey))
       return "You have already answered this survey";
     return "";

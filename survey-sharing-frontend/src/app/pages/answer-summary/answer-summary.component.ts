@@ -30,7 +30,7 @@ export class AnswerSummaryComponent implements OnInit {
       this.appComponent.answerService.findAnswerById(answer_id).subscribe(responseMessage => {
         if(responseMessage.object!=null){
           this.answer = responseMessage.object;
-          this.appComponent.surveyService.findSurveyByTitle(this.answer.survey).subscribe(responseMessage2 => {
+          this.appComponent.surveyService.findSurveyByTitle(this.answer.survey, true).subscribe(responseMessage2 => {
             if(responseMessage2.object!=null){
               this.survey = responseMessage2.object;
             }
@@ -98,7 +98,7 @@ export class AnswerSummaryComponent implements OnInit {
   getSurvey(): Survey {
     if(this.survey)
       return this.survey;
-    return new Survey("","","",[],[],[],[],"");
+    return new Survey("","","",false,[],[],[],[],[],"");
   }
 
   getUser(): User {

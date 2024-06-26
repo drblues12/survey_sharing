@@ -30,7 +30,11 @@ public class InvitationService {
         Optional<User> receiver = userRepository.findUserByIdOrUsernameOrEmail(invitation.getUser(), invitation.getUser(), invitation.getUser());
         if(receiver.isEmpty())
             throw new RuntimeException("User does not exist");
-        Invitation i_saved = invitationRepository.save(new Invitation(invitation));
+        Invitation toSave = new Invitation(invitation);
+        for(String surveyTitle: receiver.get().getAnswers().keySet())
+            if(surveyTitle.equals(toSave.getSurvey()))
+                toSave.setAccepted(true);
+        Invitation i_saved = invitationRepository.save(toSave);
         receiver.get().getInvitations().add(i_saved.getId());
         userRepository.save(receiver.get());
         return i_saved;

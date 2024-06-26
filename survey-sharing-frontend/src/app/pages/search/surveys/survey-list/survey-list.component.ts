@@ -2,9 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
 import { Survey } from 'src/app/entities/survey';
 import { User } from 'src/app/entities/user';
-import { SurveyService } from 'src/app/services/survey.service';
-import { UserService } from 'src/app/services/user.service';
-import { ResponseMessage } from 'src/app/support/response-message';
 
 @Component({
   selector: 'app-survey-list',
@@ -25,7 +22,7 @@ export class SurveyListComponent implements OnInit {
     this.appComponent.reloadWindow();
     this.search_results = [];
     if(this.query===""){
-      this.appComponent.surveyService.findAllSurveys().subscribe(responseMessage => {
+      this.appComponent.surveyService.findAllSurveys(false).subscribe(responseMessage => {
         this.search_results = responseMessage.object;
         if(this.search_results.length==0) alert (responseMessage.message);
         this.search_results.forEach(survey => {
@@ -34,7 +31,7 @@ export class SurveyListComponent implements OnInit {
       })
     }
     else{
-      this.appComponent.surveyService.findSurveysByTitle(this.query).subscribe(responseMessage => {
+      this.appComponent.surveyService.findSurveysByTitle(this.query, false).subscribe(responseMessage => {
         this.search_results = responseMessage.object;
         if(this.search_results.length==0) alert (responseMessage.message);
         this.search_results.forEach(survey => {

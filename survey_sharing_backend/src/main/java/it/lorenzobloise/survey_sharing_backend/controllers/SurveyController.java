@@ -43,8 +43,8 @@ public class SurveyController {
     //TODO
     // Authentication (every role)
     @GetMapping("/search")
-    public ResponseEntity findAllSurveys(){
-        Set<Survey> result = surveyService.getAllSurveys();
+    public ResponseEntity findAllSurveys(@RequestParam boolean returnClosedSurveys){
+        Set<Survey> result = surveyService.getAllSurveys(returnClosedSurveys);
         if(result.size()==0)
             return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
         return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
@@ -53,9 +53,9 @@ public class SurveyController {
     //TODO
     // Authentication (every role)
     @GetMapping("/search/by_owner")
-    public ResponseEntity findAllSurveysByOwner(@RequestParam String owner){
+    public ResponseEntity findAllSurveysByOwner(@RequestParam String owner, @RequestParam boolean returnClosedSurveys){
         try{
-            Set<Survey> result = surveyService.getAllSurveysByOwner(owner);
+            Set<Survey> result = surveyService.getAllSurveysByOwner(owner, returnClosedSurveys);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
             return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
@@ -67,9 +67,9 @@ public class SurveyController {
     //TODO
     // Authentication (every role)
     @GetMapping("/search/by_title")
-    public ResponseEntity findSurveysByTitle(@RequestParam String surveyTitle){
+    public ResponseEntity findSurveysByTitle(@RequestParam String surveyTitle, @RequestParam boolean returnClosedSurveys){
         try{
-            Set<Survey> result = surveyService.getSurveysByTitle(surveyTitle);
+            Set<Survey> result = surveyService.getSurveysByTitle(surveyTitle, returnClosedSurveys);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
             return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
@@ -81,10 +81,10 @@ public class SurveyController {
     //TODO
     // Authentication (every role)
     @GetMapping("/search/single/by_title")
-    public ResponseEntity findSurveyByTitle(@RequestParam String surveyTitle){
+    public ResponseEntity findSurveyByTitle(@RequestParam String surveyTitle, @RequestParam boolean returnClosedSurveys){
         try{
-            Optional<Survey> result = surveyService.getSurveyByTitle(surveyTitle);
-            if(result.isEmpty())
+            Optional<Survey> result = surveyService.getSurveyByTitle(surveyTitle, returnClosedSurveys);
+            if(result==null || result.isEmpty())
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
             return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
@@ -92,35 +92,15 @@ public class SurveyController {
         }
     }
 
-    // GET methods about this user's surveys (prerequisite: authentication as this user)
+    // PUT
 
     //TODO
     // Authentication as this user
-    @GetMapping("/{user}/search")
-    public ResponseEntity findAllCreatedSurveys(@PathVariable(value = "user") String user){
-        //TODO
-        // If user is authenticated, invoke method above "findAllSurveysByOwner(String owner)"
-        try {
-            Set<Survey> result = surveyService.getAllSurveysByOwner(user);
-            if(result.size()==0)
-                return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-            return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
-        }catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-        }
-    }
-
-    //TODO
-    // Authentication as this user
-    @GetMapping("/{user}/search/by_title")
-    public ResponseEntity findCreatedSurveysByTitle(@PathVariable(value = "user") String user, @RequestParam String surveyTitle){
+    @PutMapping
+    public ResponseEntity closeSurvey(@RequestParam String surveyTitle){
         try{
-            Set<Survey> result = surveyService.getAllSurveysByOwner(user);
-            Set<Survey> match = surveyService.getSurveysByTitle(surveyTitle);
-            result.retainAll(match);
-            if(result.size()==0)
-                return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
-            return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
+            Survey result = surveyService.closeSurvey(surveyTitle);
+            return new ResponseEntity(new ResponseMessage("Survey closed", result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }

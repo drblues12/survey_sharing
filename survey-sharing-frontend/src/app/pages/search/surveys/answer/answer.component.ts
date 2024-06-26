@@ -31,7 +31,7 @@ export class AnswerComponent implements OnInit {
     this.appComponent.reloadWindow();
     var surveyTitle = this.route.snapshot.paramMap.get('surveyTitle');
     if(surveyTitle!=null){
-      this.appComponent.surveyService.findSurveyByTitle(surveyTitle).subscribe(responseMessage => {
+      this.appComponent.surveyService.findSurveyByTitle(surveyTitle, false).subscribe(responseMessage => {
         if(responseMessage.object!=null){
           this.survey = responseMessage.object;
           this.answer = new Answer(this.appComponent.user.username, this.survey.title);
@@ -76,7 +76,7 @@ export class AnswerComponent implements OnInit {
 
   getSurvey(): Survey{
     if(this.survey!=null) return this.survey;
-    return new Survey("","","",[],[],[],[],null);
+    return new Survey("","","",false,[],[],[],[],[],null);
   }
 
   isMultipleChoice(question: Question): boolean {

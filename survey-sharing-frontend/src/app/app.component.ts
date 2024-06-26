@@ -11,8 +11,6 @@ import { StatisticsService } from './services/statistics.service';
 import { Answer } from './entities/answer';
 import { Invitation } from './entities/invitation';
 import { QuestionService } from './services/question.service';
-import { filter } from 'rxjs/operators';
-import { SupportService } from './support/support.service';
 import { Question } from './entities/question';
 import { ImageService } from './services/image.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -24,13 +22,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class AppComponent implements OnInit {
 
-  public username: string = 'dr.blues.__';
-  //public username: string = 'john.doe';
+  //public username: string = 'dr.blues.__';
+  public username: string = 'carmgug';
   user!: User;
   createdSurveys: Survey[] = [];
   answers: {answer: Answer, surveyOwner: User}[] = [];
   averageRatings: {surveyTitle: string, averageRating: number}[] = [];
-  invitations: {invitation: Invitation, surveyOwner: User}[] = [];
+  invitations: {invitation: Invitation, surveyOwner: User, survey: Survey}[] = [];
   searchType!: string;
   query: string = "";
   refresh: boolean = false;
@@ -112,7 +110,7 @@ export class AppComponent implements OnInit {
   }
 
   fetchCreatedSurveys(): void {
-    this.surveyService.findAllCreatedSurveys(this.username).subscribe(responseMessage => {
+    this.surveyService.findAllSurveysByOwner(this.username, true).subscribe(responseMessage => {
       if(responseMessage.object){
         this.createdSurveys = responseMessage.object;
         this.createdSurveys.forEach(s => {
@@ -138,7 +136,7 @@ export class AppComponent implements OnInit {
       var result: Answer[] = responseMessage.object;
       if(result!=null && result.length>0)
         result.forEach(answer => {
-          this.surveyService.findSurveyByTitle(answer.survey).subscribe(responseMessage2 => {
+          this.surveyService.findSurveyByTitle(answer.survey, true).subscribe(responseMessage2 => {
             if(responseMessage2.object)
               this.userService.findUserByUsername(responseMessage2.object.owner).subscribe(responseMessage3 => {
                 if(responseMessage3.object)
@@ -160,18 +158,18 @@ export class AppComponent implements OnInit {
       var result: Invitation[] = responseMessage.object;
       if(result!=null && result.length>0)
         result.forEach(invitation => {
-          this.surveyService.findSurveyByTitle(invitation.survey).subscribe(responseMessage2 => {
+          this.surveyService.findSurveyByTitle(invitation.survey, true).subscribe(responseMessage2 => {
             if(responseMessage2.object)
               this.userService.findUserByUsername(responseMessage2.object.owner).subscribe(responseMessage3 => {
                 if(responseMessage3.object)
-                  this.invitations.push({invitation: invitation, surveyOwner: responseMessage3.object});
+                  this.invitations.push({invitation: invitation, surveyOwner: responseMessage3.object, survey: responseMessage2.object});
               })
           })
         })
     })
   }
 
-  getInvitations(): {invitation: Invitation, surveyOwner: User}[] {
+  getInvitations(): {invitation: Invitation, surveyOwner: User, survey: Survey}[] {
     if(this.invitations)
       return this.invitations;
     return [];

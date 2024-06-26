@@ -30,11 +30,30 @@
                   <br>{{getSurvey().creationDate[3]}}:{{getSurvey().creationDate[4]}}:{{getSurvey().creationDate[5]}}
                 </div>
               </nb-list-item>
+              <nb-list-item>
+                <div class="item-left">
+                  <b>Status</b>:
+                </div>
+                <div class="item-left">
+                  <div *ngIf="!getSurvey().closed">
+                    Open <nb-icon icon="unlock" status="success"></nb-icon>
+                  </div>
+                  <div *ngIf="getSurvey().closed">
+                    Closed <nb-icon icon="lock" status="danger"></nb-icon>
+                  </div>
+                </div>
+              </nb-list-item>
             </nb-list>
           </nb-card-body>
           <nb-card-footer>
-            <div class="item-right">
-              <button nbButton (click)="deleteSurvey(getSurvey().title)">Delete<nb-icon icon="trash-2"></nb-icon></button>
+            <div class="item-container">
+              <div class="item-3">
+                <button nbButton (click)="closeSurvey(getSurvey().title)" [disabled]="getSurvey().closed" [nbTooltip]="getTooltip(getSurvey())"
+                [nbTooltipDisabled]="!getSurvey().closed">Close<nb-icon icon="lock"></nb-icon></button>
+              </div>
+              <div class="item-right">
+                <button nbButton (click)="deleteSurvey(getSurvey().title)">Delete<nb-icon icon="trash-2"></nb-icon></button>
+              </div>
             </div>
           </nb-card-footer>
         </nb-card>

@@ -23,28 +23,26 @@ export class SurveyService{
 
   // GET
 
-  public findAllSurveys(): Observable<ResponseMessage>{
-    return this.http.get<ResponseMessage>(this.base_url+'/search');
+  public findAllSurveys(returnClosedSurveys: boolean): Observable<ResponseMessage>{
+    return this.http.get<ResponseMessage>(this.base_url+'/search?returnClosedSurveys='+returnClosedSurveys);
   }
 
-  public findAllSurveysByOwner(owner: string): Observable<ResponseMessage>{
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_owner?owner='+owner);
+  public findAllSurveysByOwner(owner: string, returnClosedSurveys: boolean): Observable<ResponseMessage>{
+    return this.http.get<ResponseMessage>(this.base_url+'/search/by_owner?owner='+owner+'&returnClosedSurveys='+returnClosedSurveys);
   }
 
-  public findSurveysByTitle(surveyTitle: string): Observable<ResponseMessage>{
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_title?surveyTitle='+surveyTitle);
+  public findSurveysByTitle(surveyTitle: string, returnClosedSurveys: boolean): Observable<ResponseMessage>{
+    return this.http.get<ResponseMessage>(this.base_url+'/search/by_title?surveyTitle='+surveyTitle+'&returnClosedSurveys='+returnClosedSurveys);
   }
 
-  public findSurveyByTitle(surveyTitle: string): Observable<ResponseMessage>{
-    return this.http.get<ResponseMessage>(this.base_url+'/search/single/by_title?surveyTitle='+surveyTitle);
+  public findSurveyByTitle(surveyTitle: string, returnClosedSurveys: boolean): Observable<ResponseMessage>{
+    return this.http.get<ResponseMessage>(this.base_url+'/search/single/by_title?surveyTitle='+surveyTitle+'&returnClosedSurveys='+returnClosedSurveys);
   }
 
-  public findAllCreatedSurveys(user: string): Observable<ResponseMessage>{
-    return this.http.get<ResponseMessage>(this.base_url+'/'+user+'/search');
-  }
+  // PUT
 
-  public findCreatedSurveysByTitle(user: string, surveyTitle: string): Observable<ResponseMessage>{
-    return this.http.get<ResponseMessage>(this.base_url+'/'+user+'/search/by_title?surveyTitle='+surveyTitle);
+  public closeSurvey(surveyTitle: string): Observable<ResponseMessage>{
+    return this.http.put<ResponseMessage>(this.base_url+'?surveyTitle='+surveyTitle, null);
   }
 
   // DELETE
