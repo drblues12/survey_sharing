@@ -22,8 +22,7 @@ export class AnswerDetailsComponent implements OnInit {
   questions: {question: Question, answer: string}[] = [];
   images: {id: string, image: Image, src: SafeUrl}[] = [];
 
-  constructor(private appComponent: AppComponent, private route: ActivatedRoute,
-              private sanitizer: DomSanitizer) { }
+  constructor(private appComponent: AppComponent, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.appComponent.reloadWindow();
@@ -54,10 +53,10 @@ export class AnswerDetailsComponent implements OnInit {
                     if(responseMessage3.object){
                       const byteArray: number[] = responseMessage3.object.image;
                       try{
-                        const mimeType = this.getImageMimeType(responseMessage3.object.fileName);
-                        const blob = new Blob([new Uint8Array(byteArray)], { type: 'image/jpeg' });
+                        const mimeType = this.appComponent.getImageMimeType(responseMessage3.object.fileName);
+                        const blob = new Blob([new Uint8Array(byteArray)], { type: mimeType });
                         const imageUrl = URL.createObjectURL(blob);
-                        const sanitizedImageUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+                        const sanitizedImageUrl = this.appComponent.sanitizer.bypassSecurityTrustUrl(imageUrl);
                         this.images.push({id: answer, image: responseMessage3.object, src: sanitizedImageUrl});
                       }catch(e){
                         console.error(e);
@@ -134,27 +133,6 @@ export class AnswerDetailsComponent implements OnInit {
       return this.getAnswer().rating as number;
     else
       return 0;
-  }
-
-  getImageMimeType(fileName: string): string {
-    const extension = fileName.split('.').pop()?.toLowerCase();
-    switch (extension) {
-      case 'jpg':
-      case 'jpeg':
-        return 'image/jpeg';
-      case 'png':
-        return 'image/png';
-      default:
-        throw new Error('Image format not supported');
-    }
-  }
-
-  arrayBufferToBase64(buffer: number[]): string {
-    let binary = '';
-    for (let i = 0; i < buffer.length; i++) {
-      binary += String.fromCharCode(buffer[i]);
-    }
-    return btoa(binary);
   }
 
   getImage(question: Question): {id: string, image: Image, src: SafeUrl} | null {

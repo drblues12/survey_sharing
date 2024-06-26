@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/images")
@@ -21,7 +23,7 @@ public class ImageController {
     // POST
 
     @PostMapping
-    public ResponseEntity uploadImage(@RequestBody byte[] image, @RequestParam String fileName){
+    public ResponseEntity uploadImage(@RequestBody int[] image, @RequestParam String fileName){
         try{
             Image result = imageService.addImage(image, fileName);
             return new ResponseEntity(new ResponseMessage("Added successfully", result), HttpStatus.OK);

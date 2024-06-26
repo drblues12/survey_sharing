@@ -16,12 +16,12 @@ public class Image {
 
     @Id
     private String id;
-    private byte[] image;
+    private int[] image;
     private String fileName;
     @Version
     private Long version;
 
-    public Image(byte[] image, String fileName){
+    public Image(int[] image, String fileName){
         this.image = image;
         this.fileName = fileName;
     }

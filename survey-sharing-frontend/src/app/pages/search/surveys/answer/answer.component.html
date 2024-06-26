@@ -43,6 +43,11 @@
                     <input #imageInput type="file" nbInput fullWidth="true" (change)="uploadImage(imageInput, question.id)">
                   </div>
                 </div>
+                <div class="item-container">
+                  <div *ngIf="getImage(question.answer)!=null" class="item-2">
+                    <img [src]="getImage(question.answer)?.src" alt="{{getImage(question.answer)?.image?.fileName}}">
+                  </div>
+                </div>
               </nb-card-body>
             </div>
           </nb-card>

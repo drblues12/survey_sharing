@@ -15,6 +15,7 @@ import { filter } from 'rxjs/operators';
 import { SupportService } from './support/support.service';
 import { Question } from './entities/question';
 import { ImageService } from './services/image.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,7 @@ import { ImageService } from './services/image.service';
 export class AppComponent implements OnInit {
 
   public username: string = 'dr.blues.__';
+  //public username: string = 'john.doe';
   user!: User;
   createdSurveys: Survey[] = [];
   answers: {answer: Answer, surveyOwner: User}[] = [];
@@ -37,7 +39,8 @@ export class AppComponent implements OnInit {
   constructor(public router: Router, public userService: UserService, public surveyService: SurveyService,
               public answerService: AnswerService, public invitationService: InvitationService,
               public statisticsService: StatisticsService, public questionService: QuestionService,
-              public imageService: ImageService, private themeService: NbThemeService){
+              public imageService: ImageService, private themeService: NbThemeService,
+              public sanitizer: DomSanitizer){
   }
 
   ngOnInit(): void {
@@ -222,6 +225,19 @@ export class AppComponent implements OnInit {
     if(i1.invitationDate[5]<i2.invitationDate[5]) return -1;
     if(i1.invitationDate[5]>i2.invitationDate[5]) return 1;
     return 0;
+  }
+
+  getImageMimeType(fileName: string): string {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'png':
+        return 'image/png';
+      default:
+        throw new Error('Image format not supported');
+    }
   }
 
   logout(){

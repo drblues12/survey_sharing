@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { NbWindowService } from '@nebular/theme';
 import { AppComponent } from 'src/app/app.component';
@@ -18,12 +19,13 @@ export class AnswerComponent implements OnInit {
   answer!: Answer;
   survey!: Survey;
   questions: {id: number, question: Question, answer: string}[] = [];
+  images: {id: string, image: Image, src: SafeUrl}[] = [];
   questionId: number = 0;
   rating: number = 0;
   feedback: string = "";
   nextIndex: number = 0;
 
-  constructor(private appComponent: AppComponent, private route: ActivatedRoute, private windowService: NbWindowService) { }
+  constructor(private appComponent: AppComponent, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.appComponent.reloadWindow();
@@ -137,6 +139,11 @@ export class AnswerComponent implements OnInit {
               var index: number = this.questions.findIndex(q => q.id==questionId);
               if(index!=-1){
                 this.questions[index].answer = image.id;
+                const mimeType = this.appComponent.getImageMimeType(image.fileName);
+                const blob = new Blob([new Uint8Array(byteArray)], { type: mimeType });
+                const imageUrl = URL.createObjectURL(blob);
+                const sanitizedImageUrl = this.appComponent.sanitizer.bypassSecurityTrustUrl(imageUrl);
+                this.images.push({id: image.id, image: image, src: sanitizedImageUrl});
                 alert("Image uploaded");
               }
             }
@@ -147,6 +154,13 @@ export class AnswerComponent implements OnInit {
         }
       })();
     }
+  }
+
+  getImage(imageId: string): {id: string, image: Image, src: SafeUrl} | null {
+    const index: number = this.images.findIndex(i=> i.id==imageId);
+    if(index!=-1)
+      return this.images[index];
+    return null;
   }
 
   submit(): void {

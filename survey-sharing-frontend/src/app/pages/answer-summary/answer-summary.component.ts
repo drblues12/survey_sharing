@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { Answer } from 'src/app/entities/answer';
+import { Image } from 'src/app/entities/image';
 import { Option } from 'src/app/entities/option';
 import { ImageQuestion, MultipleChoiceQuestion, OpenEndedQuestion, Question } from 'src/app/entities/question';
 import { Survey } from 'src/app/entities/survey';
@@ -18,6 +20,7 @@ export class AnswerSummaryComponent implements OnInit {
   survey!: Survey;
   user!: User;
   questions: {question: Question, answer: string}[] = [];
+  images: {id: string, image: Image, src: SafeUrl}[] = [];
 
   constructor(private appComponent: AppComponent, private route: ActivatedRoute) { }
 
@@ -54,6 +57,16 @@ export class AnswerSummaryComponent implements OnInit {
                 if(this.isImage(currQuestion)){
                   const iq: ImageQuestion = currQuestion as ImageQuestion;
                   answer = iq.image;
+                  this.appComponent.imageService.findImageById(iq.image).subscribe(responseMessage3 => {
+                    if(responseMessage3.object!=null){
+                      const image: Image = responseMessage3.object;
+                      const mimeType = this.appComponent.getImageMimeType(image.fileName);
+                      const blob = new Blob([new Uint8Array(image.image)], { type: mimeType });
+                      const imageUrl = URL.createObjectURL(blob);
+                      const sanitizedImageUrl = this.appComponent.sanitizer.bypassSecurityTrustUrl(imageUrl);
+                      this.images.push({id: image.id, image: image, src: sanitizedImageUrl});
+                    }
+                  })
                 }
                 this.questions.push({question: currQuestion, answer: answer});
                 this.questions.sort((q1, q2) => this.appComponent.compareQuestions(q1.question, q2.question));
@@ -69,6 +82,17 @@ export class AnswerSummaryComponent implements OnInit {
     if(this.answer)
       return this.answer;
     return new Answer("","");
+  }
+
+  getImage(question: Question): {id: string, image: Image, src: SafeUrl} | null {
+    if(this.isImage(question)){
+      const iq: ImageQuestion = question as ImageQuestion;
+      const index: number = this.images.findIndex(i => i.id==iq.image);
+      if(index!=-1){
+        return this.images[index];
+      }
+    }
+    return null;
   }
 
   getSurvey(): Survey {

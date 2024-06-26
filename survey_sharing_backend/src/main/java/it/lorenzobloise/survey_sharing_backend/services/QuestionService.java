@@ -17,6 +17,7 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final OptionRepository optionRepository;
+    private final ImageService imageService;
 
     // POST
 
@@ -63,9 +64,14 @@ public class QuestionService {
         Optional<Question> opt_q = questionRepository.findById(q);
         if(opt_q.isEmpty())
             throw new RuntimeException("Question does not exist");
-        if(opt_q.get() instanceof MultipleChoiceQuestion)
+        if(opt_q.get().getType().equals("MutipleChoiceQuestion"))
             // Remove all options in this question from the options repository, if it is a MultipleChoiceQuestion
             optionRepository.deleteAll(((MultipleChoiceQuestion)(opt_q.get())).getOptions());
+        if(opt_q.get().getType().equals("ImageQuestion")) {
+            // Remove the image associated to this question only if it is present
+            String image = ((ImageQuestion) (opt_q.get())).getImage();
+            if(image!=null) imageService.deleteImage(image);
+        }
         // Remove this question from the questions repository
         questionRepository.delete(opt_q.get());
     }
