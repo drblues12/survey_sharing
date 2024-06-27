@@ -41,7 +41,6 @@ public class Survey implements Comparable<Survey> {
     private LocalDateTime closingDateObj;
     private String[] creationDate;
     private String[] closingDate;
-    private String statistics;
     @Version
     @JsonIgnore
     private Long version;
@@ -57,7 +56,6 @@ public class Survey implements Comparable<Survey> {
         this.closingDate = null;
         this.answers = new TreeSet<>();
         this.invitations = new TreeSet<>();
-        this.statistics = null;
     }
 
     public void close(){

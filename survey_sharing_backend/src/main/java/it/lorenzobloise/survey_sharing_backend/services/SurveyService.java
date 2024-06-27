@@ -142,7 +142,7 @@ public class SurveyService {
         for(String q: opt_s.get().getQuestions())
             questionService.removeQuestion(q);
         // Remove this survey's statistics from the statistics repository
-        statisticsService.removeStatistics(opt_s.get().getStatistics());
+        statisticsService.removeStatistics(surveyTitle);
         opt_s = surveyRepository.findSurveyByTitle(surveyTitle); // In the midtime, its former value has been modified, so when I try to delete it from the repository,
         // the old version number doesn't match with the new one
         if(opt_s.isEmpty())

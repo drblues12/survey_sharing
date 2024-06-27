@@ -92,7 +92,7 @@ export class AnswerDetailsComponent implements OnInit {
   getSurvey(): Survey {
     if(this.survey)
       return this.survey;
-    return new Survey("","","",false,[],[],[],[],[],"");
+    return new Survey("","","",false,[],[],[],[],[]);
   }
 
   getSurveyOwner(): User {

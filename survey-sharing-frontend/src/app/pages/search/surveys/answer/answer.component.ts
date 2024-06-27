@@ -76,7 +76,7 @@ export class AnswerComponent implements OnInit {
 
   getSurvey(): Survey{
     if(this.survey!=null) return this.survey;
-    return new Survey("","","",false,[],[],[],[],[],null);
+    return new Survey("","","",false,[],[],[],[],[]);
   }
 
   isMultipleChoice(question: Question): boolean {

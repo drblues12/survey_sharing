@@ -131,7 +131,7 @@ export class SurveyDetailsComponent implements OnInit {
   getSurvey(): Survey{
     if(this.survey!=undefined)
       return this.survey;
-    return new Survey("","","",false,[],[],[],[],[],null);
+    return new Survey("","","",false,[],[],[],[],[]);
   }
 
   getQuestion(question: string): Question{

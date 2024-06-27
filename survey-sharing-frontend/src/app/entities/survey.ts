@@ -13,10 +13,9 @@ export class Survey{
   closingDate!: string[];
   answers!: string[];
   invitations!: string[];
-  statistics!: string | null;
 
   constructor(id: string, title: string, owner: string, closed: boolean, questions: string[], creationDate: string[],
-              closingDate: string[], answers: string[], invitations: string[], statistics: string | null){
+              closingDate: string[], answers: string[], invitations: string[]){
     this.id = id;
     this.title = title;
     this.owner = owner;
@@ -26,6 +25,5 @@ export class Survey{
     this.closingDate = closingDate;
     this.answers = answers;
     this.invitations = invitations;
-    this.statistics = statistics;
   }
 }
