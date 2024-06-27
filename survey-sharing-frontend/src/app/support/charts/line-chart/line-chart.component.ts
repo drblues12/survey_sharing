@@ -1,19 +1,19 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Statistics } from 'src/app/entities/statistics';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 
 @Component({
-  selector: 'app-bar-chart',
-  templateUrl: './bar-chart.component.html',
-  styleUrls: ['./bar-chart.component.scss']
+  selector: 'app-line-chart',
+  templateUrl: './line-chart.component.html',
+  styleUrls: ['./line-chart.component.scss']
 })
-export class BarChartComponent implements OnChanges {
+export class LineChartComponent implements OnChanges {
 
-  @Input() data: any[] = [0,0,0,0,0];
-  @Input() categories: string[] = [];
-  @Input() type: string = "";
+  @Input() data!: number[];
+  @Input() categories!: string[];
+  @Input() type!: string;
 
-  chartOptions: any;
+  chartOptions!: any;
+
+  constructor() { }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.updateChartOptions();
@@ -43,7 +43,6 @@ export class BarChartComponent implements OnChanges {
       },
       yAxis: {
         type: 'value',
-        min: 0,
         axisLabel: {
           color: color,
           formatter: (value: number) => {
@@ -70,25 +69,13 @@ export class BarChartComponent implements OnChanges {
       },
       series: [{
         data: this.data,
-        type: 'bar',
+        type: 'line',
+        step: 'end',
         itemStyle: {
           color: this.getChartColor()
         }
       }]
-    };
-  }
-
-  getChartColor(): string {
-    var result: string = "";
-    if(this.type=='Ratings')
-      result = 'orange';
-    if(this.type=='Age')
-      result = '#4CAF50';
-    if(this.type=='World')
-      result = '#F44336';
-    if(this.type=='Answers')
-      result = '#2196F3';
-    return result;
+    }
   }
 
   getAxisColor(): string {
@@ -100,6 +87,14 @@ export class BarChartComponent implements OnChanges {
         return '#333333';
     }
     return '#333333';
+  }
+
+  getChartColor(): string {
+    if(this.type=='Answers')
+      return '#F44336';
+    if(this.type=='Ratings')
+      return 'orange';
+    return '';
   }
 
 }

@@ -79,6 +79,7 @@ export class SurveyDetailsComponent implements OnInit {
                   if(responseMessage3.object!=null){
                     const currUser: User = responseMessage3.object;
                     this.answers.push({id: currAnswer.id, answer: currAnswer, user: currUser});
+                    this.answers.sort((a1, a2) => { return this.appComponent.compareAnswers(a1.answer, a2.answer) });
                   }
                 })
                 currAnswer.questions.forEach(q => {
@@ -319,6 +320,64 @@ export class SurveyDetailsComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  getAnswersOverTime(): number[] {
+    const answersTimeAxis: string[] = this.getAnswersTimeAxis();
+    var result: number[] = [];
+    for(let i=0; i<answersTimeAxis.length-1; i++)
+      result.push(i);
+    if(this.getSurvey().closingDate!=null)
+      result[answersTimeAxis.length-1] = result[answersTimeAxis.length-2];
+    else
+      result[answersTimeAxis.length-1] = answersTimeAxis.length-1;
+    return result;
+  }
+
+  getAnswersTimeAxis(): string[] {
+    const surveyCreationDate: string[] = this.getSurvey().creationDate;
+    const surveyClosingDate: string[] = this.getSurvey().closingDate;
+    const t_0: string = this.appComponent.getParsedDate(surveyCreationDate)+"\n"+this.appComponent.getParsedHour(surveyCreationDate);
+    var result: string[] = [t_0];
+    this.answers.forEach(a => {
+      const answerDate: string[] = a.answer.answerDate;
+      const t_i: string = this.appComponent.getParsedDate(answerDate)+"\n"+this.appComponent.getParsedHour(answerDate);
+      result.push(t_i);
+    })
+    if(surveyClosingDate!=null){
+      const t_end: string = this.appComponent.getParsedDate(surveyClosingDate)+"\n"+this.appComponent.getParsedHour(surveyClosingDate);
+      result.push(t_end);
+    }
+    return result;
+  }
+
+  getAverageRatingOverTime(): number[] {
+    const answersTimeAxis: string[] = this.getAnswersTimeAxis();
+    var result: number[] = [];
+    var partial: number = 0;
+    var nonNull: number = 0;
+    result.push(partial);
+    const answersList: Answer[] = [];
+    this.answers.forEach(a => answersList.push(a.answer));
+    for(let i=0; i<answersList.length; i++){
+      if(answersList[i].rating==0){
+        const lastIndex: number = result.length-1;
+        const lastValue: number = result[lastIndex];
+        result.push(lastValue);
+      }
+      else{
+        const currRating: number = answersList[i].rating as number;
+        nonNull++;
+        partial += currRating;
+        result.push(partial/nonNull);
+      }
+    }
+    if(this.getSurvey().closingDate!=null){
+      const lastIndex: number = result.length-1;
+      const lastValue: number = result[lastIndex];
+      result.push(lastValue);
+    }
+    return result;
   }
 
 }

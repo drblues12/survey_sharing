@@ -16,7 +16,7 @@
                   <div class="item-left">
                     <b>Created by</b>:
                   </div>
-                  <div class="item-1">
+                  <div class="item-left">
                     <nb-user name="{{getOwnerDetails().name}} {{getOwnerDetails().surname}}" title="{{getOwnerDetails().username}}"></nb-user>
                   </div>
                 </div>
@@ -41,6 +41,15 @@
                   <div *ngIf="getSurvey().closed">
                     Closed <nb-icon icon="lock" status="danger"></nb-icon>
                   </div>
+                </div>
+              </nb-list-item>
+              <nb-list-item *ngIf="getSurvey().closed">
+                <div class="item-left">
+                  <b>Closing date</b>:
+                </div>
+                <div class="item-left">
+                  {{appComponent.getParsedDate(getSurvey().closingDate)}}
+                  <br>{{appComponent.getParsedHour(getSurvey().closingDate)}}
                 </div>
               </nb-list-item>
             </nb-list>
@@ -246,10 +255,22 @@
                           </div>
                         </nb-list-item>
                       </nb-list>
+                      <nb-card>
+                        <nb-card-header>
+                          <div class="item-2">
+                            <b><h5>Answers over time</h5></b>
+                          </div>
+                        </nb-card-header>
+                        <nb-card-body>
+                          <app-line-chart type="Answers" [data]="getAnswersOverTime()" [categories]="getAnswersTimeAxis()"></app-line-chart>
+                        </nb-card-body>
+                      </nb-card>
                     </nb-accordion-item-body>
                   </nb-accordion-item>
                   <nb-accordion-item>
-                    <nb-accordion-item-header><b><h4>Answers</h4></b></nb-accordion-item-header>
+                    <nb-accordion-item-header>
+                      <b><h4>Answers</h4></b>
+                    </nb-accordion-item-header>
                     <nb-accordion-item-body>
                       <ng-container *ngFor="let entry of answerCount">
                           <nb-card>
@@ -339,6 +360,14 @@
                           </div>
                           <div class="item-2">
                             <app-bar-chart type="Ratings" [data]="getDistribution(getStatistics().ratings,[1,2,3,4,5],'Ratings')" [categories]="['1','2','3','4','5']" class="echart"></app-bar-chart>
+                          </div>
+                        </nb-card-body>
+                        <nb-card-body>
+                          <div class="item-2">
+                            <b><h5>Average rating over time</h5></b>
+                          </div>
+                          <div class="item-2">
+                            <app-line-chart type="Ratings" [data]="getAverageRatingOverTime()" [categories]="getAnswersTimeAxis()" class="echart"></app-line-chart>
                           </div>
                         </nb-card-body>
                       </nb-card>

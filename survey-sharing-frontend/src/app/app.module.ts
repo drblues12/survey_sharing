@@ -25,6 +25,7 @@ import { RatingComponent } from './support/rating/rating.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { PieChartComponent } from './support/charts/pie-chart/pie-chart.component';
 import { BarChartComponent } from './support/charts/bar-chart/bar-chart.component';
+import { LineChartComponent } from './support/charts/line-chart/line-chart.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { BarChartComponent } from './support/charts/bar-chart/bar-chart.componen
     RatingComponent,
     PieChartComponent,
     BarChartComponent,
+    LineChartComponent,
   ],
   imports: [
     BrowserModule,

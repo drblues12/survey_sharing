@@ -225,6 +225,22 @@ export class AppComponent implements OnInit {
     return 0;
   }
 
+  compareAnswers(a1: Answer, a2: Answer): number {
+    if(a1.answerDate[2]<a2.answerDate[2]) return -1;
+    if(a1.answerDate[2]>a2.answerDate[2]) return 1;
+    if(a1.answerDate[1]<a2.answerDate[1]) return -1;
+    if(a1.answerDate[1]>a2.answerDate[1]) return 1;
+    if(a1.answerDate[0]<a2.answerDate[0]) return -1;
+    if(a1.answerDate[0]>a2.answerDate[0]) return 1;
+    if(a1.answerDate[3]<a2.answerDate[3]) return -1;
+    if(a1.answerDate[3]>a2.answerDate[3]) return 1;
+    if(a1.answerDate[4]<a2.answerDate[4]) return -1;
+    if(a1.answerDate[4]>a2.answerDate[4]) return 1;
+    if(a1.answerDate[5]<a2.answerDate[5]) return -1;
+    if(a1.answerDate[5]>a2.answerDate[5]) return 1;
+    return 0;
+  }
+
   getImageMimeType(fileName: string): string {
     const extension = fileName.split('.').pop()?.toLowerCase();
     switch (extension) {
