@@ -1,8 +1,8 @@
 export class User{
   id!: string;
   username!: string;
-  name!: string;
-  surname!: string;
+  firstname!: string;
+  lastname!: string;
   email!: string;
   age!: number;
   gender!: string;
@@ -12,12 +12,12 @@ export class User{
   invitations!: string[];
   registrationDate!: string[];
 
-  constructor(id: string, username: string, name: string, surname: string, email: string,
+  constructor(id: string, username: string, firstname: string, lastname: string, email: string,
               age: number, gender: string, country: string, registrationDate: string[]){
     this.id = id;
     this.username = username;
-    this.name = name;
-    this.surname = surname;
+    this.firstname = firstname;
+    this.lastname = lastname;
     this.email = email;
     this.age = age;
     this.gender = gender;

@@ -157,8 +157,8 @@ public class StatisticsBuilder {
             List<String> entry = new LinkedList<>();
             entry.add(feedback);
             entry.add(sentiment);
-            entry.add(user.getName());
-            entry.add(user.getSurname());
+            entry.add(user.getFirstname());
+            entry.add(user.getLastname());
             entry.add(user.getUsername());
             entry.add(rating.toString());
             switch (sentiment) {

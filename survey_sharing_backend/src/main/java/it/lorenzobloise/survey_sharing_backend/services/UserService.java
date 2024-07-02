@@ -16,17 +16,25 @@ public class UserService {
 
     // POST
 
-    public User addUser(String username, String email, String name, String surname, int age, String gender, String country){
+    //TODO
+    // Deprecated
+    public User addUser(String username, String email, String password, String firstname, String lastname, int age, String gender, String country){
         if(userRepository.existsByIdOrUsernameOrEmail(null, username, email))
             throw new RuntimeException("User already exists");
         try {
             User.Gender genderConverted = User.Gender.valueOf(gender);
-            User user = new User(username, email, name, surname, age, genderConverted, country);
+            User user = new User(username, email, password, firstname, lastname, age, genderConverted, country);
             // Add this user in the users repository
             return userRepository.save(user);
         }catch (IllegalArgumentException e){
             throw new RuntimeException("Gender "+gender+" is not supported");
         }
+    }
+
+    public User addUser(User user){
+        if(userRepository.existsByIdOrUsernameOrEmail(user.getId(), user.getUsername(), user.getEmail()))
+            throw new RuntimeException("User already exists");
+        return userRepository.save(user);
     }
 
     // GET
@@ -35,15 +43,15 @@ public class UserService {
         return new TreeSet<>(userRepository.findAll());
     }
 
-    public Set<User> getUsersByNameAndSurname(String query){
+    public Set<User> getUsersByFirstnameAndLastname(String query){
         Set<User> result = new TreeSet<>();
         // Tokenize the query, separating name and surname
         StringTokenizer st = new StringTokenizer(query," ");
         List<String> tokens = new LinkedList<>();
         while(st.hasMoreTokens()) tokens.add(st.nextToken());
         for(String t: tokens){
-            TreeSet<User> partial = new TreeSet<>(userRepository.findUsersByNameContainingIgnoreCase(t));
-            TreeSet<User> partial2 = new TreeSet<>(userRepository.findUsersBySurnameContainingIgnoreCase(t));
+            TreeSet<User> partial = new TreeSet<>(userRepository.findUsersByFirstnameContainingIgnoreCase(t));
+            TreeSet<User> partial2 = new TreeSet<>(userRepository.findUsersByLastnameContainingIgnoreCase(t));
             partial.addAll(partial2);
             for(User u: partial) result.add(u);
         }

@@ -17,7 +17,7 @@
                     <b>Created by</b>:
                   </div>
                   <div class="item-left">
-                    <nb-user name="{{getOwnerDetails().name}} {{getOwnerDetails().surname}}" title="{{getOwnerDetails().username}}"></nb-user>
+                    <nb-user name="{{getOwnerDetails().firstname}} {{getOwnerDetails().lastname}}" title="{{getOwnerDetails().username}}"></nb-user>
                   </div>
                 </div>
               </nb-list-item>
@@ -136,7 +136,7 @@
                     <nb-list-item *ngFor="let answer of answers">
                       <div class="item-container">
                         <div class="item-1">
-                          <nb-user name="{{answer.user.name}} {{answer.user.surname}}" title="{{answer.user.username}}"></nb-user>
+                          <nb-user name="{{answer.user.firstname}} {{answer.user.lastname}}" title="{{answer.user.username}}"></nb-user>
                         </div>
                         <div class="item-1">
                           {{answer.answer.answerDate[0]}}/{{answer.answer.answerDate[1]}}/{{answer.answer.answerDate[2]}}
@@ -181,7 +181,7 @@
                     <nb-list-item *ngFor="let invitation of invitations">
                       <div class="item-container">
                         <div class="item-1">
-                          <nb-user name="{{invitation.recipient.name}} {{invitation.recipient.surname}}" title="{{invitation.recipient.username}}"></nb-user>
+                          <nb-user name="{{invitation.recipient.firstname}} {{invitation.recipient.lastname}}" title="{{invitation.recipient.username}}"></nb-user>
                         </div>
                         <div class="item-1">
                           {{invitation.invitation.invitationDate[0]}}/{{invitation.invitation.invitationDate[1]}}/{{invitation.invitation.invitationDate[2]}}

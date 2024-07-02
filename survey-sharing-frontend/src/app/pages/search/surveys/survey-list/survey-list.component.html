@@ -27,7 +27,7 @@
               </div>
               <div class="item-owner">
                 <div *ngIf="owners_details.get(survey.owner)">
-                  <nb-user name="{{owners_details.get(survey.owner)?.name}} {{owners_details.get(survey.owner)?.surname}}" title="{{survey.owner}}"></nb-user>
+                  <nb-user name="{{owners_details.get(survey.owner)?.firstname}} {{owners_details.get(survey.owner)?.lastname}}" title="{{survey.owner}}"></nb-user>
                 </div>
                 <div *ngIf="!owners_details.get(survey.owner)">
                   Loading user details...

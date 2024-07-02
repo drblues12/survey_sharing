@@ -23,14 +23,15 @@ public class UserController {
     // POST
 
     //TODO
+    // Deprecated
     // Authentication as admin
     @PostMapping
-    public ResponseEntity createUser(@RequestParam String username, @RequestParam String email, @RequestParam String name,
-                                     @RequestParam String surname, @RequestParam int age, @RequestParam String gender,
-                                     @RequestParam String country){
+    public ResponseEntity createUser(@RequestParam String username, @RequestParam String email, @RequestParam String password,
+                                     @RequestParam String firstname, @RequestParam String lastname, @RequestParam int age,
+                                     @RequestParam String gender, @RequestParam String country){
         try{
             return new ResponseEntity(new ResponseMessage("Created successfully",
-                    userService.addUser(username,email,name,surname,age,gender,country)), HttpStatus.OK);
+                    userService.addUser(username,email,password,firstname,lastname,age,gender,country)), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -50,11 +51,11 @@ public class UserController {
 
     //TODO
     // Authentication (every role)
-    @GetMapping("/search/by_name_surname")
-    public ResponseEntity findUsersByNameAndSurname(@RequestParam(required = false) String query){
+    @GetMapping("/search/by_firstname_lastname")
+    public ResponseEntity findUsersByFirstnameAndLastname(@RequestParam(required = false) String query){
         if(query==null)
             return findAllUsers();
-        Set<User> result = userService.getUsersByNameAndSurname(query);
+        Set<User> result = userService.getUsersByFirstnameAndLastname(query);
         if(result.size()==0)
             return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
         return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);

@@ -6,43 +6,43 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.security.auth.Subject;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Document("user")
 @ToString
 @EqualsAndHashCode
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements Comparable<User> {
+public class User implements Comparable<User>, UserDetails, Principal {
 
     public enum Gender{Male, Female};
     @Id
     private String id;
-    @NotBlank(message = "Username shall not be blank")
     @Indexed(unique = true)
     private String username;
-    private String name;
-    private String surname;
-    @NotBlank(message = "Email shall not be blank")
-    @Email(message="Email is not valid", regexp="[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}", flags = Pattern.Flag.CASE_INSENSITIVE)
+    private String firstname;
+    private String lastname;
     @Indexed(unique = true)
     private String email;
-    @NotBlank(message = "Age shall not be blank")
+    private String password;
     private int age;
-    @NotBlank(message = "Gender shall not be blank")
     private Gender gender;
-    @NotBlank(message = "Country shall not be blank")
     private String country;
     private Set<String> createdSurveys; // Titles of the created surveys
     private Map<String,String> answers; // The key is the survey's title, so each user can only give one answer per survey, and the value is the answer's id
@@ -53,12 +53,15 @@ public class User implements Comparable<User> {
     @JsonIgnore
     @Version
     private Long version;
+    @DBRef
+     private List<Role> roles;
 
-    public User(String username, String email, String name, String surname, int age, Gender gender, String country) {
+    public User(String username, String email, String password, String firstname, String lastname, int age, Gender gender, String country) {
         this.username = username;
-        this.name = name;
-        this.surname = surname;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
+        this.password = password;
         this.age = age;
         this.gender = gender;
         this.country = country;
@@ -69,11 +72,12 @@ public class User implements Comparable<User> {
         this.registrationDate = Utils.parseDate(this.registrationDateObj.toString());
     }
 
-    public User(String username, String email, String name, String surname, int age, Gender gender, String country, Set<String> createdSurveys, Map<String,String> answers) {
+    public User(String username, String email, String password, String firstname, String lastname, int age, Gender gender, String country, Set<String> createdSurveys, Map<String,String> answers) {
         this.username = username;
-        this.name = name;
-        this.surname = surname;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
+        this.password = password;
         this.age = age;
         this.gender = gender;
         this.country = country;
@@ -96,7 +100,49 @@ public class User implements Comparable<User> {
 
     public int compareTo(User u){
         if(this.equals(u)) return 0;
-        return (this.name+this.surname+this.username).compareTo(u.getName()+u.getSurname()+u.getUsername());
+        return (this.firstname +this.lastname +this.username).compareTo(u.getFirstname()+u.getLastname()+u.getUsername());
+    }
+
+    // Implementing Principal's inherited methods
+
+    @Override
+    public String getName() {
+        return this.username;
+    }
+
+    // Implementing UserDetails' inherited methods
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles
+                .stream()
+                .map(r -> new SimpleGrantedAuthority(r.getName()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
 }

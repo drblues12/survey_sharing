@@ -9,7 +9,7 @@
           <nb-list-item *ngFor="let user of search_results">
             <div class="item-container">
               <div class="item-user">
-                <nb-user name="{{user.name}} {{user.surname}}" title="{{user.username}}"></nb-user>
+                <nb-user name="{{user.firstname}} {{user.lastname}}" title="{{user.username}}"></nb-user>
               </div>
               <div class="item-button" (click)="goToSingleUserPage(user.username)">
                 <button nbButton >Show details</button>

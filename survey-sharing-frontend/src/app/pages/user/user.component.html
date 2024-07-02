@@ -2,7 +2,7 @@
   <nb-layout-column>
     <nb-card>
       <nb-card-header>
-        <h1>{{appComponent.getUser().name}} {{appComponent.getUser().surname}}</h1>
+        <h1>{{appComponent.getUser().firstname}} {{appComponent.getUser().lastname}}</h1>
       </nb-card-header>
       <nb-card-body>
         <nb-card>
@@ -14,10 +14,10 @@
               <nb-list-item>
                 <div class="item-container">
                   <div class="item-1">
-                    <b>Name</b>: {{appComponent.getUser().name}}
+                    <b>Name</b>: {{appComponent.getUser().firstname}}
                   </div>
                   <div class="item-1">
-                    <b>Surname</b>: {{appComponent.getUser().surname}}
+                    <b>Surname</b>: {{appComponent.getUser().lastname}}
                   </div>
                   <div class="item-1"></div>
                   <div class="item-1"></div>
@@ -139,7 +139,7 @@
                       {{answer.answer.survey}}
                     </div>
                     <div class="item-1">
-                      <nb-user name="{{answer.surveyOwner.name}} {{answer.surveyOwner.surname}}" title="{{answer.surveyOwner.username}}"></nb-user>
+                      <nb-user name="{{answer.surveyOwner.firstname}} {{answer.surveyOwner.lastname}}" title="{{answer.surveyOwner.username}}"></nb-user>
                     </div>
                     <div class="item-2">
                       {{appComponent.getParsedDate(answer.answer.answerDate)}}
@@ -184,7 +184,7 @@
                       {{invitation.invitation.survey}}
                     </div>
                     <div class="item-1">
-                      <nb-user name="{{invitation.surveyOwner.name}} {{invitation.surveyOwner.surname}}" title="{{invitation.surveyOwner.username}}"></nb-user>
+                      <nb-user name="{{invitation.surveyOwner.firstname}} {{invitation.surveyOwner.lastname}}" title="{{invitation.surveyOwner.username}}"></nb-user>
                     </div>
                     <div class="item-2">
                       {{appComponent.getParsedDate(invitation.invitation.invitationDate)}}
