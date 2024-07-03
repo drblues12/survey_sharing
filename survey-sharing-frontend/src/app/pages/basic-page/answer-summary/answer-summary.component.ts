@@ -25,6 +25,7 @@ export class AnswerSummaryComponent implements OnInit {
   constructor(private globalService: GlobalService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.globalService.reloadWindow();
     var answer_id = this.route.snapshot.paramMap.get('answer_id');
     if(answer_id!=null){
       this.globalService.answerService.findAnswerById(answer_id).subscribe(responseMessage => {

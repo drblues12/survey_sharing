@@ -19,7 +19,9 @@ export class LoginComponent implements OnInit {
 
   constructor(private globalService: GlobalService, private authenticationService: AuthenticationService, private tokenService: TokenService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.globalService.reloadWindow();
+  }
 
   getInputType() {
     if (this.showPassword) {
@@ -34,11 +36,10 @@ export class LoginComponent implements OnInit {
 
   login(){
     const authRequest: AuthenticationRequest = new AuthenticationRequest(this.username, this.password);
-    console.log(authRequest);
     this.authenticationService.authenticate(authRequest).subscribe(responseMessage => {
       if(responseMessage.object!=null){
         const authResponse: AuthenticationResponse = responseMessage.object;
-        this.globalService.initialize(this.username);
+        localStorage.setItem('username', this.username);
         this.tokenService.token = authResponse.token as string;
         localStorage.setItem('loggedIn', 'true');
         this.globalService.navigate('home/user',null);

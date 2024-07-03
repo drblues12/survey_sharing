@@ -2,6 +2,7 @@ package it.lorenzobloise.survey_sharing_backend.services;
 
 import it.lorenzobloise.survey_sharing_backend.entities.User;
 import it.lorenzobloise.survey_sharing_backend.repositories.RoleRepository;
+import it.lorenzobloise.survey_sharing_backend.support.Utils;
 import it.lorenzobloise.survey_sharing_backend.support.authentication.AuthenticationRequest;
 import it.lorenzobloise.survey_sharing_backend.support.authentication.AuthenticationResponse;
 import it.lorenzobloise.survey_sharing_backend.support.authentication.RegistrationRequest;
@@ -12,8 +13,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +34,7 @@ public class AuthenticationService {
                 .orElseThrow(() -> new IllegalStateException("ROLE USER was not initialized"));
         try {
             User.Gender genderConverted = User.Gender.valueOf(request.getGender());
+            LocalDateTime registrationDateObj = LocalDateTime.now();
             var user = User.builder()
                     .username(request.getUsername())
                     .firstname(request.getFirstname())
@@ -39,6 +44,11 @@ public class AuthenticationService {
                     .gender(genderConverted)
                     .age(request.getAge())
                     .country(request.getCountry())
+                    .registrationDateObj(registrationDateObj)
+                    .registrationDate(Utils.parseDate(registrationDateObj.toString()))
+                    .createdSurveys(new TreeSet<>())
+                    .answers(new TreeMap<>())
+                    .invitations(new TreeSet<>())
                     .roles(List.of(userRole))
                     .build();
             return userService.addUser(user);

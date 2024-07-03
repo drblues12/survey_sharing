@@ -10,18 +10,18 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class SurveyListComponent implements OnInit {
 
-  private query!: string;
+  private query!: string | null;
   public search_results: Survey[] = [];
   public owners_details: Map<string, User> = new Map<string, User>();
 
   constructor(public globalService: GlobalService) {
-    this.query = globalService.query;
+    this.query = globalService.getQuery();
   }
 
   ngOnInit(): void {
     this.globalService.reloadWindow();
     this.search_results = [];
-    if(this.query===""){
+    if(this.query==null || this.query===""){
       this.globalService.surveyService.findAllSurveys(false).subscribe(responseMessage => {
         this.search_results = responseMessage.object;
         if(this.search_results.length==0) alert (responseMessage.message);
@@ -53,7 +53,7 @@ export class SurveyListComponent implements OnInit {
   }
 
   answerSurvey(survey: string){
-    this.globalService.navigate('answer', survey);
+    this.globalService.navigate('home/answer', survey);
   }
 
   hasAnswered(survey: string): boolean {

@@ -9,12 +9,27 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class BasicPageComponent implements OnInit {
 
+  query: string = "";
+  searchType: string = "";
+  darkMode: boolean = this.globalService.getDarkMode() as boolean;
+
   constructor(public globalService: GlobalService, private route: ActivatedRoute) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.globalService.initialize();
+  }
 
-  navigate(route: string, parameters: string | null){
-    this.globalService.navigate(route, parameters, this.route);
+  onInputChange(event: Event){
+    this.globalService.setQuery(this.query);
+  }
+
+  onModelChange(event: Event){
+    this.globalService.setSearchType(this.searchType);
+  }
+
+  onCheckedChange(event: boolean){
+    this.globalService.setDarkMode(this.darkMode);
+    this.globalService.switchTheme();
   }
 
 }

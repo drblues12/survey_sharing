@@ -28,7 +28,7 @@ export class AnswerDetailsComponent implements OnInit {
     this.globalService.reloadWindow();
     var surveyTitle = this.route.snapshot.paramMap.get('surveyTitle');
     if(surveyTitle!=null){
-      this.globalService.answerService.findAnswersBySurveyTitle(this.globalService.username, surveyTitle).subscribe(responseMessage => {
+      this.globalService.answerService.findAnswersBySurveyTitle(surveyTitle).subscribe(responseMessage => {
         if(responseMessage.object!=null && responseMessage.object.length>0){
           this.answer = responseMessage.object[0];
           this.answer.questions.forEach(q => {
@@ -102,7 +102,7 @@ export class AnswerDetailsComponent implements OnInit {
   }
 
   deleteAnswer(answer: string){
-    this.globalService.answerService.deleteAnswer(this.globalService.getUser().username, answer).subscribe(responseMessage => {
+    this.globalService.answerService.deleteAnswer(answer).subscribe(responseMessage => {
       alert(responseMessage.message);
       this.globalService.navigate('user', null);
     })

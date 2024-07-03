@@ -13,12 +13,12 @@ export class StatisticsService{
 
   // GET
 
-  public computeStatistics(user: string, survey: string){
-    return this.http.get<ResponseMessage>(this.base_url+'?user='+user+'&surveyTitle='+survey);
+  public computeStatistics(survey: string){
+    return this.http.get<ResponseMessage>(this.base_url+'?surveyTitle='+survey);
   }
 
-  public computeAverageRating(user: string, survey: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/averageRating?user='+user+'&surveyTitle='+survey);
+  public computeAverageRating(survey: string){
+    return this.http.get<ResponseMessage>(this.base_url+'/averageRating?surveyTitle='+survey);
   }
 
 }

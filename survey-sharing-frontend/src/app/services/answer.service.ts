@@ -14,20 +14,20 @@ export class AnswerService{
 
   // POST
 
-  public createAnswer(user: string, survey: string, rating: number, feedback: string, questions: string){
-    return this.http.post<ResponseMessage>(this.base_url+'/'+user+'/create?survey='+survey+'&rating='+rating+'&feedback='+feedback, questions, {
+  public createAnswer(survey: string, rating: number, feedback: string, questions: string){
+    return this.http.post<ResponseMessage>(this.base_url+'/create?survey='+survey+'&rating='+rating+'&feedback='+feedback, questions, {
       headers: { 'Content-Type': 'application/json' }
     });
   }
 
   // GET
 
-  public findAllAnswers(user: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/'+user+'/search');
+  public findAllAnswers(){
+    return this.http.get<ResponseMessage>(this.base_url+'/search');
   }
 
-  public findAnswersBySurveyTitle(user: string, surveyTitle: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/'+user+'/search/by_survey_title?surveyTitle='+surveyTitle);
+  public findAnswersBySurveyTitle(surveyTitle: string){
+    return this.http.get<ResponseMessage>(this.base_url+'/search/by_survey_title?surveyTitle='+surveyTitle);
   }
 
   public findAnswerById(answer: string){
@@ -36,8 +36,8 @@ export class AnswerService{
 
   // DELETE
 
-  public deleteAnswer(user: string, answer: string){
-    return this.http.delete<ResponseMessage>(this.base_url+'/'+user+'/'+answer);
+  public deleteAnswer(answer: string){
+    return this.http.delete<ResponseMessage>(this.base_url+'/'+answer);
   }
 
 }

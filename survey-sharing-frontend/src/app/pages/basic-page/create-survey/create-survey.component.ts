@@ -232,9 +232,10 @@ export class CreateSurveyComponent implements OnInit {
       ...q,
       '@type': q.type
     })))
-    this.globalService.surveyService.createSurvey(this.globalService.user.username, this.surveyTitle, jsonObj).subscribe(responseMessage => {
+    console.log(jsonObj);
+    this.globalService.surveyService.createSurvey(this.surveyTitle, jsonObj).subscribe(responseMessage => {
       alert(responseMessage.message);
-      this.globalService.navigate('survey-details', this.surveyTitle);
+      this.globalService.navigate('home/survey-details', this.surveyTitle);
     })
   }
 

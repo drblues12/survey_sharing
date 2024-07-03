@@ -110,7 +110,7 @@ export class SurveyDetailsComponent implements OnInit {
               }
             })
           })
-          this.globalService.statisticsService.computeStatistics(this.globalService.getUser().username, this.survey.title).subscribe(responseMessage2 => {
+          this.globalService.statisticsService.computeStatistics(this.survey.title).subscribe(responseMessage2 => {
             if(responseMessage2.object){
               this.statistics = responseMessage2.object;
             }
@@ -175,7 +175,7 @@ export class SurveyDetailsComponent implements OnInit {
   }
 
   deleteSurvey(surveyTitle: string){
-    this.globalService.surveyService.deleteCreatedSurvey(this.globalService.user.username, surveyTitle).subscribe(responseMessage => {
+    this.globalService.surveyService.deleteCreatedSurvey(surveyTitle).subscribe(responseMessage => {
       alert(responseMessage.message);
       this.globalService.navigate('user', null);
     })
@@ -215,7 +215,7 @@ export class SurveyDetailsComponent implements OnInit {
   }
 
   deleteInvitation(invitation: string){
-    this.globalService.invitationService.deleteInvitation(this.globalService.getUser().username, invitation).subscribe(ResponseMessage => {
+    this.globalService.invitationService.deleteInvitation(invitation).subscribe(ResponseMessage => {
       alert(ResponseMessage.message);
       window.location.reload();
     })

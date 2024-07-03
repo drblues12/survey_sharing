@@ -31,7 +31,7 @@ export class SingleUserComponent implements OnInit {
   }
 
   findSurveys(){
-    this.globalService.surveyService.findAllSurveysByOwner(this.user.username, false).subscribe(responseMessage => {
+    this.globalService.surveyService.findAllSurveysByOwner(false).subscribe(responseMessage => {
       var search_results: Survey[] = responseMessage.object;
       if(search_results.length==0) alert (responseMessage.message);
       this.createdSurveys = search_results;
@@ -39,7 +39,7 @@ export class SingleUserComponent implements OnInit {
   }
 
   surveyAlreadyAnswered(surveyTitle: string): boolean {
-    return this.globalService.answers.find(a => a.answer.survey==surveyTitle)!=undefined;
+    return this.globalService.getAnswers().find(a => a.answer.survey==surveyTitle)!=undefined;
   }
 
 }

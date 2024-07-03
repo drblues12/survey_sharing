@@ -14,10 +14,6 @@ export class UserComponent implements OnInit {
 
   constructor(public globalService: GlobalService) { }
 
-  debug(){
-    console.log(this.globalService.getUser());
-  }
-
   ngOnInit(): void {
     this.globalService.reloadWindow();
   }
@@ -27,21 +23,21 @@ export class UserComponent implements OnInit {
   }
 
   deleteCreatedSurvey(surveyTitle: string){
-    this.globalService.surveyService.deleteCreatedSurvey(this.globalService.user.username, surveyTitle).subscribe(responseMessage => {
+    this.globalService.surveyService.deleteCreatedSurvey(surveyTitle).subscribe(responseMessage => {
       alert(responseMessage.message);
       window.location.reload();
     })
   }
 
   deleteInvitation(invitation: string){
-    this.globalService.invitationService.deleteInvitation(this.globalService.getUser().username, invitation).subscribe(responseMessage => {
+    this.globalService.invitationService.deleteInvitation(invitation).subscribe(responseMessage => {
       alert(responseMessage.message);
       window.location.reload();
     })
   }
 
   deleteAnswer(answer: string){
-    this.globalService.answerService.deleteAnswer(this.globalService.getUser().username, answer).subscribe(responseMessage => {
+    this.globalService.answerService.deleteAnswer(answer).subscribe(responseMessage => {
       alert(responseMessage.message);
       window.location.reload();
     })
@@ -61,7 +57,7 @@ export class UserComponent implements OnInit {
   }
 
   getTooltip(invitation: Invitation): string {
-    if(this.globalService.invitations.find(i => i.invitation.id==invitation.id)?.survey.closed)
+    if(this.globalService.getInvitations().find(i => i.invitation.id==invitation.id)?.survey.closed)
       return "This survey is closed";
     if(this.checkAccepted(invitation.survey))
       return "You have already answered this survey";

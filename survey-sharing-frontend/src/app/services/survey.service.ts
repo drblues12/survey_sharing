@@ -15,8 +15,8 @@ export class SurveyService{
 
   // POST
 
-  public createSurvey(user: string, surveyTitle: string, questions: string): Observable<ResponseMessage>{
-    return this.http.post<ResponseMessage>(this.base_url+'?user='+user+'&surveyTitle='+surveyTitle,questions, {
+  public createSurvey(surveyTitle: string, questions: string): Observable<ResponseMessage>{
+    return this.http.post<ResponseMessage>(this.base_url+'?surveyTitle='+surveyTitle,questions, {
       headers: { 'Content-Type': 'application/json' }
     });
   }
@@ -27,8 +27,8 @@ export class SurveyService{
     return this.http.get<ResponseMessage>(this.base_url+'/search?returnClosedSurveys='+returnClosedSurveys);
   }
 
-  public findAllSurveysByOwner(owner: string, returnClosedSurveys: boolean): Observable<ResponseMessage>{
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_owner?owner='+owner+'&returnClosedSurveys='+returnClosedSurveys);
+  public findAllSurveysByOwner(returnClosedSurveys: boolean): Observable<ResponseMessage>{
+    return this.http.get<ResponseMessage>(this.base_url+'/search/by_owner?returnClosedSurveys='+returnClosedSurveys);
   }
 
   public findSurveysByTitle(surveyTitle: string, returnClosedSurveys: boolean): Observable<ResponseMessage>{
@@ -47,12 +47,15 @@ export class SurveyService{
 
   // DELETE
 
-  public deleteCreatedSurvey(user: string, surveyTitle: string): Observable<ResponseMessage>{
-    return this.http.delete<ResponseMessage>(this.base_url+'/'+user+'?surveyTitle='+surveyTitle);
+  public deleteCreatedSurvey(surveyTitle: string): Observable<ResponseMessage>{
+    return this.http.delete<ResponseMessage>(this.base_url+'?surveyTitle='+surveyTitle);
   }
 
+  //Deprecated
+  /*
   public deleteSurvey(surveyTitle: string): Observable<ResponseMessage>{
     return this.http.delete<ResponseMessage>(this.base_url+'?surveyTitle='+surveyTitle);
   }
+  */
 
 }

@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 
 @RestController
 @RequestMapping("/surveys")
@@ -29,9 +30,11 @@ public class SurveyController {
 
     //TODO
     // Authentication as this user
-    @PostMapping
+    @PostMapping(consumes = "application/json")
     public ResponseEntity createSurvey(@RequestParam String surveyTitle, @RequestBody List<Question> questions, Authentication connectedUser){
         try{
+            for(Question q: questions)
+                System.out.println(q);
             return new ResponseEntity(new ResponseMessage("Created successfully",
                     surveyService.addSurvey(surveyTitle, questions, connectedUser)), HttpStatus.OK);
         }catch (RuntimeException e){

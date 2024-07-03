@@ -32,12 +32,12 @@
             </button>
           </nb-form-field>
           <nb-form-field>
-            <input nbInput type="text" placeholder="Name" [(ngModel)]="fields.name.name" (input)="onInputChangeName($event)"
-            [status]="getStatus(fields.name.correct)" [nbTooltip]="fields.name.error" [nbTooltipStatus]="getStatus(fields.name.correct)"
-            [nbTooltipIcon]="getTooltipIcon(fields.name.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.name.correct==undefined">
-            <input nbInput type="text" placeholder="Surname" [(ngModel)]="fields.surname.surname" (input)="onInputChangeSurname($event)"
-            [status]="getStatus(fields.surname.correct)" [nbTooltip]="fields.surname.error" [nbTooltipStatus]="getStatus(fields.surname.correct)"
-            [nbTooltipIcon]="getTooltipIcon(fields.surname.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.surname.correct==undefined">
+            <input nbInput type="text" placeholder="Name" [(ngModel)]="fields.firstname.firstname" (input)="onInputChangeFirstname($event)"
+            [status]="getStatus(fields.firstname.correct)" [nbTooltip]="fields.firstname.error" [nbTooltipStatus]="getStatus(fields.firstname.correct)"
+            [nbTooltipIcon]="getTooltipIcon(fields.firstname.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.firstname.correct==undefined">
+            <input nbInput type="text" placeholder="Surname" [(ngModel)]="fields.lastname.lastname" (input)="onInputChangeLastname($event)"
+            [status]="getStatus(fields.lastname.correct)" [nbTooltip]="fields.lastname.error" [nbTooltipStatus]="getStatus(fields.lastname.correct)"
+            [nbTooltipIcon]="getTooltipIcon(fields.lastname.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.lastname.correct==undefined">
             <input nbInput type="text" placeholder="Age" [(ngModel)]="fields.age.age" (input)="onInputChangeAge($event)"
             [status]="getStatus(fields.age.correct)" [nbTooltip]="fields.age.error" [nbTooltipStatus]="getStatus(fields.age.correct)"
             [nbTooltipIcon]="getTooltipIcon(fields.age.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.age.correct==undefined">

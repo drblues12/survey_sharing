@@ -14,7 +14,7 @@ import { UserListComponent } from './pages/basic-page/search/users/user-list/use
 import { CreateSurveyComponent } from './pages/basic-page/create-survey/create-survey.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { SingleUserComponent } from './pages/basic-page/search/users/single-user/single-user.component';
 import { SurveyDetailsComponent } from './pages/basic-page/survey-details/survey-details.component';
 import { InvitationComponent } from './pages/basic-page/invitation/invitation.component';
@@ -27,6 +27,7 @@ import { PieChartComponent } from './support/charts/pie-chart/pie-chart.componen
 import { BarChartComponent } from './support/charts/bar-chart/bar-chart.component';
 import { LineChartComponent } from './support/charts/line-chart/line-chart.component';
 import { BasicPageComponent } from './pages/basic-page/basic-page.component';
+import { HttpTokenInterceptor } from './services/interceptor/http-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,14 @@ import { BasicPageComponent } from './pages/basic-page/basic-page.component';
     }),
     NbAccordionModule,
   ],
-  providers: [],
+  providers: [
+    HttpClient,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpTokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbTrigger } from '@nebular/theme';
+import { RegistrationRequest } from 'src/app/entities/auth/registration-request';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
@@ -14,8 +16,8 @@ export class RegisterComponent implements OnInit {
   fields: {email: {email: string, correct: boolean | undefined, error: string},
             username: {username: string, correct: boolean | undefined, error: string},
             password: {password: string, correct: boolean | undefined, error: string},
-            name: {name: string, correct: boolean | undefined, error: string},
-            surname: {surname: string, correct: boolean | undefined, error: string},
+            firstname: {firstname: string, correct: boolean | undefined, error: string},
+            lastname: {lastname: string, correct: boolean | undefined, error: string},
             age: {age: number | undefined, correct: boolean | undefined, error: string},
             gender: {gender: string, correct: boolean | undefined, error: string},
             country: {country: string, correct: boolean | undefined, error: string}}
@@ -23,16 +25,17 @@ export class RegisterComponent implements OnInit {
             {email: {email: "", correct: undefined, error: ""},
             username: {username: "", correct: undefined, error: ""},
             password: {password: "", correct: undefined, error: ""},
-            name: {name: "", correct: undefined, error: ""},
-            surname: {surname: "", correct: undefined, error: ""},
+            firstname: {firstname: "", correct: undefined, error: ""},
+            lastname: {lastname: "", correct: undefined, error: ""},
             age: {age: undefined, correct: undefined, error: ""},
             gender: {gender: "", correct: undefined, error: ""},
             country: {country: "", correct: undefined, error: ""}};
   tooltipTrigger: NbTrigger = NbTrigger.HOVER;
 
-  constructor(public globalService: GlobalService) { }
+  constructor(public globalService: GlobalService, private authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
+    this.globalService.reloadWindow();
   }
 
   getInputType() {
@@ -47,12 +50,26 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
+    const registrationRequest: RegistrationRequest = new RegistrationRequest(
+      this.fields.username.username, this.fields.firstname.firstname, this.fields.lastname.lastname, this.fields.email.email,
+      this.fields.password.password, this.fields.age.age as number, this.fields.gender.gender, this.fields.country.country);
+    this.authenticationService.register(registrationRequest).subscribe(responseMessage => {
+      if(responseMessage.object!=null){
+        console.log(responseMessage.object);
+        alert(responseMessage.message);
+        this.globalService.navigate('login',null);
+      }
+      else
+        alert(responseMessage.message);
+    })
+    /*
     this.globalService.userService.createUser(this.fields.username.username, this.fields.email.email,
-      this.fields.name.name, this.fields.surname.surname, this.fields.age.age+'', this.fields.gender.gender,
+      this.fields.firstname.firstname, this.fields.lastname.lastname, this.fields.age.age+'', this.fields.gender.gender,
       this.fields.country.country).subscribe(responseMessage => {
         alert(responseMessage.message);
         this.globalService.navigate('login',null);
     })
+    */
   }
 
   onInputChangeEmail(event: Event): void{
@@ -111,36 +128,36 @@ export class RegisterComponent implements OnInit {
       this.fields.password.error = "";
   }
 
-  onInputChangeName(event: Event): void{
+  onInputChangeFirstname(event: Event): void{
     const namePattern = /^[A-Za-z]+$/;
-    if(this.fields.name.name==""){
-      this.fields.name.correct = false;
-      this.fields.name.error = "Name cannot be blank";
+    if(this.fields.firstname.firstname==""){
+      this.fields.firstname.correct = false;
+      this.fields.firstname.error = "Name cannot be blank";
       return;
     }
-    if(!namePattern.test(this.fields.name.name)){
-      this.fields.name.correct = false;
-      this.fields.name.error = "Invalid name format";
+    if(!namePattern.test(this.fields.firstname.firstname)){
+      this.fields.firstname.correct = false;
+      this.fields.firstname.error = "Invalid name format";
       return;
     }
-    this.fields.name.correct = true;
-    this.fields.name.error = "";
+    this.fields.firstname.correct = true;
+    this.fields.firstname.error = "";
   }
 
-  onInputChangeSurname(event: Event): void{
+  onInputChangeLastname(event: Event): void{
     const surnamePattern = /^[A-Za-z]+$/;
-    if(this.fields.surname.surname==""){
-      this.fields.surname.correct = false;
-      this.fields.surname.error = "Surname cannot be blank";
+    if(this.fields.lastname.lastname==""){
+      this.fields.lastname.correct = false;
+      this.fields.lastname.error = "Surname cannot be blank";
       return;
     }
-    if(!surnamePattern.test(this.fields.surname.surname)){
-      this.fields.surname.correct = false;
-      this.fields.surname.error = "Invalid surname format";
+    if(!surnamePattern.test(this.fields.lastname.lastname)){
+      this.fields.lastname.correct = false;
+      this.fields.lastname.error = "Invalid surname format";
       return;
     }
-    this.fields.surname.correct = true;
-    this.fields.surname.error = "";
+    this.fields.lastname.correct = true;
+    this.fields.lastname.error = "";
   }
 
   onInputChangeAge(event: Event): void{

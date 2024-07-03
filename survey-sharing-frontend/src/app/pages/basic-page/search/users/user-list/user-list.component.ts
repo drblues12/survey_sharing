@@ -9,17 +9,17 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class UserListComponent implements OnInit {
 
-  private query!: string;
+  private query!: string | null;
   public search_results: User[] = [];
 
   constructor(public globalService: GlobalService) {
-    this.query = this.globalService.query;
+    this.query = this.globalService.getQuery();
   }
 
   ngOnInit(): void {
     this.globalService.reloadWindow();
     this.search_results = [];
-    if(this.query===""){
+    if(this.query==null || this.query===""){
       this.globalService.userService.findAllUsers().subscribe(responseMessage => {
         this.search_results = responseMessage.object
         if(this.search_results.length==0) alert (responseMessage.message);
@@ -42,7 +42,7 @@ export class UserListComponent implements OnInit {
   }
 
   goToSingleUserPage(username: string): void{
-    this.globalService.navigate('search/users/single-user', username);
+    this.globalService.navigate('home/search/users/single-user', username);
   }
 
 }

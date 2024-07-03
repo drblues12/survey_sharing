@@ -20,8 +20,8 @@ export class InvitationService{
 
   // GET
 
-  public findAllInvitations(user: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/'+user);
+  public findAllInvitations(){
+    return this.http.get<ResponseMessage>(this.base_url+'/search/all');
   }
 
   public findInvitationById(invitationId: string){
@@ -30,14 +30,14 @@ export class InvitationService{
 
   // DELETE
 
-  public deleteInvitation(user: string, invitation: string){
-    return this.http.delete<ResponseMessage>(this.base_url+'/'+user+'?invitation='+invitation);
+  public deleteInvitation(invitation: string){
+    return this.http.delete<ResponseMessage>(this.base_url+'?invitation='+invitation);
   }
 
   // PUT
 
-  public updateInvitation(user: string, invitation: string, accepted: boolean){
-    return this.http.put<ResponseMessage>(this.base_url+'/'+user+'?invitation='+invitation+'&accepted='+accepted,null);
+  public updateInvitation(invitation: string, accepted: boolean){
+    return this.http.put<ResponseMessage>(this.base_url+'?invitation='+invitation+'&accepted='+accepted,null);
   }
 
 }

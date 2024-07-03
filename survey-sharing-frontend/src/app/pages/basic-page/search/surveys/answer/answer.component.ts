@@ -33,7 +33,7 @@ export class AnswerComponent implements OnInit {
       this.globalService.surveyService.findSurveyByTitle(surveyTitle, false).subscribe(responseMessage => {
         if(responseMessage.object!=null){
           this.survey = responseMessage.object;
-          this.answer = new Answer(this.globalService.user.username, this.survey.title);
+          this.answer = new Answer(this.globalService.getUser().username, this.survey.title);
           this.survey.questions.forEach(q => {
             this.globalService.questionService.findQuestionById(q).subscribe(responseMessage2 => {
               if(responseMessage2.object!=null){
@@ -186,7 +186,7 @@ export class AnswerComponent implements OnInit {
       ...q,
       '@type': q.type
     })))
-    this.globalService.answerService.createAnswer(this.globalService.user.username, this.getSurvey().title, this.rating, this.feedback, jsonObj).subscribe(responseMessage => {
+    this.globalService.answerService.createAnswer(this.getSurvey().title, this.rating, this.feedback, jsonObj).subscribe(responseMessage => {
       alert(responseMessage.message);
       this.globalService.navigate('answer-details', this.getSurvey().title);
     })

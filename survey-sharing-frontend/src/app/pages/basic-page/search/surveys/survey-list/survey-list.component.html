@@ -29,9 +29,6 @@
                 <div *ngIf="owners_details.get(survey.owner)">
                   <nb-user name="{{owners_details.get(survey.owner)?.firstname}} {{owners_details.get(survey.owner)?.lastname}}" title="{{survey.owner}}"></nb-user>
                 </div>
-                <div *ngIf="!owners_details.get(survey.owner)">
-                  Loading user details...
-                </div>
               </div>
               <div class="item-date">
                 {{survey.creationDate[0]}}/{{survey.creationDate[1]}}/{{survey.creationDate[2]}}

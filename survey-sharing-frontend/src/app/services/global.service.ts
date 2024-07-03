@@ -13,30 +13,52 @@ import { ImageService } from "./image.service";
 import { DomSanitizer } from "@angular/platform-browser";
 import { NbThemeService } from "@nebular/theme";
 import { AnswerService } from "./answer.service";
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalService {
-  username!:string;
-  user!: User;
-  createdSurveys: Survey[] = [];
-  answers: {answer: Answer, surveyOwner: User}[] = [];
-  averageRatings: {surveyTitle: string, averageRating: number}[] = [];
-  invitations: {invitation: Invitation, surveyOwner: User, survey: Survey}[] = [];
-  searchType!: string;
-  query: string = "";
-  refresh: boolean = false;
-  darkMode: boolean = false;
+  private usernameSubject = new BehaviorSubject<string|null>(null);
+  username$ = this.usernameSubject.asObservable();
+  private userSubject = new BehaviorSubject<User|null>(null);
+  user$ = this.userSubject.asObservable();
+  private createdSurveysSubject = new BehaviorSubject<Survey[]|null>(null);
+  createdSurveys$ = this.createdSurveysSubject.asObservable();
+  private answersSubject = new BehaviorSubject<{answer: Answer, surveyOwner: User}[]|null>(null);
+  answers$ = this.answersSubject.asObservable();
+  private averageRatingsSubject = new BehaviorSubject<{surveyTitle: string, averageRating: number}[]|null>(null);
+  averageRatings$ = this.averageRatingsSubject.asObservable();
+  private invitationsSubject = new BehaviorSubject<{invitation: Invitation, surveyOwner: User, survey: Survey}[]|null>(null);
+  invitations$ = this.invitationsSubject.asObservable();
+  private searchTypeSubject = new BehaviorSubject<string|null>(null);
+  searchType$ = this.searchTypeSubject.asObservable();
+  private querySubject = new BehaviorSubject<string|null>(null);
+  query$ = this.querySubject.asObservable();
+  private refreshSubject = new BehaviorSubject<boolean|null>(null);
+  refresh$ = this.refreshSubject.asObservable();
+  private darkModeSubject = new BehaviorSubject<boolean|null>(null);
+  darkMode$ = this.darkModeSubject.asObservable();
 
   constructor(public router: Router, public userService: UserService, public surveyService: SurveyService,
     public answerService: AnswerService, public invitationService: InvitationService,
     public statisticsService: StatisticsService, public questionService: QuestionService,
     public imageService: ImageService, public themeService: NbThemeService,
-    public sanitizer: DomSanitizer){}
+    public sanitizer: DomSanitizer){
+      this.usernameSubject.next("");
+      this.userSubject.next(new User("","","","","",-1,"","",[]));
+      this.createdSurveysSubject.next([]);
+      this.answersSubject.next([]);
+      this.averageRatingsSubject.next([]);
+      this.invitationsSubject.next([]);
+      this.searchTypeSubject.next("");
+      this.querySubject.next("");
+      this.refreshSubject.next(false);
+      this.darkModeSubject.next(false);
+  }
 
-  initialize(username: string): void {
-    this.username = username;
+  initialize(): void {
+    this.setUsername(localStorage.getItem('username') as string);
     this.fetchUser();
     this.fetchCreatedSurveys();
     this.fetchAnswers();
@@ -60,14 +82,14 @@ export class GlobalService {
     if(theme!=null){
       this.themeService.changeTheme(theme);
       if(theme=='default')
-        this.darkMode = false;
+        this.setDarkMode(false);
       else
-        this.darkMode = true;
+      this.setDarkMode(true);
     }
   }
 
   switchTheme(){
-    if(this.darkMode){
+    if(this.getDarkMode()){
       this.themeService.changeTheme('dark');
       localStorage.setItem('theme','dark');
     }
@@ -78,7 +100,7 @@ export class GlobalService {
   }
 
   navigate(route: string, parameters: string | null, relativeTo?: ActivatedRoute){
-    this.refresh = true;
+    this.setRefresh(true);
     if(parameters==null){
       if(relativeTo)
         this.router.navigate([route], { relativeTo });
@@ -94,48 +116,61 @@ export class GlobalService {
   }
 
   reloadWindow(){
-    if(this.refresh){
-      this.refresh = false;
+    if(this.getRefresh()){
+      this.setRefresh(false);
       window.location.reload();
     }
   }
 
+  getUsername(): string | null {
+    return this.usernameSubject.value;
+  }
+
+  setUsername(username: string): void {
+    this.usernameSubject.next(username);
+  }
+
   fetchUser(): void {
-    this.userService.findUserByUsername(this.username).subscribe(responseMessage => {
-      this.user = responseMessage.object;
+    this.userService.findUserByUsername(this.getUsername() as string).subscribe(responseMessage => {
+      this.userSubject.next(responseMessage.object);
     })
   }
 
   getUser(): User{
-    if(this.user!=null)
-      return this.user;
+    const result = this.userSubject.value;
+    if(result!=null)
+      return result;
     return new User("","","","","",-1,"","",[]);
   }
 
   fetchCreatedSurveys(): void {
-    this.surveyService.findAllSurveysByOwner(this.username, true).subscribe(responseMessage => {
+    this.surveyService.findAllSurveysByOwner(true).subscribe(responseMessage => {
       if(responseMessage.object){
-        this.createdSurveys = responseMessage.object;
-        this.createdSurveys.forEach(s => {
-          const surveyTitle: string = s.title;
-          this.statisticsService.computeAverageRating(this.getUser().username, surveyTitle).subscribe(responseMessage => {
-            if(responseMessage.object){
-              this.averageRatings.push({surveyTitle: surveyTitle, averageRating: responseMessage.object});
-            }
+        this.createdSurveysSubject.next(responseMessage.object);
+        const createdSurveys = this.getCreatedSurveys();
+        if(createdSurveys){
+          createdSurveys.forEach(s => {
+            const surveyTitle: string = s.title;
+            this.statisticsService.computeAverageRating(surveyTitle).subscribe(responseMessage => {
+              if(responseMessage.object){
+                this.getAverageRatings().push({surveyTitle: surveyTitle, averageRating: responseMessage.object});
+              }
+            })
           })
-        })
+        }
       }
     })
   }
 
   getCreatedSurveys(): Survey[] {
-    if(this.createdSurveys)
-      return this.createdSurveys;
+    const result = this.createdSurveysSubject.value;
+    if(result!=null)
+      return result;
     return [];
   }
 
   fetchAnswers(): void {
-    this.answerService.findAllAnswers(this.username).subscribe(responseMessage => {
+    this.answerService.findAllAnswers().subscribe(responseMessage => {
       var result: Answer[] = responseMessage.object;
       if(result!=null && result.length>0)
         result.forEach(answer => {
@@ -143,7 +178,7 @@ export class GlobalService {
             if(responseMessage2.object)
               this.userService.findUserByUsername(responseMessage2.object.owner).subscribe(responseMessage3 => {
                 if(responseMessage3.object)
-                  this.answers.push({answer: answer, surveyOwner: responseMessage3.object});
+                  this.getAnswers().push({answer: answer, surveyOwner: responseMessage3.object});
               })
           })
         })
@@ -151,13 +186,14 @@ export class GlobalService {
   }
 
   getAnswers(): {answer: Answer, surveyOwner: User}[] {
-    if(this.answers)
-      return this.answers;
+    const result = this.answersSubject.value;
+    if(result!=null)
+      return result;
     return [];
   }
 
   fetchInvitations(): void {
-    this.invitationService.findAllInvitations(this.username).subscribe(responseMessage => {
+    this.invitationService.findAllInvitations().subscribe(responseMessage => {
       var result: Invitation[] = responseMessage.object;
       if(result!=null && result.length>0)
         result.forEach(invitation => {
@@ -165,7 +201,7 @@ export class GlobalService {
             if(responseMessage2.object)
               this.userService.findUserByUsername(responseMessage2.object.owner).subscribe(responseMessage3 => {
                 if(responseMessage3.object)
-                  this.invitations.push({invitation: invitation, surveyOwner: responseMessage3.object, survey: responseMessage2.object});
+                  this.getInvitations().push({invitation: invitation, surveyOwner: responseMessage3.object, survey: responseMessage2.object});
               })
           })
         })
@@ -173,15 +209,49 @@ export class GlobalService {
   }
 
   getInvitations(): {invitation: Invitation, surveyOwner: User, survey: Survey}[] {
-    if(this.invitations)
-      return this.invitations;
+    const result = this.invitationsSubject.value;
+    if(result!=null)
+      return result;
     return [];
   }
 
   getAverageRatings(){
-    if(this.averageRatings)
-      return this.averageRatings;
+    const result = this.averageRatingsSubject.value;
+    if(result!=null)
+      return result;
     return [];
+  }
+
+  getSearchType(): string | null {
+    return this.searchTypeSubject.value;
+  }
+
+  setSearchType(searchType: string): void {
+    this.searchTypeSubject.next(searchType);
+  }
+
+  getQuery(): string | null {
+    return this.querySubject.value;
+  }
+
+  setQuery(query: string): void {
+    this.querySubject.next(query);
+  }
+
+  getDarkMode(): boolean | null {
+    return this.darkModeSubject.value;
+  }
+
+  setDarkMode(darkMode: boolean): void {
+    this.darkModeSubject.next(darkMode);
+  }
+
+  getRefresh(): boolean | null {
+    return this.refreshSubject.value;
+  }
+
+  setRefresh(refresh: boolean): void {
+    this.refreshSubject.next(refresh);
   }
 
   getParsedDate(date: string[] | undefined): string | null {
@@ -227,6 +297,8 @@ export class GlobalService {
 
   logout(){
     localStorage.setItem('loggedIn', 'false');
+    this.themeService.changeTheme('default');
+    localStorage.setItem('theme','default');
     this.navigate('login', null);
   }
 }

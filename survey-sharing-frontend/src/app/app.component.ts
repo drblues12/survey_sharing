@@ -11,15 +11,7 @@ export class AppComponent implements OnInit {
   constructor(private globalService: GlobalService){}
 
   ngOnInit(): void {
-    //this.globalService.themeCheck();
-    /*
-    this.userService.findUsersByUsername(this.username).subscribe(responseMessage => {
-      this.user = responseMessage.object[0];
-      this.fetchCreatedSurveys();
-      this.fetchAnswers();
-      this.fetchInvitations();
-    })
-    */
+    this.globalService.themeCheck();
   }
 
 }
