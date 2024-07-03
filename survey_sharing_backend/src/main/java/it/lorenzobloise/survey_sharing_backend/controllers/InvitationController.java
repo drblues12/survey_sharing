@@ -1,11 +1,13 @@
 package it.lorenzobloise.survey_sharing_backend.controllers;
 
 import it.lorenzobloise.survey_sharing_backend.entities.Invitation;
+import it.lorenzobloise.survey_sharing_backend.entities.User;
 import it.lorenzobloise.survey_sharing_backend.services.InvitationService;
 import it.lorenzobloise.survey_sharing_backend.support.ResponseMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -40,10 +42,10 @@ public class InvitationController {
 
     //TODO
     // Authentication as this user
-    @GetMapping("/{user}")
-    public ResponseEntity findAllInvitations(@PathVariable(value = "user") String user){
+    @GetMapping("/search/all")
+    public ResponseEntity findAllInvitations(Authentication connectedUser){
         try{
-            Set<Invitation> result = invitationService.getAllInvitations(user);
+            Set<Invitation> result = invitationService.getAllInvitations(connectedUser);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
             return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
@@ -52,7 +54,7 @@ public class InvitationController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/search/by_id")
     public ResponseEntity findInvitationById(@RequestParam String invitationId){
         try{
             Invitation result = invitationService.getInvitationById(invitationId);
@@ -66,8 +68,8 @@ public class InvitationController {
 
     //TODO
     // Authentication as this user
-    @DeleteMapping("/{user}")
-    public ResponseEntity deleteInvitation(@PathVariable(value = "user") String user, @RequestParam String invitation){
+    @DeleteMapping
+    public ResponseEntity deleteInvitation(@RequestParam String invitation){
         try {
             Invitation result = invitationService.removeInvitation(invitation);
             return new ResponseEntity(new ResponseMessage("Invitation deleted correctly",result), HttpStatus.OK);
@@ -80,11 +82,10 @@ public class InvitationController {
 
     //TODO
     // Authentication as this user
-    @PutMapping("/{user}")
-    public ResponseEntity updateInvitation(@PathVariable(value = "user") String user, @RequestParam String invitation,
-                                           @RequestParam boolean accepted){
+    @PutMapping
+    public ResponseEntity updateInvitation(@RequestParam String invitation, @RequestParam boolean accepted, Authentication connectedUser){
         try {
-            Invitation result = invitationService.updateInvitation(user, invitation, accepted);
+            Invitation result = invitationService.updateInvitation(invitation, accepted, connectedUser);
             return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);

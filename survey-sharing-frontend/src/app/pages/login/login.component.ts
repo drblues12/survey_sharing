@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
-import { SupportService } from 'src/app/support/support.service';
+import { AuthenticationRequest } from 'src/app/entities/auth/authentication-request';
+import { AuthenticationResponse } from 'src/app/entities/auth/authentication-response';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-login',
@@ -11,11 +13,10 @@ import { SupportService } from 'src/app/support/support.service';
 export class LoginComponent implements OnInit {
 
   username!: string;
-  email!: string;
   password!: string;
   showPassword = true;
 
-  constructor(private appComponent: AppComponent) { }
+  constructor(private appComponent: AppComponent, private authenticationService: AuthenticationService, private tokenService: TokenService) { }
 
   ngOnInit(): void { }
 
@@ -31,9 +32,17 @@ export class LoginComponent implements OnInit {
   }
 
   login(){
-    // TODO
-    localStorage.setItem('loggedIn', 'true');
-    this.appComponent.navigate('',null);
+    const authRequest: AuthenticationRequest = new AuthenticationRequest(this.username, this.password);
+    this.authenticationService.authenticate(authRequest).subscribe(responseMessage => {
+      if(responseMessage.object!=null){
+        const authResponse: AuthenticationResponse = responseMessage.object;
+        this.tokenService.token = authResponse.token as string;
+        localStorage.setItem('loggedIn', 'true');
+        this.appComponent.navigate('',null);
+      }
+      else
+        console.log(responseMessage.message);
+    })
   }
 
   navigateToRegister(){

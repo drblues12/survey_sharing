@@ -6,6 +6,7 @@ import it.lorenzobloise.survey_sharing_backend.repositories.InvitationRepository
 import it.lorenzobloise.survey_sharing_backend.repositories.SurveyRepository;
 import it.lorenzobloise.survey_sharing_backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +27,9 @@ public class AnswerService {
 
     // POST
 
-    public Answer addAnswer(String user, String survey, double rating, String feedback, List<Question> questions){
-        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user, user, user);
+    public Answer addAnswer(String survey, double rating, String feedback, List<Question> questions, Authentication connectedUser){
+        User user = ((User)connectedUser.getPrincipal());
+        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user.getId(), user.getUsername(), user.getEmail());
         if(u.isEmpty())
             throw new RuntimeException("User "+user+" does not exist");
         Optional<Survey> s = surveyRepository.findSurveyByTitle(survey);
@@ -39,7 +41,7 @@ public class AnswerService {
             throw new RuntimeException("User has already answered this survey");
         try{
             // Create answer
-            Answer answer = new Answer(user, survey, feedback, rating);
+            Answer answer = new Answer(user.getUsername(), survey, feedback, rating);
             // Save this answer's questions
             for(Question q: questions){
                 Question q_saved = questionService.addQuestion(q);
@@ -48,7 +50,7 @@ public class AnswerService {
             // Add this answer in the answers repository
             Answer result = answerRepository.save(answer);
             //Accept all the invitations received by this user for this survey
-            Set<Invitation> invitations = invitationService.getAllInvitations(user);
+            Set<Invitation> invitations = invitationService.getAllInvitations(connectedUser);
             for(Invitation i: invitations)
                 if(i.getSurvey().equals(survey)) {
                     i.setAccepted(true);
@@ -68,8 +70,9 @@ public class AnswerService {
 
     // GET
 
-    public Set<Answer> getAllAnswers(String user){
-        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user, user, user);
+    public Set<Answer> getAllAnswers(Authentication connectedUser){
+        User user = ((User)connectedUser.getPrincipal());
+        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user.getId(), user.getUsername(), user.getEmail());
         if(u.isEmpty())
             throw new RuntimeException("User does not exist");
         Set<Answer> result = new TreeSet<>();
@@ -82,8 +85,9 @@ public class AnswerService {
         return result;
     }
 
-    public Set<Answer> getAnswersBySurveyTitle(String user, String surveyTitle){
-        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user, user, user);
+    public Set<Answer> getAnswersBySurveyTitle(String surveyTitle, Authentication connectedUser){
+        User user = ((User)connectedUser.getPrincipal());
+        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user.getId(), user.getUsername(), user.getEmail());
         if(u.isEmpty())
             throw new RuntimeException("User does not exist");
         Set<String> keys = new TreeSet<>(u.get().getAnswers().keySet()); // Set #1: titles of the surveys answered by the user

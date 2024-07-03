@@ -6,6 +6,7 @@ import it.lorenzobloise.survey_sharing_backend.entities.User;
 import it.lorenzobloise.survey_sharing_backend.repositories.SurveyRepository;
 import it.lorenzobloise.survey_sharing_backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +27,9 @@ public class SurveyService {
 
     // POST
 
-    public Survey addSurvey(String user, String surveyTitle, List<Question> questions){
-        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user, user, user);
+    public Survey addSurvey(String surveyTitle, List<Question> questions, Authentication connectedUser){
+        User user = ((User)connectedUser.getPrincipal());
+        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user.getId(), user.getUsername(), user.getEmail());
         if(u.isEmpty())
             throw new RuntimeException("User does not exist");
         if(surveyRepository.findSurveyByTitle(surveyTitle).isPresent())
@@ -67,8 +69,9 @@ public class SurveyService {
         return partial;
     }
 
-    public Set<Survey> getAllSurveysByOwner(String user, boolean returnClosedSurveys){
-        Optional<User> opt_u = userRepository.findUserByIdOrUsernameOrEmail(user, user, user);
+    public Set<Survey> getAllSurveysByOwner(boolean returnClosedSurveys, Authentication connectedUser){
+        User user = ((User)connectedUser.getPrincipal());
+        Optional<User> opt_u = userRepository.findUserByIdOrUsernameOrEmail(user.getId(), user.getUsername(), user.getEmail());
         if(opt_u.isEmpty())
             throw new RuntimeException("User "+user+" does not exist");
         Set<Survey> partial = new TreeSet<>();

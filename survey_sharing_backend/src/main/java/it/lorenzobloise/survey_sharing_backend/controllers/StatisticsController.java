@@ -24,7 +24,7 @@ public class StatisticsController {
     //TODO
     // Authentication as this user
     @GetMapping()
-    public ResponseEntity computeStatistics(@RequestParam String user, @RequestParam String surveyTitle){
+    public ResponseEntity computeStatistics(@RequestParam String surveyTitle){
         try{
             Statistics result = statisticsService.getStatistics(surveyTitle);
             return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
@@ -36,7 +36,7 @@ public class StatisticsController {
     //TODO
     // Authentication as this user
     @GetMapping("/averageRating")
-    public ResponseEntity computeAverageRating(@RequestParam String user, @RequestParam String surveyTitle){
+    public ResponseEntity computeAverageRating(@RequestParam String surveyTitle){
         try{
             double result = statisticsService.getAverageRating(surveyTitle);
             return new ResponseEntity(new ResponseMessage("", result), HttpStatus.OK);

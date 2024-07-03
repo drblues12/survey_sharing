@@ -8,6 +8,7 @@ import it.lorenzobloise.survey_sharing_backend.support.ResponseMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,12 +27,11 @@ public class AnswerController {
 
     //TODO
     // Authentication as this user
-    @PostMapping("/{user}/create")
-    public ResponseEntity createAnswer(@PathVariable(value = "user") String user, @RequestParam String survey,
-                                       @RequestParam double rating, @RequestParam String feedback,
-                                       @RequestBody List<Question> questions){
+    @PostMapping("/create")
+    public ResponseEntity createAnswer(@RequestParam String survey, @RequestParam double rating, @RequestParam String feedback,
+                                       @RequestBody List<Question> questions, Authentication connectedUser){
         try{
-            Answer result = answerService.addAnswer(user, survey, rating, feedback, questions);
+            Answer result = answerService.addAnswer(survey, rating, feedback, questions, connectedUser);
             return new ResponseEntity(new ResponseMessage("Added successfully", result), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
@@ -42,10 +42,10 @@ public class AnswerController {
 
     //TODO
     // Authentication as this user
-    @GetMapping("/{user}/search")
-    public ResponseEntity findAllAnswers(@PathVariable(value = "user") String user){
+    @GetMapping("/search")
+    public ResponseEntity findAllAnswers(Authentication connectedUser){
         try{
-            Set<Answer> result = answerService.getAllAnswers(user);
+            Set<Answer> result = answerService.getAllAnswers(connectedUser);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
             return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
@@ -56,10 +56,10 @@ public class AnswerController {
 
     //TODO
     // Authentication as this user
-    @GetMapping("/{user}/search/by_survey_title")
-    public ResponseEntity findAnswersBySurveyTitle(@PathVariable(value = "user") String user, @RequestParam String surveyTitle){
+    @GetMapping("/search/by_survey_title")
+    public ResponseEntity findAnswersBySurveyTitle(@RequestParam String surveyTitle, Authentication connectedUser){
         try{
-            Set<Answer> result = answerService.getAnswersBySurveyTitle(user, surveyTitle);
+            Set<Answer> result = answerService.getAnswersBySurveyTitle(surveyTitle, connectedUser);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
             return new ResponseEntity(new ResponseMessage("",result), HttpStatus.OK);
@@ -84,8 +84,8 @@ public class AnswerController {
 
     //TODO
     // Authentication as this user
-    @DeleteMapping("/{user}/{answer}")
-    public ResponseEntity deleteAnswer(@PathVariable(value = "user") String user, @PathVariable(value = "answer") String answer){
+    @DeleteMapping("/{answer}")
+    public ResponseEntity deleteAnswer(@PathVariable(value = "answer") String answer){
         try{
             Optional<Answer> result = answerService.removeAnswer(answer);
             return new ResponseEntity(new ResponseMessage("Deleted successfully", result.get()), HttpStatus.OK);

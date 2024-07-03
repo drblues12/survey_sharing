@@ -7,6 +7,7 @@ import it.lorenzobloise.survey_sharing_backend.repositories.InvitationRepository
 import it.lorenzobloise.survey_sharing_backend.repositories.SurveyRepository;
 import it.lorenzobloise.survey_sharing_backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,8 +63,9 @@ public class InvitationService {
 
     // GET
 
-    public Set<Invitation> getAllInvitations(String user){
-        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user, user, user);
+    public Set<Invitation> getAllInvitations(Authentication connectedUser){
+        User user = ((User)connectedUser.getPrincipal());
+        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user.getId(), user.getUsername(), user.getEmail());
         if(u.isEmpty())
             throw new RuntimeException("User does not exist");
         Set<Invitation> result = new TreeSet<>();
@@ -107,8 +109,9 @@ public class InvitationService {
 
     // PUT
 
-    public Invitation updateInvitation(String user, String invitation, boolean accepted){
-        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user, user, user);
+    public Invitation updateInvitation(String invitation, boolean accepted, Authentication connectedUser){
+        User user = ((User)connectedUser.getPrincipal());
+        Optional<User> u = userRepository.findUserByIdOrUsernameOrEmail(user.getId(), user.getUsername(), user.getEmail());
         if(u.isEmpty())
             throw new RuntimeException("User does not exist");
         Optional<Invitation> i = invitationRepository.findById(invitation);

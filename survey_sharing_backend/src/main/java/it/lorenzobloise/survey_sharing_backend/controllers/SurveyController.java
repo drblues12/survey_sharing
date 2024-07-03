@@ -3,12 +3,14 @@ package it.lorenzobloise.survey_sharing_backend.controllers;
 import it.lorenzobloise.survey_sharing_backend.entities.Question;
 import it.lorenzobloise.survey_sharing_backend.entities.Statistics;
 import it.lorenzobloise.survey_sharing_backend.entities.Survey;
+import it.lorenzobloise.survey_sharing_backend.entities.User;
 import it.lorenzobloise.survey_sharing_backend.services.StatisticsService;
 import it.lorenzobloise.survey_sharing_backend.services.SurveyService;
 import it.lorenzobloise.survey_sharing_backend.support.ResponseMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,11 +30,10 @@ public class SurveyController {
     //TODO
     // Authentication as this user
     @PostMapping
-    public ResponseEntity createSurvey(@RequestParam String user, @RequestParam String surveyTitle,
-                                       @RequestBody List<Question> questions){
+    public ResponseEntity createSurvey(@RequestParam String surveyTitle, @RequestBody List<Question> questions, Authentication connectedUser){
         try{
             return new ResponseEntity(new ResponseMessage("Created successfully",
-                    surveyService.addSurvey(user, surveyTitle, questions)), HttpStatus.OK);
+                    surveyService.addSurvey(surveyTitle, questions, connectedUser)), HttpStatus.OK);
         }catch (RuntimeException e){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
@@ -53,9 +54,9 @@ public class SurveyController {
     //TODO
     // Authentication (every role)
     @GetMapping("/search/by_owner")
-    public ResponseEntity findAllSurveysByOwner(@RequestParam String owner, @RequestParam boolean returnClosedSurveys){
+    public ResponseEntity findAllSurveysByOwner(@RequestParam boolean returnClosedSurveys, Authentication connectedUser){
         try{
-            Set<Survey> result = surveyService.getAllSurveysByOwner(owner, returnClosedSurveys);
+            Set<Survey> result = surveyService.getAllSurveysByOwner(returnClosedSurveys, connectedUser);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
             return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
@@ -110,8 +111,8 @@ public class SurveyController {
 
     //TODO
     // Authentication as this user
-    @DeleteMapping("/{user}")
-    public ResponseEntity deleteCreatedSurvey(@PathVariable(value = "user") String user, @RequestParam String surveyTitle){
+    @DeleteMapping
+    public ResponseEntity deleteCreatedSurvey(@RequestParam String surveyTitle){
         //TODO
         // If the user is authenticated, invoke the method below "deleteSurvey(String surveyTitle)"
         try{
@@ -122,6 +123,7 @@ public class SurveyController {
         }
     }
 
+    /*
     //TODO
     // Authentication as admin
     @DeleteMapping
@@ -133,5 +135,7 @@ public class SurveyController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
+
+     */
 
 }

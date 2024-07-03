@@ -5,10 +5,10 @@
     </nb-card-header>
     <nb-card-body>
       <nb-form-field>
-        <input type="text" nbInput placeholder="Username or email">
+        <input type="text" nbInput [(ngModel)]="username" placeholder="Username">
       </nb-form-field>
       <nb-form-field>
-        <input [type]="getInputType()" nbInput placeholder="Password">
+        <input [type]="getInputType()" nbInput [(ngModel)]="password" placeholder="Password">
         <button fullWidth="true" nbSuffix nbButton ghost (click)="toggleShowPassword()">
           <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
                     pack="eva"
@@ -16,7 +16,7 @@
           </nb-icon>
         </button>
       </nb-form-field>
-      <button nbButton fullWidth="true" (click)="login()">Login</button>
+      <button nbButton [disabled]="username==null || password==null" fullWidth="true" (click)="login()">Login</button>
       <button nbButton fullWidth="true" (click)="navigateToRegister()">Register</button>
     </nb-card-body>
   </nb-card>

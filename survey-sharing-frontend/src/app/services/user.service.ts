@@ -13,7 +13,7 @@ export class UserService{
   constructor(private http:HttpClient) { }
 
   // POST
-
+  // Deprecated
   public createUser(username: string, email: string, name: string, surname: string, age: string, gender: string, country: string){
     return this.http.post<ResponseMessage>(this.base_url+'?username='+username+'&email='+email+'&name='+name+'&surname='+surname+'&age='+age+'&gender='+gender+'&country='+country,null);
   }

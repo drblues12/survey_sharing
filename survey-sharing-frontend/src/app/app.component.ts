@@ -22,8 +22,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class AppComponent implements OnInit {
 
-  //public username: string = 'dr.blues.__';
-  public username: string = 'carmgug';
+  public username: string = 'dr.blues.__';
+  //public username: string = 'carmgug';
   user!: User;
   createdSurveys: Survey[] = [];
   answers: {answer: Answer, surveyOwner: User}[] = [];
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkLogin();
+    //this.checkLogin();
     this.themeCheck();
     this.userService.findUsersByUsername(this.username).subscribe(responseMessage => {
       this.user = responseMessage.object[0];
@@ -255,8 +255,8 @@ export class AppComponent implements OnInit {
   }
 
   logout(){
-    localStorage.setItem('loggedIn', 'false');
-    this.navigate('login', null);
+    //localStorage.setItem('loggedIn', 'false');
+    //this.navigate('login', null);
   }
 
 }
