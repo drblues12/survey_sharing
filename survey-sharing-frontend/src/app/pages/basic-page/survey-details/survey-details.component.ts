@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NbWindowService } from '@nebular/theme';
-import { AppComponent } from 'src/app/app.component';
 import { Invitation } from 'src/app/entities/invitation';
 import { Option } from 'src/app/entities/option';
 import { MultipleChoiceQuestion, Question } from 'src/app/entities/question';
 import { Survey } from 'src/app/entities/survey';
 import { User } from 'src/app/entities/user';
 import { InvitationComponent } from '../invitation/invitation.component';
-import { SupportService } from 'src/app/support/support.service';
+import { SupportService } from 'src/app/services/support.service';
 import { Answer } from 'src/app/entities/answer';
 import { Statistics } from 'src/app/entities/statistics';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-survey-details',
@@ -29,24 +29,24 @@ export class SurveyDetailsComponent implements OnInit {
   statistics!: Statistics;
   nullVariable: null = null;
 
-  constructor(public appComponent: AppComponent, private route: ActivatedRoute,
+  constructor(public globalService: GlobalService, private route: ActivatedRoute,
               private windowService: NbWindowService, private supportService: SupportService) {}
 
   ngOnInit(): void {
-    this.appComponent.reloadWindow();
+    this.globalService.reloadWindow();
     var surveyTitle = this.route.snapshot.paramMap.get('surveyTitle');
     if(surveyTitle!=null){
-      this.appComponent.surveyService.findSurveyByTitle(surveyTitle, true).subscribe(responseMessage => {
+      this.globalService.surveyService.findSurveyByTitle(surveyTitle, true).subscribe(responseMessage => {
         if(responseMessage.object!=null){
           this.survey = responseMessage.object;
-          this.appComponent.userService.findUsersByUsername(this.survey.owner).subscribe(responseMessage2 => {
+          this.globalService.userService.findUsersByUsername(this.survey.owner).subscribe(responseMessage2 => {
             if(responseMessage2.object!=null && responseMessage2.object.length>0)
               this.ownerDetails = responseMessage2.object[0];
             else
               alert(responseMessage.message);
           })
           this.survey.questions.forEach(q => {
-            this.appComponent.questionService.findQuestionById(q).subscribe(responseMessage2 => {
+            this.globalService.questionService.findQuestionById(q).subscribe(responseMessage2 => {
               if(responseMessage2.object!=null && !this.questions.find(x => x.id==q)){
                 this.questions.push({ id: q, question: responseMessage2.object });
                 this.questions.sort((x,y) => {
@@ -60,30 +60,30 @@ export class SurveyDetailsComponent implements OnInit {
             })
           })
           this.survey.invitations.forEach(i => {
-            this.appComponent.invitationService.findInvitationById(i).subscribe(responseMessage2 => {
+            this.globalService.invitationService.findInvitationById(i).subscribe(responseMessage2 => {
               if(responseMessage2.object!=null && !this.invitations.find(x => x.id==i)){
-                this.appComponent.userService.findUsersByUsername(responseMessage2.object.user).subscribe(responseMessage3 => {
+                this.globalService.userService.findUsersByUsername(responseMessage2.object.user).subscribe(responseMessage3 => {
                   if(responseMessage3.object!=null && responseMessage3.object.length>0){
                     this.invitations.push({ id: i, invitation: responseMessage2.object, recipient: responseMessage3.object[0] });
-                    this.invitations.sort((i1, i2) => { return this.appComponent.compareInvitations(i2.invitation, i1.invitation) });
+                    this.invitations.sort((i1, i2) => { return this.globalService.compareDates(i2.invitation.invitationDate, i1.invitation.invitationDate) });
                   }
                 })
               }
             })
           })
           this.survey.answers.forEach(a => {
-            this.appComponent.answerService.findAnswerById(a).subscribe(responseMessage2 => {
+            this.globalService.answerService.findAnswerById(a).subscribe(responseMessage2 => {
               if(responseMessage2.object!=null){
                 const currAnswer: Answer = responseMessage2.object;
-                this.appComponent.userService.findUserByUsername(currAnswer.user).subscribe(responseMessage3 => {
+                this.globalService.userService.findUserByUsername(currAnswer.user).subscribe(responseMessage3 => {
                   if(responseMessage3.object!=null){
                     const currUser: User = responseMessage3.object;
                     this.answers.push({id: currAnswer.id, answer: currAnswer, user: currUser});
-                    this.answers.sort((a1, a2) => { return this.appComponent.compareAnswers(a1.answer, a2.answer) });
+                    this.answers.sort((a1, a2) => { return this.globalService.compareDates(a1.answer.answerDate, a2.answer.answerDate) });
                   }
                 })
                 currAnswer.questions.forEach(q => {
-                  this.appComponent.questionService.findQuestionById(q).subscribe(responseMessage3 => {
+                  this.globalService.questionService.findQuestionById(q).subscribe(responseMessage3 => {
                     if(responseMessage3.object!=null && this.isMultipleChoice(responseMessage3.object)){
                       const currQuestion: Question = responseMessage3.object;
                       const currOptions: Option[] | null = this.getOptions(currQuestion);
@@ -110,7 +110,7 @@ export class SurveyDetailsComponent implements OnInit {
               }
             })
           })
-          this.appComponent.statisticsService.computeStatistics(this.appComponent.getUser().username, this.survey.title).subscribe(responseMessage2 => {
+          this.globalService.statisticsService.computeStatistics(this.globalService.getUser().username, this.survey.title).subscribe(responseMessage2 => {
             if(responseMessage2.object){
               this.statistics = responseMessage2.object;
             }
@@ -168,21 +168,21 @@ export class SurveyDetailsComponent implements OnInit {
   }
 
   closeSurvey(surveyTitle: string){
-    this.appComponent.surveyService.closeSurvey(surveyTitle).subscribe(responseMessage => {
+    this.globalService.surveyService.closeSurvey(surveyTitle).subscribe(responseMessage => {
       alert(responseMessage.message);
       window.location.reload();
     })
   }
 
   deleteSurvey(surveyTitle: string){
-    this.appComponent.surveyService.deleteCreatedSurvey(this.appComponent.user.username, surveyTitle).subscribe(responseMessage => {
+    this.globalService.surveyService.deleteCreatedSurvey(this.globalService.user.username, surveyTitle).subscribe(responseMessage => {
       alert(responseMessage.message);
-      this.appComponent.navigate('user', null);
+      this.globalService.navigate('user', null);
     })
   }
 
   goToAnswerSummaryPage(answer: Answer){
-    this.appComponent.navigate('answer-summary', answer.id);
+    this.globalService.navigate('answer-summary', answer.id);
   }
 
   getInvitationAcceptedIcon(invitation: Invitation){
@@ -209,13 +209,13 @@ export class SurveyDetailsComponent implements OnInit {
 
   openInvitationWindow(){
     this.supportService.surveyTitle = this.survey.title;
-    this.supportService.username = this.appComponent.getUser().username;
+    this.supportService.username = this.globalService.getUser().username;
     this.windowService.open(InvitationComponent,
       { title: 'Invite other users to answer your survey', windowClass: 'custom-window' });
   }
 
   deleteInvitation(invitation: string){
-    this.appComponent.invitationService.deleteInvitation(this.appComponent.getUser().username, invitation).subscribe(ResponseMessage => {
+    this.globalService.invitationService.deleteInvitation(this.globalService.getUser().username, invitation).subscribe(ResponseMessage => {
       alert(ResponseMessage.message);
       window.location.reload();
     })
@@ -337,15 +337,15 @@ export class SurveyDetailsComponent implements OnInit {
   getAnswersTimeAxis(): string[] {
     const surveyCreationDate: string[] = this.getSurvey().creationDate;
     const surveyClosingDate: string[] = this.getSurvey().closingDate;
-    const t_0: string = this.appComponent.getParsedDate(surveyCreationDate)+"\n"+this.appComponent.getParsedHour(surveyCreationDate);
+    const t_0: string = this.globalService.getParsedDate(surveyCreationDate)+"\n"+this.globalService.getParsedHour(surveyCreationDate);
     var result: string[] = [t_0];
     this.answers.forEach(a => {
       const answerDate: string[] = a.answer.answerDate;
-      const t_i: string = this.appComponent.getParsedDate(answerDate)+"\n"+this.appComponent.getParsedHour(answerDate);
+      const t_i: string = this.globalService.getParsedDate(answerDate)+"\n"+this.globalService.getParsedHour(answerDate);
       result.push(t_i);
     })
     if(surveyClosingDate!=null){
-      const t_end: string = this.appComponent.getParsedDate(surveyClosingDate)+"\n"+this.appComponent.getParsedHour(surveyClosingDate);
+      const t_end: string = this.globalService.getParsedDate(surveyClosingDate)+"\n"+this.globalService.getParsedHour(surveyClosingDate);
       result.push(t_end);
     }
     return result;

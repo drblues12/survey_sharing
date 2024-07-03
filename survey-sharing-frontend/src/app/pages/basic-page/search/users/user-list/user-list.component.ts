@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AppComponent } from 'src/app/app.component';
 import { User } from 'src/app/entities/user';
-import { UserService } from 'src/app/services/user.service';
-import { ResponseMessage } from 'src/app/support/response-message';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-user-list',
@@ -16,30 +12,29 @@ export class UserListComponent implements OnInit {
   private query!: string;
   public search_results: User[] = [];
 
-  constructor(private appComponent: AppComponent,
-              private router: Router) {
-    this.query = this.appComponent.query;
+  constructor(public globalService: GlobalService) {
+    this.query = this.globalService.query;
   }
 
   ngOnInit(): void {
-    this.appComponent.reloadWindow();
+    this.globalService.reloadWindow();
     this.search_results = [];
     if(this.query===""){
-      this.appComponent.userService.findAllUsers().subscribe(responseMessage => {
+      this.globalService.userService.findAllUsers().subscribe(responseMessage => {
         this.search_results = responseMessage.object
         if(this.search_results.length==0) alert (responseMessage.message);
         else{
-          const indexToRemove: number = this.search_results.findIndex(x => x.username==this.appComponent.getUser().username);
+          const indexToRemove: number = this.search_results.findIndex(x => x.username==this.globalService.getUser().username);
           this.search_results.splice(indexToRemove, 1);
         }
       })
     }
     else{
-      this.appComponent.userService.findUsersByNameAndSurname(this.query).subscribe(responseMessage => {
+      this.globalService.userService.findUsersByNameAndSurname(this.query).subscribe(responseMessage => {
         this.search_results = responseMessage.object;
         if(this.search_results.length==0) alert (responseMessage.message);
         else{
-          const indexToRemove: number = this.search_results.findIndex(x => x.username==this.appComponent.getUser().username);
+          const indexToRemove: number = this.search_results.findIndex(x => x.username==this.globalService.getUser().username);
           this.search_results.splice(indexToRemove, 1);
         }
       })
@@ -47,7 +42,7 @@ export class UserListComponent implements OnInit {
   }
 
   goToSingleUserPage(username: string): void{
-    this.appComponent.navigate('search/users/single-user', username);
+    this.globalService.navigate('search/users/single-user', username);
   }
 
 }

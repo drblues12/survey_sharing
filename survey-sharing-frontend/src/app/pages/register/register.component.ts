@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbTrigger } from '@nebular/theme';
-import { AppComponent } from 'src/app/app.component';
-import { SupportService } from 'src/app/support/support.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-register',
@@ -31,7 +30,7 @@ export class RegisterComponent implements OnInit {
             country: {country: "", correct: undefined, error: ""}};
   tooltipTrigger: NbTrigger = NbTrigger.HOVER;
 
-  constructor(public appComponent: AppComponent) { }
+  constructor(public globalService: GlobalService) { }
 
   ngOnInit(): void {
   }
@@ -48,11 +47,11 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
-    this.appComponent.userService.createUser(this.fields.username.username, this.fields.email.email,
+    this.globalService.userService.createUser(this.fields.username.username, this.fields.email.email,
       this.fields.name.name, this.fields.surname.surname, this.fields.age.age+'', this.fields.gender.gender,
       this.fields.country.country).subscribe(responseMessage => {
         alert(responseMessage.message);
-        this.appComponent.navigate('login',null);
+        this.globalService.navigate('login',null);
     })
   }
 
@@ -68,7 +67,7 @@ export class RegisterComponent implements OnInit {
       this.fields.email.error = "Invalid email format";
       return;
     }
-    this.appComponent.userService.findUserByEmail(this.fields.email.email).subscribe(responseMessage => {
+    this.globalService.userService.findUserByEmail(this.fields.email.email).subscribe(responseMessage => {
       if(responseMessage.object!=null){
         this.fields.email.correct = false;
         this.fields.email.error = "Email already in use";
@@ -90,7 +89,7 @@ export class RegisterComponent implements OnInit {
       this.fields.username.error = "Username must be between 3 and 15 characters";
       return;
     }
-    this.appComponent.userService.findUserByUsername(this.fields.username.username).subscribe(responseMessage => {
+    this.globalService.userService.findUserByUsername(this.fields.username.username).subscribe(responseMessage => {
       if(responseMessage.object!=null){
         this.fields.username.correct = false;
         this.fields.username.error = "Username already in use";

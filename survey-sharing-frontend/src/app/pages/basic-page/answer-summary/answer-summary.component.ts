@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { AppComponent } from 'src/app/app.component';
 import { Answer } from 'src/app/entities/answer';
 import { Image } from 'src/app/entities/image';
 import { Option } from 'src/app/entities/option';
 import { ImageQuestion, MultipleChoiceQuestion, OpenEndedQuestion, Question } from 'src/app/entities/question';
 import { Survey } from 'src/app/entities/survey';
 import { User } from 'src/app/entities/user';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-answer-summary',
@@ -22,25 +22,25 @@ export class AnswerSummaryComponent implements OnInit {
   questions: {question: Question, answer: string}[] = [];
   images: {id: string, image: Image, src: SafeUrl}[] = [];
 
-  constructor(private appComponent: AppComponent, private route: ActivatedRoute) { }
+  constructor(private globalService: GlobalService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     var answer_id = this.route.snapshot.paramMap.get('answer_id');
     if(answer_id!=null){
-      this.appComponent.answerService.findAnswerById(answer_id).subscribe(responseMessage => {
+      this.globalService.answerService.findAnswerById(answer_id).subscribe(responseMessage => {
         if(responseMessage.object!=null){
           this.answer = responseMessage.object;
-          this.appComponent.surveyService.findSurveyByTitle(this.answer.survey, true).subscribe(responseMessage2 => {
+          this.globalService.surveyService.findSurveyByTitle(this.answer.survey, true).subscribe(responseMessage2 => {
             if(responseMessage2.object!=null){
               this.survey = responseMessage2.object;
             }
           })
-          this.appComponent.userService.findUserByUsername(this.answer.user).subscribe(responseMessage2 => {
+          this.globalService.userService.findUserByUsername(this.answer.user).subscribe(responseMessage2 => {
             if(responseMessage2.object!=null)
               this.user = responseMessage2.object;
           })
           this.answer.questions.forEach(q => {
-            this.appComponent.questionService.findQuestionById(q).subscribe(responseMessage2 => {
+            this.globalService.questionService.findQuestionById(q).subscribe(responseMessage2 => {
               if(responseMessage2.object!=null){
                 const currQuestion: Question = responseMessage2.object;
                 var answer: string = "";
@@ -57,19 +57,19 @@ export class AnswerSummaryComponent implements OnInit {
                 if(this.isImage(currQuestion)){
                   const iq: ImageQuestion = currQuestion as ImageQuestion;
                   answer = iq.image;
-                  this.appComponent.imageService.findImageById(iq.image).subscribe(responseMessage3 => {
+                  this.globalService.imageService.findImageById(iq.image).subscribe(responseMessage3 => {
                     if(responseMessage3.object!=null){
                       const image: Image = responseMessage3.object;
-                      const mimeType = this.appComponent.getImageMimeType(image.fileName);
+                      const mimeType = this.globalService.getImageMimeType(image.fileName);
                       const blob = new Blob([new Uint8Array(image.image)], { type: mimeType });
                       const imageUrl = URL.createObjectURL(blob);
-                      const sanitizedImageUrl = this.appComponent.sanitizer.bypassSecurityTrustUrl(imageUrl);
+                      const sanitizedImageUrl = this.globalService.sanitizer.bypassSecurityTrustUrl(imageUrl);
                       this.images.push({id: image.id, image: image, src: sanitizedImageUrl});
                     }
                   })
                 }
                 this.questions.push({question: currQuestion, answer: answer});
-                this.questions.sort((q1, q2) => this.appComponent.compareQuestions(q1.question, q2.question));
+                this.questions.sort((q1, q2) => this.globalService.compareDates(q1.question.questionDate, q2.question.questionDate));
               }
             })
           })

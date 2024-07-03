@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { NbWindowService } from '@nebular/theme';
-import { AppComponent } from 'src/app/app.component';
 import { Answer } from 'src/app/entities/answer';
 import { Image } from 'src/app/entities/image';
 import { Option } from 'src/app/entities/option';
 import { ImageQuestion, MultipleChoiceQuestion, OpenEndedQuestion, Question } from 'src/app/entities/question';
 import { Survey } from 'src/app/entities/survey';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-answer',
@@ -25,18 +24,18 @@ export class AnswerComponent implements OnInit {
   feedback: string = "";
   nextIndex: number = 0;
 
-  constructor(private appComponent: AppComponent, private route: ActivatedRoute) { }
+  constructor(private globalService: GlobalService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.appComponent.reloadWindow();
+    this.globalService.reloadWindow();
     var surveyTitle = this.route.snapshot.paramMap.get('surveyTitle');
     if(surveyTitle!=null){
-      this.appComponent.surveyService.findSurveyByTitle(surveyTitle, false).subscribe(responseMessage => {
+      this.globalService.surveyService.findSurveyByTitle(surveyTitle, false).subscribe(responseMessage => {
         if(responseMessage.object!=null){
           this.survey = responseMessage.object;
-          this.answer = new Answer(this.appComponent.user.username, this.survey.title);
+          this.answer = new Answer(this.globalService.user.username, this.survey.title);
           this.survey.questions.forEach(q => {
-            this.appComponent.questionService.findQuestionById(q).subscribe(responseMessage2 => {
+            this.globalService.questionService.findQuestionById(q).subscribe(responseMessage2 => {
               if(responseMessage2.object!=null){
                 if(this.isMultipleChoice(responseMessage2.object)){
                   var newQ: MultipleChoiceQuestion = new MultipleChoiceQuestion();
@@ -59,7 +58,7 @@ export class AnswerComponent implements OnInit {
                   newQ3.setQuestionDate(responseMessage2.object.questionDate);
                   this.questions.push({id: this.generateId(), question: newQ3, answer: ""});
                 }
-                this.questions.sort((q1, q2) => this.appComponent.compareQuestions(q1.question, q2.question));
+                this.questions.sort((q1, q2) => this.globalService.compareDates(q1.question.questionDate, q2.question.questionDate));
               }
             })
           })
@@ -133,16 +132,16 @@ export class AnswerComponent implements OnInit {
       (async() => {
         try{
           const byteArray = await fileToByteArray();
-          this.appComponent.imageService.uploadImage(byteArray, file.name).subscribe(responseMessage => {
+          this.globalService.imageService.uploadImage(byteArray, file.name).subscribe(responseMessage => {
             if(responseMessage.object!=null){
               const image: Image = responseMessage.object;
               var index: number = this.questions.findIndex(q => q.id==questionId);
               if(index!=-1){
                 this.questions[index].answer = image.id;
-                const mimeType = this.appComponent.getImageMimeType(image.fileName);
+                const mimeType = this.globalService.getImageMimeType(image.fileName);
                 const blob = new Blob([new Uint8Array(byteArray)], { type: mimeType });
                 const imageUrl = URL.createObjectURL(blob);
-                const sanitizedImageUrl = this.appComponent.sanitizer.bypassSecurityTrustUrl(imageUrl);
+                const sanitizedImageUrl = this.globalService.sanitizer.bypassSecurityTrustUrl(imageUrl);
                 this.images.push({id: image.id, image: image, src: sanitizedImageUrl});
                 alert("Image uploaded");
               }
@@ -187,9 +186,9 @@ export class AnswerComponent implements OnInit {
       ...q,
       '@type': q.type
     })))
-    this.appComponent.answerService.createAnswer(this.appComponent.user.username, this.getSurvey().title, this.rating, this.feedback, jsonObj).subscribe(responseMessage => {
+    this.globalService.answerService.createAnswer(this.globalService.user.username, this.getSurvey().title, this.rating, this.feedback, jsonObj).subscribe(responseMessage => {
       alert(responseMessage.message);
-      this.appComponent.navigate('answer-details', this.getSurvey().title);
+      this.globalService.navigate('answer-details', this.getSurvey().title);
     })
   }
 

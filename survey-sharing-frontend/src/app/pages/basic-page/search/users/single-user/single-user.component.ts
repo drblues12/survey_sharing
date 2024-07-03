@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AppComponent } from 'src/app/app.component';
 import { Survey } from 'src/app/entities/survey';
 import { User } from 'src/app/entities/user';
-import { SurveyService } from 'src/app/services/survey.service';
-import { UserService } from 'src/app/services/user.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-single-user',
@@ -13,16 +11,16 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class SingleUserComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, public appComponent: AppComponent) { }
+  constructor(private route: ActivatedRoute, public globalService: GlobalService) { }
 
   user!: User;
   createdSurveys: Survey[] = [];
 
   ngOnInit(): void{
-    this.appComponent.reloadWindow();
+    this.globalService.reloadWindow();
     var username = this.route.snapshot.paramMap.get('username');
     if(username!=null){
-      this.appComponent.userService.findUsersByUsername(username).subscribe(responseMessage => {
+      this.globalService.userService.findUsersByUsername(username).subscribe(responseMessage => {
         this.user = responseMessage.object[0];
         this.findSurveys();
       });
@@ -33,7 +31,7 @@ export class SingleUserComponent implements OnInit {
   }
 
   findSurveys(){
-    this.appComponent.surveyService.findAllSurveysByOwner(this.user.username, false).subscribe(responseMessage => {
+    this.globalService.surveyService.findAllSurveysByOwner(this.user.username, false).subscribe(responseMessage => {
       var search_results: Survey[] = responseMessage.object;
       if(search_results.length==0) alert (responseMessage.message);
       this.createdSurveys = search_results;
@@ -41,7 +39,7 @@ export class SingleUserComponent implements OnInit {
   }
 
   surveyAlreadyAnswered(surveyTitle: string): boolean {
-    return this.appComponent.answers.find(a => a.answer.survey==surveyTitle)!=undefined;
+    return this.globalService.answers.find(a => a.answer.survey==surveyTitle)!=undefined;
   }
 
 }

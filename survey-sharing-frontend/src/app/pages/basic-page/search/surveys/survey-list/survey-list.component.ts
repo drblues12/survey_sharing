@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AppComponent } from 'src/app/app.component';
 import { Survey } from 'src/app/entities/survey';
 import { User } from 'src/app/entities/user';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-survey-list',
@@ -14,15 +14,15 @@ export class SurveyListComponent implements OnInit {
   public search_results: Survey[] = [];
   public owners_details: Map<string, User> = new Map<string, User>();
 
-  constructor(public appComponent: AppComponent) {
-    this.query = appComponent.query;
+  constructor(public globalService: GlobalService) {
+    this.query = globalService.query;
   }
 
   ngOnInit(): void {
-    this.appComponent.reloadWindow();
+    this.globalService.reloadWindow();
     this.search_results = [];
     if(this.query===""){
-      this.appComponent.surveyService.findAllSurveys(false).subscribe(responseMessage => {
+      this.globalService.surveyService.findAllSurveys(false).subscribe(responseMessage => {
         this.search_results = responseMessage.object;
         if(this.search_results.length==0) alert (responseMessage.message);
         this.search_results.forEach(survey => {
@@ -31,7 +31,7 @@ export class SurveyListComponent implements OnInit {
       })
     }
     else{
-      this.appComponent.surveyService.findSurveysByTitle(this.query, false).subscribe(responseMessage => {
+      this.globalService.surveyService.findSurveysByTitle(this.query, false).subscribe(responseMessage => {
         this.search_results = responseMessage.object;
         if(this.search_results.length==0) alert (responseMessage.message);
         this.search_results.forEach(survey => {
@@ -43,7 +43,7 @@ export class SurveyListComponent implements OnInit {
 
   findOwnerDetails(owner: string) {
     if(!this.owners_details.has(owner)){
-      this.appComponent.userService.findUsersByUsername(owner).subscribe(responseMessage => {
+      this.globalService.userService.findUsersByUsername(owner).subscribe(responseMessage => {
         if(responseMessage.object.length==0)
           alert (responseMessage.message);
         else
@@ -53,11 +53,11 @@ export class SurveyListComponent implements OnInit {
   }
 
   answerSurvey(survey: string){
-    this.appComponent.navigate('answer', survey);
+    this.globalService.navigate('answer', survey);
   }
 
   hasAnswered(survey: string): boolean {
-    return this.appComponent.getAnswers().find(a => a.answer.survey==survey)!=undefined;
+    return this.globalService.getAnswers().find(a => a.answer.survey==survey)!=undefined;
   }
 
   getTooltip(survey: string): string {

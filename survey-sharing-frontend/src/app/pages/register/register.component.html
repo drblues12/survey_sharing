@@ -1,53 +1,57 @@
-<div class="centered">
-  <nb-card>
-    <nb-card-header>
-      <h4>Register</h4>
-    </nb-card-header>
-    <!--
-    <input nbInput fullWidth [(ngModel)]="surveyTitle" (input)="onInputChange($event)"
-    [status]="getInputStatus(available)" [nbTooltip]="getInputTooltip(available)"
-    [nbTooltipStatus]="getInputStatus(available)" [nbTooltipIcon]="getTooltipIcon()"
-    [nbTooltipTrigger]="tooltipTrigger">
-    -->
-    <nb-card-body>
-      <nb-form-field>
-        <input nbInput type="text" placeholder="Email" [(ngModel)]="fields.email.email" (input)="onInputChangeEmail($event)"
-        [status]="getStatus(fields.email.correct)" [nbTooltip]="fields.email.error" [nbTooltipStatus]="getStatus(fields.email.correct)"
-        [nbTooltipIcon]="getTooltipIcon(fields.email.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.email.correct==undefined">
-        <input fullWidth="true" nbInput type="text" placeholder="Username" [(ngModel)]="fields.username.username"
-        (input)="onInputChangeUsername($event)" [status]="getStatus(fields.username.correct)" [nbTooltip]="fields.username.error" [nbTooltipStatus]="getStatus(fields.username.correct)"
-        [nbTooltipIcon]="getTooltipIcon(fields.username.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.username.correct==undefined">
-      </nb-form-field>
-      <nb-form-field>
-        <input [type]="getInputType()" nbInput placeholder="Password" [(ngModel)]="fields.password.password" (input)="onInputChangePassword($event)"
-        [status]="getStatus(fields.password.correct)" [nbTooltip]="fields.password.error" [nbTooltipStatus]="getStatus(fields.password.correct)"
-        [nbTooltipIcon]="getTooltipIcon(fields.password.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.password.correct==undefined">
-        <button fullWidth="true" nbSuffix nbButton ghost (click)="toggleShowPassword()">
-          <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
-                    pack="eva"
-                    [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
-          </nb-icon>
-        </button>
-      </nb-form-field>
-      <nb-form-field>
-        <input nbInput type="text" placeholder="Name" [(ngModel)]="fields.name.name" (input)="onInputChangeName($event)"
-        [status]="getStatus(fields.name.correct)" [nbTooltip]="fields.name.error" [nbTooltipStatus]="getStatus(fields.name.correct)"
-        [nbTooltipIcon]="getTooltipIcon(fields.name.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.name.correct==undefined">
-        <input nbInput type="text" placeholder="Surname" [(ngModel)]="fields.surname.surname" (input)="onInputChangeSurname($event)"
-        [status]="getStatus(fields.surname.correct)" [nbTooltip]="fields.surname.error" [nbTooltipStatus]="getStatus(fields.surname.correct)"
-        [nbTooltipIcon]="getTooltipIcon(fields.surname.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.surname.correct==undefined">
-        <input nbInput type="text" placeholder="Age" [(ngModel)]="fields.age.age" (input)="onInputChangeAge($event)"
-        [status]="getStatus(fields.age.correct)" [nbTooltip]="fields.age.error" [nbTooltipStatus]="getStatus(fields.age.correct)"
-        [nbTooltipIcon]="getTooltipIcon(fields.age.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.age.correct==undefined">
-        <nb-select placeholder="Gender" [(selected)]="fields.gender.gender">
-          <nb-option value="Male">Male</nb-option>
-          <nb-option value="Female">Female</nb-option>
-        </nb-select>
-        <nb-select placeholder="Country" [(selected)]="fields.country.country">
-          <nb-option *ngFor="let country of countries" [value]="country.name">{{country.name}}</nb-option>
-        </nb-select>
-      </nb-form-field>
-      <button (click)="register()" nbButton fullWidth="true">Register</button>
-    </nb-card-body>
-  </nb-card>
-</div>
+<nb-layout>
+  <nb-layout-column>
+    <div class="centered">
+      <nb-card>
+        <nb-card-header>
+          <h4>Register</h4>
+        </nb-card-header>
+        <!--
+        <input nbInput fullWidth [(ngModel)]="surveyTitle" (input)="onInputChange($event)"
+        [status]="getInputStatus(available)" [nbTooltip]="getInputTooltip(available)"
+        [nbTooltipStatus]="getInputStatus(available)" [nbTooltipIcon]="getTooltipIcon()"
+        [nbTooltipTrigger]="tooltipTrigger">
+        -->
+        <nb-card-body>
+          <nb-form-field>
+            <input nbInput type="text" placeholder="Email" [(ngModel)]="fields.email.email" (input)="onInputChangeEmail($event)"
+            [status]="getStatus(fields.email.correct)" [nbTooltip]="fields.email.error" [nbTooltipStatus]="getStatus(fields.email.correct)"
+            [nbTooltipIcon]="getTooltipIcon(fields.email.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.email.correct==undefined">
+            <input fullWidth="true" nbInput type="text" placeholder="Username" [(ngModel)]="fields.username.username"
+            (input)="onInputChangeUsername($event)" [status]="getStatus(fields.username.correct)" [nbTooltip]="fields.username.error" [nbTooltipStatus]="getStatus(fields.username.correct)"
+            [nbTooltipIcon]="getTooltipIcon(fields.username.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.username.correct==undefined">
+          </nb-form-field>
+          <nb-form-field>
+            <input [type]="getInputType()" nbInput placeholder="Password" [(ngModel)]="fields.password.password" (input)="onInputChangePassword($event)"
+            [status]="getStatus(fields.password.correct)" [nbTooltip]="fields.password.error" [nbTooltipStatus]="getStatus(fields.password.correct)"
+            [nbTooltipIcon]="getTooltipIcon(fields.password.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.password.correct==undefined">
+            <button fullWidth="true" nbSuffix nbButton ghost (click)="toggleShowPassword()">
+              <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
+                        pack="eva"
+                        [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+              </nb-icon>
+            </button>
+          </nb-form-field>
+          <nb-form-field>
+            <input nbInput type="text" placeholder="Name" [(ngModel)]="fields.name.name" (input)="onInputChangeName($event)"
+            [status]="getStatus(fields.name.correct)" [nbTooltip]="fields.name.error" [nbTooltipStatus]="getStatus(fields.name.correct)"
+            [nbTooltipIcon]="getTooltipIcon(fields.name.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.name.correct==undefined">
+            <input nbInput type="text" placeholder="Surname" [(ngModel)]="fields.surname.surname" (input)="onInputChangeSurname($event)"
+            [status]="getStatus(fields.surname.correct)" [nbTooltip]="fields.surname.error" [nbTooltipStatus]="getStatus(fields.surname.correct)"
+            [nbTooltipIcon]="getTooltipIcon(fields.surname.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.surname.correct==undefined">
+            <input nbInput type="text" placeholder="Age" [(ngModel)]="fields.age.age" (input)="onInputChangeAge($event)"
+            [status]="getStatus(fields.age.correct)" [nbTooltip]="fields.age.error" [nbTooltipStatus]="getStatus(fields.age.correct)"
+            [nbTooltipIcon]="getTooltipIcon(fields.age.correct)" [nbTooltipTrigger]="tooltipTrigger" [nbTooltipDisabled]="fields.age.correct==undefined">
+            <nb-select placeholder="Gender" [(selected)]="fields.gender.gender">
+              <nb-option value="Male">Male</nb-option>
+              <nb-option value="Female">Female</nb-option>
+            </nb-select>
+            <nb-select placeholder="Country" [(selected)]="fields.country.country">
+              <nb-option *ngFor="let country of countries" [value]="country.name">{{country.name}}</nb-option>
+            </nb-select>
+          </nb-form-field>
+          <button (click)="register()" nbButton fullWidth="true">Register</button>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-layout-column>
+</nb-layout>

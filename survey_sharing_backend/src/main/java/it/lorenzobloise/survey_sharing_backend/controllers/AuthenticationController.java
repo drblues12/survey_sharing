@@ -33,11 +33,11 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity authenticate(@RequestBody @Valid AuthenticationRequest request) {
-        try{
+        try {
             AuthenticationResponse result = authenticationService.authenticate(request);
             return new ResponseEntity(new ResponseMessage("User authenticated", result), HttpStatus.OK);
         }catch (RuntimeException e){
-            return new ResponseEntity(new ResponseMessage("Username or password incorrect", null), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(new ResponseMessage("Username or password incorrect", null), HttpStatus.OK);
         }
     }
 

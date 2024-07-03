@@ -38,7 +38,7 @@
                 <br>{{survey.creationDate[3]}}:{{survey.creationDate[4]}}:{{survey.creationDate[5]}}
               </div>
               <div class="item-button">
-                <div *ngIf="survey.owner!=appComponent.getUser().username">
+                <div *ngIf="survey.owner!=globalService.getUser().username">
                   <button nbButton disabled="{{hasAnswered(survey.title)}}" (click)="answerSurvey(survey.title)" [nbTooltip]="getTooltip(survey.title)"
                   [nbTooltipDisabled]="!hasAnswered(survey.title)">Answer</button>
                 </div>

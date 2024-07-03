@@ -7,25 +7,26 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbMenuModule, NbActionsModule, NbInputModule, NbCardModule, NbContextMenuModule, NbIconModule, NbSearchModule, NbSelectModule, NbToggleModule, NbButtonModule, NbFormFieldModule, NbStepperModule, NbListModule, NbUserModule, NbTabsetModule, NbBadgeModule, NbPopoverModule, NbPosition, NbRadioModule, NbTooltipModule, NbWindowModule, NbCheckboxModule, NbAccordionModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { LoginComponent } from './pages/login/login.component';
-import { UserComponent } from './pages/user/user.component';
-import { SurveyListComponent } from './pages/search/surveys/survey-list/survey-list.component';
-import { AnswerComponent } from './pages/search/surveys/answer/answer.component';
-import { UserListComponent } from './pages/search/users/user-list/user-list.component';
-import { CreateSurveyComponent } from './pages/create-survey/create-survey.component';
+import { UserComponent } from './pages/basic-page/user/user.component';
+import { SurveyListComponent } from './pages/basic-page/search/surveys/survey-list/survey-list.component';
+import { AnswerComponent } from './pages/basic-page/search/surveys/answer/answer.component';
+import { UserListComponent } from './pages/basic-page/search/users/user-list/user-list.component';
+import { CreateSurveyComponent } from './pages/basic-page/create-survey/create-survey.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { SingleUserComponent } from './pages/search/users/single-user/single-user.component';
-import { SurveyDetailsComponent } from './pages/survey-details/survey-details.component';
-import { InvitationComponent } from './pages/invitation/invitation.component';
-import { AnswerDetailsComponent } from './pages/answer-details/answer-details.component';
-import { AnswerSummaryComponent } from './pages/answer-summary/answer-summary.component';
+import { SingleUserComponent } from './pages/basic-page/search/users/single-user/single-user.component';
+import { SurveyDetailsComponent } from './pages/basic-page/survey-details/survey-details.component';
+import { InvitationComponent } from './pages/basic-page/invitation/invitation.component';
+import { AnswerDetailsComponent } from './pages/basic-page/answer-details/answer-details.component';
+import { AnswerSummaryComponent } from './pages/basic-page/answer-summary/answer-summary.component';
 import { NgbModule, NgbRatingModule } from '@ng-bootstrap/ng-bootstrap';
 import { RatingComponent } from './support/rating/rating.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { PieChartComponent } from './support/charts/pie-chart/pie-chart.component';
 import { BarChartComponent } from './support/charts/bar-chart/bar-chart.component';
 import { LineChartComponent } from './support/charts/line-chart/line-chart.component';
+import { BasicPageComponent } from './pages/basic-page/basic-page.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { LineChartComponent } from './support/charts/line-chart/line-chart.compo
     PieChartComponent,
     BarChartComponent,
     LineChartComponent,
+    BasicPageComponent,
   ],
   imports: [
     BrowserModule,

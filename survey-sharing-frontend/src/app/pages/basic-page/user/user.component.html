@@ -2,35 +2,23 @@
   <nb-layout-column>
     <nb-card>
       <nb-card-header>
-        <h1>{{appComponent.getUser().firstname}} {{appComponent.getUser().lastname}}</h1>
+        <h1>{{globalService.getUser().firstname}} {{globalService.getUser().lastname}}</h1>
       </nb-card-header>
       <nb-card-body>
         <nb-card>
           <nb-card-header>
             <h4>Information</h4>
+            <button nbButton (click)="debug()">Debug</button>
           </nb-card-header>
           <nb-card-body>
             <nb-list>
               <nb-list-item>
                 <div class="item-container">
                   <div class="item-1">
-                    <b>Name</b>: {{appComponent.getUser().firstname}}
+                    <b>Name</b>: {{globalService.getUser().firstname}}
                   </div>
                   <div class="item-1">
-                    <b>Surname</b>: {{appComponent.getUser().lastname}}
-                  </div>
-                  <div class="item-1"></div>
-                  <div class="item-1"></div>
-                  <div class="item-1"></div>
-                </div>
-              </nb-list-item>
-              <nb-list-item>
-                <div class="item-container">
-                  <div class="item-1">
-                    <b>Username</b>: {{appComponent.getUser().username}}
-                  </div>
-                  <div class="item-1">
-                    <b>Email</b>: {{appComponent.getUser().email}}
+                    <b>Surname</b>: {{globalService.getUser().lastname}}
                   </div>
                   <div class="item-1"></div>
                   <div class="item-1"></div>
@@ -40,10 +28,23 @@
               <nb-list-item>
                 <div class="item-container">
                   <div class="item-1">
-                    <b>Age</b>: {{appComponent.getUser().age}}
+                    <b>Username</b>: {{globalService.getUser().username}}
                   </div>
                   <div class="item-1">
-                    <b>Gender</b>: {{appComponent.getUser().gender}}
+                    <b>Email</b>: {{globalService.getUser().email}}
+                  </div>
+                  <div class="item-1"></div>
+                  <div class="item-1"></div>
+                  <div class="item-1"></div>
+                </div>
+              </nb-list-item>
+              <nb-list-item>
+                <div class="item-container">
+                  <div class="item-1">
+                    <b>Age</b>: {{globalService.getUser().age}}
+                  </div>
+                  <div class="item-1">
+                    <b>Gender</b>: {{globalService.getUser().gender}}
                   </div>
                   <div class="item-1"></div>
                   <div class="item-1"></div>
@@ -52,14 +53,14 @@
               </nb-list-item>
               <nb-list-item>
                 <div class="item-1">
-                  <b>Country</b>: {{appComponent.getUser().country}}
+                  <b>Country</b>: {{globalService.getUser().country}}
                 </div>
                 <div class="item-left">
                   <b>Registered since</b>:
                 </div>
                 <div class="item-left">
-                  {{appComponent.getUser().registrationDate[0]}}/{{appComponent.getUser().registrationDate[1]}}/{{appComponent.getUser().registrationDate[2]}}
-                  <br>{{appComponent.getUser().registrationDate[3]}}:{{appComponent.getUser().registrationDate[4]}}:{{appComponent.getUser().registrationDate[5]}}
+                  {{globalService.getParsedDate(globalService.getUser().registrationDate)}}
+                  <br>{{globalService.getParsedHour(globalService.getUser().registrationDate)}}
                 </div>
                 <div class="item-1"></div>
                 <div class="item-1"></div>
@@ -90,14 +91,14 @@
                     <div class="item-3"></div>
                   </div>
                 </nb-list-item>
-                <nb-list-item *ngFor="let survey of appComponent.getCreatedSurveys()">
+                <nb-list-item *ngFor="let survey of globalService.getCreatedSurveys()">
                   <div class="item-container">
                     <div class="item-1">
                       {{survey.title}}
                     </div>
                     <div class="item-1">
-                      {{appComponent.getParsedDate(survey.creationDate)}}
-                      <br>{{appComponent.getParsedHour(survey.creationDate)}}
+                      {{globalService.getParsedDate(survey.creationDate)}}
+                      <br>{{globalService.getParsedHour(survey.creationDate)}}
                     </div>
                     <div class="item-2">
                       <app-rating [averageRating]="getAverageRating(survey.title)"></app-rating>
@@ -133,7 +134,7 @@
                     <div class="item-3"></div>
                   </div>
                 </nb-list-item>
-                <nb-list-item *ngFor="let answer of appComponent.getAnswers()">
+                <nb-list-item *ngFor="let answer of globalService.getAnswers()">
                   <div class="item-container">
                     <div class="item-1">
                       {{answer.answer.survey}}
@@ -142,8 +143,8 @@
                       <nb-user name="{{answer.surveyOwner.firstname}} {{answer.surveyOwner.lastname}}" title="{{answer.surveyOwner.username}}"></nb-user>
                     </div>
                     <div class="item-2">
-                      {{appComponent.getParsedDate(answer.answer.answerDate)}}
-                      <br>{{appComponent.getParsedHour(answer.answer.answerDate)}}
+                      {{globalService.getParsedDate(answer.answer.answerDate)}}
+                      <br>{{globalService.getParsedHour(answer.answer.answerDate)}}
                     </div>
                     <div class="item-3">
                       <button nbButton (click)="goToAnswerDetailsPage(answer.answer.survey)">Details<nb-icon icon="file-text"></nb-icon></button>
@@ -178,7 +179,7 @@
                     <div class="item-3"></div>
                   </div>
                 </nb-list-item>
-                <nb-list-item *ngFor="let invitation of appComponent.getInvitations()">
+                <nb-list-item *ngFor="let invitation of globalService.getInvitations()">
                   <div class="item-container">
                     <div class="item-1">
                       {{invitation.invitation.survey}}
@@ -187,8 +188,8 @@
                       <nb-user name="{{invitation.surveyOwner.firstname}} {{invitation.surveyOwner.lastname}}" title="{{invitation.surveyOwner.username}}"></nb-user>
                     </div>
                     <div class="item-2">
-                      {{appComponent.getParsedDate(invitation.invitation.invitationDate)}}
-                      <br>{{appComponent.getParsedHour(invitation.invitation.invitationDate)}}
+                      {{globalService.getParsedDate(invitation.invitation.invitationDate)}}
+                      <br>{{globalService.getParsedHour(invitation.invitation.invitationDate)}}
                     </div>
                     <div class="item-2">
                       {{invitation.invitation.message}}

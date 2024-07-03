@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { SafeUrl } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { AppComponent } from 'src/app/app.component';
 import { Answer } from 'src/app/entities/answer';
 import { Image } from 'src/app/entities/image';
 import { Option } from 'src/app/entities/option';
 import { ImageQuestion, MultipleChoiceQuestion, OpenEndedQuestion, Question } from 'src/app/entities/question';
 import { Survey } from 'src/app/entities/survey';
 import { User } from 'src/app/entities/user';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-answer-details',
@@ -22,17 +22,17 @@ export class AnswerDetailsComponent implements OnInit {
   questions: {question: Question, answer: string}[] = [];
   images: {id: string, image: Image, src: SafeUrl}[] = [];
 
-  constructor(private appComponent: AppComponent, private route: ActivatedRoute) { }
+  constructor(private globalService: GlobalService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.appComponent.reloadWindow();
+    this.globalService.reloadWindow();
     var surveyTitle = this.route.snapshot.paramMap.get('surveyTitle');
     if(surveyTitle!=null){
-      this.appComponent.answerService.findAnswersBySurveyTitle(this.appComponent.username, surveyTitle).subscribe(responseMessage => {
+      this.globalService.answerService.findAnswersBySurveyTitle(this.globalService.username, surveyTitle).subscribe(responseMessage => {
         if(responseMessage.object!=null && responseMessage.object.length>0){
           this.answer = responseMessage.object[0];
           this.answer.questions.forEach(q => {
-            this.appComponent.questionService.findQuestionById(q).subscribe(responseMessage2 => {
+            this.globalService.questionService.findQuestionById(q).subscribe(responseMessage2 => {
               if(responseMessage2.object!=null){
                 var currQuestion: Question = responseMessage2.object;
                 var answer: string = "";
@@ -49,14 +49,14 @@ export class AnswerDetailsComponent implements OnInit {
                 if(this.isImage(currQuestion)){
                   const iq: ImageQuestion = currQuestion as ImageQuestion;
                   answer = iq.image;
-                  this.appComponent.imageService.findImageById(answer).subscribe(responseMessage3 => {
+                  this.globalService.imageService.findImageById(answer).subscribe(responseMessage3 => {
                     if(responseMessage3.object){
                       const byteArray: number[] = responseMessage3.object.image;
                       try{
-                        const mimeType = this.appComponent.getImageMimeType(responseMessage3.object.fileName);
+                        const mimeType = this.globalService.getImageMimeType(responseMessage3.object.fileName);
                         const blob = new Blob([new Uint8Array(byteArray)], { type: mimeType });
                         const imageUrl = URL.createObjectURL(blob);
-                        const sanitizedImageUrl = this.appComponent.sanitizer.bypassSecurityTrustUrl(imageUrl);
+                        const sanitizedImageUrl = this.globalService.sanitizer.bypassSecurityTrustUrl(imageUrl);
                         this.images.push({id: answer, image: responseMessage3.object, src: sanitizedImageUrl});
                       }catch(e){
                         console.error(e);
@@ -65,16 +65,16 @@ export class AnswerDetailsComponent implements OnInit {
                   })
                 }
                 this.questions.push({question: currQuestion, answer: answer});
-                this.questions.sort((q1, q2) => this.appComponent.compareQuestions(q1.question,q2.question));
+                this.questions.sort((q1, q2) => this.globalService.compareDates(q1.question.questionDate,q2.question.questionDate));
               }
             })
           })
         }
       })
-      this.appComponent.surveyService.findSurveyByTitle(surveyTitle, true).subscribe(responseMessage => {
+      this.globalService.surveyService.findSurveyByTitle(surveyTitle, true).subscribe(responseMessage => {
         if(responseMessage.object!=null){
           this.survey = responseMessage.object;
-          this.appComponent.userService.findUserByUsername(this.survey.owner).subscribe(responseMessage2 => {
+          this.globalService.userService.findUserByUsername(this.survey.owner).subscribe(responseMessage2 => {
             if(responseMessage2.object!=null)
               this.surveyOwner = responseMessage2.object;
           })
@@ -102,9 +102,9 @@ export class AnswerDetailsComponent implements OnInit {
   }
 
   deleteAnswer(answer: string){
-    this.appComponent.answerService.deleteAnswer(this.appComponent.getUser().username, answer).subscribe(responseMessage => {
+    this.globalService.answerService.deleteAnswer(this.globalService.getUser().username, answer).subscribe(responseMessage => {
       alert(responseMessage.message);
-      this.appComponent.navigate('user', null);
+      this.globalService.navigate('user', null);
     })
   }
 

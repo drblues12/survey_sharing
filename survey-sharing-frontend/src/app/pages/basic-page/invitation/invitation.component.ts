@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AppComponent } from 'src/app/app.component';
 import { Invitation } from 'src/app/entities/invitation';
 import { User } from 'src/app/entities/user';
 import { InvitationService } from 'src/app/services/invitation.service';
 import { UserService } from 'src/app/services/user.service';
-import { SupportService } from 'src/app/support/support.service';
+import { SupportService } from 'src/app/services/support.service';
 
 @Component({
   selector: 'app-invitation',
@@ -18,6 +17,7 @@ export class InvitationComponent implements OnInit {
   users: {invited: boolean, user: User}[] = []
   message: string = "";
 
+  //TODO: delete all these services from the constructor and use only globalService
   constructor(private userService: UserService, private invitationService: InvitationService,
               private supportService: SupportService) {
     this.surveyTitle = this.supportService.surveyTitle;

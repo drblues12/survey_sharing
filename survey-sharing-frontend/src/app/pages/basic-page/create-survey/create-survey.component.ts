@@ -1,11 +1,9 @@
-import { Component, OnInit, QueryList, TemplateRef, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
-import { AppComponent } from 'src/app/app.component';
-import { NbMenuService, NbPopoverDirective, NbPosition, NbTrigger } from '@nebular/theme';
+import { Component, OnInit } from '@angular/core';
+import { NbMenuService, NbTrigger } from '@nebular/theme';
 import { filter, map } from 'rxjs/operators';
 import { ImageQuestion, MultipleChoiceQuestion, OpenEndedQuestion, Question } from 'src/app/entities/question';
 import { Option } from 'src/app/entities/option';
-import { Survey } from 'src/app/entities/survey';
-import { Router } from '@angular/router';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-create-survey',
@@ -14,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class CreateSurveyComponent implements OnInit {
 
-  constructor(private appComponent: AppComponent, private nbMenuService: NbMenuService, private router: Router) { }
+  constructor(private globalService: GlobalService, private nbMenuService: NbMenuService) { }
 
   surveyTitle: string = '';
   available: boolean | undefined = undefined;
@@ -34,7 +32,7 @@ export class CreateSurveyComponent implements OnInit {
   tooltipTrigger: NbTrigger = NbTrigger.HOVER;
 
   ngOnInit(): void {
-    this.appComponent.reloadWindow();
+    this.globalService.reloadWindow();
     this.nbMenuService.onItemClick()
     .pipe(
       filter(({ tag }) => tag === 'my-context-menu'),
@@ -51,7 +49,7 @@ export class CreateSurveyComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     this.surveyTitle = target.value;
     if(this.surveyTitle.trim() != ''){
-      this.appComponent.surveyService.findSurveyByTitle(this.surveyTitle, true).subscribe(responseMessage => {
+      this.globalService.surveyService.findSurveyByTitle(this.surveyTitle, true).subscribe(responseMessage => {
         if(responseMessage.object!=null){
           this.available = false;
         }
@@ -234,9 +232,9 @@ export class CreateSurveyComponent implements OnInit {
       ...q,
       '@type': q.type
     })))
-    this.appComponent.surveyService.createSurvey(this.appComponent.user.username, this.surveyTitle, jsonObj).subscribe(responseMessage => {
+    this.globalService.surveyService.createSurvey(this.globalService.user.username, this.surveyTitle, jsonObj).subscribe(responseMessage => {
       alert(responseMessage.message);
-      this.appComponent.navigate('survey-details', this.surveyTitle);
+      this.globalService.navigate('survey-details', this.surveyTitle);
     })
   }
 
