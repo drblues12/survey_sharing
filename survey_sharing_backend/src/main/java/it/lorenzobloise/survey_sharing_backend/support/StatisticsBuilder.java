@@ -161,6 +161,7 @@ public class StatisticsBuilder {
             entry.add(user.getLastname());
             entry.add(user.getUsername());
             entry.add(rating.toString());
+            feedbacks.add(entry);
             switch (sentiment) {
                 case "POSITIVE" -> this.positiveFeedbacks++;
                 case "NEGATIVE" -> this.negativeFeedbacks++;

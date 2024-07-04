@@ -198,8 +198,8 @@
                       <nb-icon *ngIf="invitation.survey.closed" class="custom-icon" icon="lock" status="danger"></nb-icon>
                     </div>
                     <div class="item-3">
-                      <button nbButton disabled="{{checkAccepted(invitation.invitation.survey)}}" (click)="answerSurvey(invitation.invitation.survey)"
-                      [nbTooltip]="getTooltip(invitation.invitation)" [nbTooltipDisabled]="!checkAccepted(invitation.invitation.survey)">
+                      <button nbButton disabled="{{surveyAnsweredOrClosed(invitation.survey)}}" (click)="answerSurvey(invitation.invitation.survey)"
+                      [nbTooltip]="getTooltip(invitation.survey, invitation.invitation)" [nbTooltipDisabled]="!surveyAnsweredOrClosed(invitation.survey)">
                         Accept<nb-icon icon="checkmark-circle-2"></nb-icon>
                       </button>
                     </div>

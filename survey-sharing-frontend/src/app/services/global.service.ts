@@ -14,6 +14,7 @@ import { DomSanitizer } from "@angular/platform-browser";
 import { NbThemeService } from "@nebular/theme";
 import { AnswerService } from "./answer.service";
 import { BehaviorSubject } from "rxjs";
+import { TokenService } from "./token.service";
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class GlobalService {
     public answerService: AnswerService, public invitationService: InvitationService,
     public statisticsService: StatisticsService, public questionService: QuestionService,
     public imageService: ImageService, public themeService: NbThemeService,
-    public sanitizer: DomSanitizer){
+    public sanitizer: DomSanitizer, private tokenService: TokenService){
       this.usernameSubject.next("");
       this.userSubject.next(new User("","","","","",-1,"","",[]));
       this.createdSurveysSubject.next([]);
@@ -99,20 +100,12 @@ export class GlobalService {
     }
   }
 
-  navigate(route: string, parameters: string | null, relativeTo?: ActivatedRoute){
+  navigate(route: string, parameters: string | null){
     this.setRefresh(true);
-    if(parameters==null){
-      if(relativeTo)
-        this.router.navigate([route], { relativeTo });
-      else
-        this.router.navigate([route]);
-    }
-    else{
-      if(relativeTo)
-        this.router.navigate([route, parameters], { relativeTo });
-      else
-        this.router.navigate([route, parameters]);
-    }
+    if(parameters==null)
+      this.router.navigate([route]);
+    else
+      this.router.navigate([route, parameters]);
   }
 
   reloadWindow(){
@@ -297,6 +290,7 @@ export class GlobalService {
 
   logout(){
     localStorage.setItem('loggedIn', 'false');
+    this.tokenService.token = '';
     this.themeService.changeTheme('default');
     localStorage.setItem('theme','default');
     this.navigate('login', null);

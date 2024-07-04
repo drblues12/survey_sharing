@@ -62,14 +62,6 @@ export class RegisterComponent implements OnInit {
       else
         alert(responseMessage.message);
     })
-    /*
-    this.globalService.userService.createUser(this.fields.username.username, this.fields.email.email,
-      this.fields.firstname.firstname, this.fields.lastname.lastname, this.fields.age.age+'', this.fields.gender.gender,
-      this.fields.country.country).subscribe(responseMessage => {
-        alert(responseMessage.message);
-        this.globalService.navigate('login',null);
-    })
-    */
   }
 
   onInputChangeEmail(event: Event): void{

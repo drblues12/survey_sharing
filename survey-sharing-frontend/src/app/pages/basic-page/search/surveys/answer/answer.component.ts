@@ -188,7 +188,7 @@ export class AnswerComponent implements OnInit {
     })))
     this.globalService.answerService.createAnswer(this.getSurvey().title, this.rating, this.feedback, jsonObj).subscribe(responseMessage => {
       alert(responseMessage.message);
-      this.globalService.navigate('answer-details', this.getSurvey().title);
+      this.globalService.navigate('home/answer-details', this.getSurvey().title);
     })
   }
 

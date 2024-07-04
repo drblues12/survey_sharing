@@ -12,6 +12,7 @@ import { SurveyDetailsComponent } from './pages/basic-page/survey-details/survey
 import { AnswerDetailsComponent } from './pages/basic-page/answer-details/answer-details.component';
 import { AnswerSummaryComponent } from './pages/basic-page/answer-summary/answer-summary.component';
 import { BasicPageComponent } from './pages/basic-page/basic-page.component';
+import { authGuard } from './services/guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -30,42 +31,52 @@ const routes: Routes = [
   {
     path: 'home',
     component: BasicPageComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: 'user',
-        component: UserComponent
+        component: UserComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'create-survey',
-        component: CreateSurveyComponent
+        component: CreateSurveyComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'search/users',
-        component: UserListComponent
+        component: UserListComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'search/users/single-user/:username',
-        component: SingleUserComponent
+        component: SingleUserComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'search/surveys',
-        component: SurveyListComponent
+        component: SurveyListComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'answer/:surveyTitle',
-        component: AnswerComponent
+        component: AnswerComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'survey-details/:surveyTitle',
-        component: SurveyDetailsComponent
+        component: SurveyDetailsComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'answer-details/:surveyTitle',
-        component: AnswerDetailsComponent
+        component: AnswerDetailsComponent,
+        canActivate: [authGuard]
       },
       {
         path: 'answer-summary/:answer_id',
-        component: AnswerSummaryComponent
+        component: AnswerSummaryComponent,
+        canActivate: [authGuard]
       }
     ]
   }

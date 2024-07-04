@@ -33,8 +33,6 @@ public class SurveyController {
     @PostMapping(consumes = "application/json")
     public ResponseEntity createSurvey(@RequestParam String surveyTitle, @RequestBody List<Question> questions, Authentication connectedUser){
         try{
-            for(Question q: questions)
-                System.out.println(q);
             return new ResponseEntity(new ResponseMessage("Created successfully",
                     surveyService.addSurvey(surveyTitle, questions, connectedUser)), HttpStatus.OK);
         }catch (RuntimeException e){

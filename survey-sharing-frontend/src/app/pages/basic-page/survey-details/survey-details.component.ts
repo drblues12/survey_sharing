@@ -29,6 +29,11 @@ export class SurveyDetailsComponent implements OnInit {
   statistics!: Statistics;
   nullVariable: null = null;
 
+  debug(){
+    console.log(this.getStatistics());
+    console.log(this.answers);
+  }
+
   constructor(public globalService: GlobalService, private route: ActivatedRoute,
               private windowService: NbWindowService, private supportService: SupportService) {}
 
@@ -177,12 +182,12 @@ export class SurveyDetailsComponent implements OnInit {
   deleteSurvey(surveyTitle: string){
     this.globalService.surveyService.deleteCreatedSurvey(surveyTitle).subscribe(responseMessage => {
       alert(responseMessage.message);
-      this.globalService.navigate('user', null);
+      this.globalService.navigate('home/user', null);
     })
   }
 
   goToAnswerSummaryPage(answer: Answer){
-    this.globalService.navigate('answer-summary', answer.id);
+    this.globalService.navigate('home/answer-summary', answer.id);
   }
 
   getInvitationAcceptedIcon(invitation: Invitation){

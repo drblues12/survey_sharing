@@ -104,7 +104,7 @@ export class AnswerDetailsComponent implements OnInit {
   deleteAnswer(answer: string){
     this.globalService.answerService.deleteAnswer(answer).subscribe(responseMessage => {
       alert(responseMessage.message);
-      this.globalService.navigate('user', null);
+      this.globalService.navigate('home/user', null);
     })
   }
 

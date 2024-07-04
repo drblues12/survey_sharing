@@ -25,7 +25,7 @@ export class InvitationService{
   }
 
   public findInvitationById(invitationId: string){
-    return this.http.get<ResponseMessage>(this.base_url+'?invitationId='+invitationId);
+    return this.http.get<ResponseMessage>(this.base_url+'/search/by_id?invitationId='+invitationId);
   }
 
   // DELETE

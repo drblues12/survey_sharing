@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
 import { Answer } from 'src/app/entities/answer';
 import { Invitation } from 'src/app/entities/invitation';
+import { Survey } from 'src/app/entities/survey';
 import { User } from 'src/app/entities/user';
 import { GlobalService } from 'src/app/services/global.service';
 
@@ -19,7 +20,7 @@ export class UserComponent implements OnInit {
   }
 
   goToSurveyDetailsPage(surveyTitle: string){
-    this.globalService.navigate('survey-details', surveyTitle);
+    this.globalService.navigate('home/survey-details', surveyTitle);
   }
 
   deleteCreatedSurvey(surveyTitle: string){
@@ -44,22 +45,26 @@ export class UserComponent implements OnInit {
   }
 
   goToAnswerDetailsPage(survey: string){
-    this.globalService.navigate('answer-details', survey);
+    this.globalService.navigate('home/answer-details', survey);
   }
 
   answerSurvey(survey: string){
-    this.globalService.navigate('answer', survey);
+    this.globalService.navigate('home/answer', survey);
   }
 
-  checkAccepted(survey: string): boolean {
-    const answerToThisInvitation: {answer: Answer, surveyOwner: User} | undefined = this.globalService.getAnswers().find(a => a.answer.survey==survey);
-    return answerToThisInvitation!=undefined;
+  surveyAnsweredOrClosed(survey: Survey): boolean {
+    return this.surveyAnswered(survey.title) || survey.closed;
   }
 
-  getTooltip(invitation: Invitation): string {
-    if(this.globalService.getInvitations().find(i => i.invitation.id==invitation.id)?.survey.closed)
+  surveyAnswered(survey: string): boolean {
+    const answerFound = this.globalService.getAnswers().find(a => a.answer.survey==survey);
+    return answerFound!=undefined;
+  }
+
+  getTooltip(survey: Survey, invitation: Invitation): string {
+    if(survey.closed)
       return "This survey is closed";
-    if(this.checkAccepted(invitation.survey))
+    if(this.surveyAnswered(invitation.survey))
       return "You have already answered this survey";
     return "";
   }

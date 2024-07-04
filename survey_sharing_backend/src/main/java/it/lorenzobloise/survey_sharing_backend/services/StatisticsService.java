@@ -24,9 +24,10 @@ public class StatisticsService {
     // POST
 
     public Statistics addStatistics(Statistics statistics){
-        Optional<Statistics> existingStatistics = statisticsRepository.findStatisticsBySurvey(statistics.getSurvey());
+        String surveyTitle = statistics.getSurvey();
+        Optional<Statistics> existingStatistics = statisticsRepository.findStatisticsBySurvey(surveyTitle);
         if(existingStatistics.isPresent())
-            removeStatistics(statistics.getSurvey());
+            removeStatistics(existingStatistics.get().getId());
         return statisticsRepository.save(statistics);
     }
 
@@ -69,12 +70,13 @@ public class StatisticsService {
 
     // DELETE
 
-    public Statistics removeStatistics(String surveyTitle){
-        Optional<Statistics> result = statisticsRepository.findStatisticsBySurvey(surveyTitle);
-        if (result.isEmpty())
-            throw new RuntimeException("Statistics does not exist");
-        statisticsRepository.delete(result.get());
-        return result.get();
+    public Statistics removeStatistics(String statisticsId){
+        Optional<Statistics> result = statisticsRepository.findById(statisticsId);
+        if (result.isPresent()) {
+            statisticsRepository.delete(result.get());
+            return result.get();
+        }
+        return null;
     }
 
 }
