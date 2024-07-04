@@ -1,10 +1,7 @@
 package it.lorenzobloise.survey_sharing_backend.controllers;
 
 import it.lorenzobloise.survey_sharing_backend.entities.Question;
-import it.lorenzobloise.survey_sharing_backend.entities.Statistics;
 import it.lorenzobloise.survey_sharing_backend.entities.Survey;
-import it.lorenzobloise.survey_sharing_backend.entities.User;
-import it.lorenzobloise.survey_sharing_backend.services.StatisticsService;
 import it.lorenzobloise.survey_sharing_backend.services.SurveyService;
 import it.lorenzobloise.survey_sharing_backend.support.ResponseMessage;
 import lombok.AllArgsConstructor;
@@ -17,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TreeSet;
 
 @RestController
 @RequestMapping("/surveys")
@@ -54,10 +50,22 @@ public class SurveyController {
 
     //TODO
     // Authentication (every role)
-    @GetMapping("/search/by_owner")
-    public ResponseEntity findAllSurveysByOwner(@RequestParam boolean returnClosedSurveys, Authentication connectedUser){
+    @GetMapping("/all")
+    public ResponseEntity findAllCreatedSurveys(@RequestParam boolean returnClosedSurveys, Authentication connectedUser){
         try{
-            Set<Survey> result = surveyService.getAllSurveysByOwner(returnClosedSurveys, connectedUser);
+            Set<Survey> result = surveyService.getAllCreatedSurveys(returnClosedSurveys, connectedUser);
+            if(result.size()==0)
+                return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
+        }catch (RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
+    }
+
+    @GetMapping("/search/by_owner")
+    public ResponseEntity findAllSurveysByOwner(@RequestParam String owner, @RequestParam boolean returnClosedSurveys){
+        try{
+            Set<Survey> result = surveyService.getAllSurveysByOwner(owner, returnClosedSurveys);
             if(result.size()==0)
                 return new ResponseEntity<>(new ResponseMessage("No result"), HttpStatus.OK);
             return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);

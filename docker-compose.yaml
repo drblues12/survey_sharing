@@ -1,6 +1,5 @@
 version: "3.1"
 services:
-
   mongodb:
     image: mongo
     container_name: mongodb
@@ -8,10 +7,7 @@ services:
       - "27017:27017"
     volumes:
       - data:/data
-    networks:
-      - survey-sharing-network
     restart: unless-stopped
-
   backend:
     build:
       context: ./survey_sharing_backend
@@ -24,7 +20,6 @@ services:
       - mongodb
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/survey_sharing
-
   frontend:
     build:
       context: ./survey-sharing-frontend
@@ -34,9 +29,5 @@ services:
       - "4200:4200"
     depends_on:
       - backend
-
 volumes:
   data: {}
-
-networks:
-      - survey-sharing-network

@@ -69,11 +69,35 @@ public class SurveyService {
         return partial;
     }
 
-    public Set<Survey> getAllSurveysByOwner(boolean returnClosedSurveys, Authentication connectedUser){
+    public Set<Survey> getAllCreatedSurveys(boolean returnClosedSurveys, Authentication connectedUser){
         User user = ((User)connectedUser.getPrincipal());
+        /*
         Optional<User> opt_u = userRepository.findUserByIdOrUsernameOrEmail(user.getId(), user.getUsername(), user.getEmail());
         if(opt_u.isEmpty())
             throw new RuntimeException("User "+user+" does not exist");
+        Set<Survey> partial = new TreeSet<>();
+        for(String surveyTitle: opt_u.get().getCreatedSurveys()){
+            Optional<Survey> opt_s = surveyRepository.findSurveyByTitle(surveyTitle);
+            if(opt_s.isEmpty())
+                throw new RuntimeException("Survey "+surveyTitle+" does not exist");
+            partial.add(opt_s.get());
+        }
+        Set<Survey> result = new TreeSet<>();
+        if(!returnClosedSurveys) {
+            for (Survey s : partial)
+                if (!s.isClosed())
+                    result.add(s);
+            return result;
+        }
+        return partial;
+         */
+        return this.getAllSurveysByOwner(user.getUsername(), returnClosedSurveys);
+    }
+
+    public Set<Survey> getAllSurveysByOwner(String owner, boolean returnClosedSurveys){
+        Optional<User> opt_u = userRepository.findUserByIdOrUsernameOrEmail(owner, owner, owner);
+        if(opt_u.isEmpty())
+            throw new RuntimeException("User "+owner+" does not exist");
         Set<Survey> partial = new TreeSet<>();
         for(String surveyTitle: opt_u.get().getCreatedSurveys()){
             Optional<Survey> opt_s = surveyRepository.findSurveyByTitle(surveyTitle);

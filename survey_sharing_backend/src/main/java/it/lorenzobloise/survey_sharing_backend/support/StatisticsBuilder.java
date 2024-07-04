@@ -17,10 +17,10 @@ public class StatisticsBuilder {
     private int totalNumberOfUsers;
     private Survey survey;
     private Map<Answer, User> answers;
-    private Set<Invitation> invitations;
+    private List<Invitation> invitations;
     private Statistics result = new Statistics();
 
-    public StatisticsBuilder(int totalNumberOfUsers, Survey survey, Map<Answer, User> answers, Set<Invitation> invitations){
+    public StatisticsBuilder(int totalNumberOfUsers, Survey survey, Map<Answer, User> answers, List<Invitation> invitations){
         this.totalNumberOfUsers = totalNumberOfUsers;
         this.survey = survey;
         this.answers = answers;

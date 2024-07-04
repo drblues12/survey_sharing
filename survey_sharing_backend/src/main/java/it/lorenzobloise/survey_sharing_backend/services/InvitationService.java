@@ -25,7 +25,7 @@ public class InvitationService {
 
     // POST
 
-    public Invitation addInvitation(Invitation invitation){
+    private Invitation addInvitation(Invitation invitation){
         if(invitation.getId()!=null && invitationRepository.existsById(invitation.getId()))
             throw new RuntimeException("Invitation already exists");
         Optional<User> receiver = userRepository.findUserByIdOrUsernameOrEmail(invitation.getUser(), invitation.getUser(), invitation.getUser());

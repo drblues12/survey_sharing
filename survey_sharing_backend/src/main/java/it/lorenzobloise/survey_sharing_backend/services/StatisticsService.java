@@ -46,7 +46,7 @@ public class StatisticsService {
                 if(user.isPresent()) answers.put(answer.get(), user.get());
             }
         }
-        Set<Invitation> invitations = new TreeSet<>();
+        List<Invitation> invitations = new LinkedList<>();
         for(String i: survey.get().getInvitations())
             invitations.add(invitationService.getInvitationById(i));
         StatisticsBuilder sb = new StatisticsBuilder(totalNumberOfUsers, survey.get(), answers, invitations);

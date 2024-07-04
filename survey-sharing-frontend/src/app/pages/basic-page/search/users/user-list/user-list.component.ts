@@ -12,16 +12,15 @@ export class UserListComponent implements OnInit {
   private query!: string | null;
   public search_results: User[] = [];
 
-  constructor(public globalService: GlobalService) {
-    this.query = this.globalService.getQuery();
-  }
+  constructor(public globalService: GlobalService) { }
 
   ngOnInit(): void {
     this.globalService.reloadWindow();
+    this.query = localStorage.getItem('query');
     this.search_results = [];
     if(this.query==null || this.query===""){
       this.globalService.userService.findAllUsers().subscribe(responseMessage => {
-        this.search_results = responseMessage.object
+        this.search_results = responseMessage.object;
         if(this.search_results.length==0) alert (responseMessage.message);
         else{
           const indexToRemove: number = this.search_results.findIndex(x => x.username==this.globalService.getUser().username);
@@ -30,14 +29,18 @@ export class UserListComponent implements OnInit {
       })
     }
     else{
-      this.globalService.userService.findUsersByNameAndSurname(this.query).subscribe(responseMessage => {
-        this.search_results = responseMessage.object;
-        if(this.search_results.length==0) alert (responseMessage.message);
-        else{
-          const indexToRemove: number = this.search_results.findIndex(x => x.username==this.globalService.getUser().username);
-          this.search_results.splice(indexToRemove, 1);
-        }
-      })
+      this.globalService.userService.findUsersByFirstnameAndLastname(this.query).subscribe(responseMessage => {
+        (responseMessage.object as User[]).forEach(u => {
+          if(!this.search_results.find(x => x.username==u.username))
+            this.search_results.push(u);
+        })
+      });
+      this.globalService.userService.findUsersByUsername(this.query).subscribe(responseMessage => {
+        (responseMessage.object as User[]).forEach(u => {
+          if(!this.search_results.find(x => x.username==u.username))
+            this.search_results.push(u);
+        })
+      });
     }
   }
 

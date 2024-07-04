@@ -29,11 +29,6 @@ export class SurveyDetailsComponent implements OnInit {
   statistics!: Statistics;
   nullVariable: null = null;
 
-  debug(){
-    console.log(this.getStatistics());
-    console.log(this.answers);
-  }
-
   constructor(public globalService: GlobalService, private route: ActivatedRoute,
               private windowService: NbWindowService, private supportService: SupportService) {}
 

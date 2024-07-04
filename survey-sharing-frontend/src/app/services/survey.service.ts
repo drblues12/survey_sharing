@@ -27,8 +27,12 @@ export class SurveyService{
     return this.http.get<ResponseMessage>(this.base_url+'/search?returnClosedSurveys='+returnClosedSurveys);
   }
 
-  public findAllSurveysByOwner(returnClosedSurveys: boolean): Observable<ResponseMessage>{
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_owner?returnClosedSurveys='+returnClosedSurveys);
+  public findAllCreatedSurveys(returnClosedSurveys: boolean): Observable<ResponseMessage>{
+    return this.http.get<ResponseMessage>(this.base_url+'/all?returnClosedSurveys='+returnClosedSurveys);
+  }
+
+  public findAllSurveysByOwner(owner: string, returnClosedSurveys: boolean): Observable<ResponseMessage>{
+    return this.http.get<ResponseMessage>(this.base_url+'/search/by_owner?owner='+owner+'&returnClosedSurveys='+returnClosedSurveys);
   }
 
   public findSurveysByTitle(surveyTitle: string, returnClosedSurveys: boolean): Observable<ResponseMessage>{

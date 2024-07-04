@@ -137,7 +137,7 @@ export class GlobalService {
   }
 
   fetchCreatedSurveys(): void {
-    this.surveyService.findAllSurveysByOwner(true).subscribe(responseMessage => {
+    this.surveyService.findAllCreatedSurveys(true).subscribe(responseMessage => {
       if(responseMessage.object){
         this.createdSurveysSubject.next(responseMessage.object);
         const createdSurveys = this.getCreatedSurveys();

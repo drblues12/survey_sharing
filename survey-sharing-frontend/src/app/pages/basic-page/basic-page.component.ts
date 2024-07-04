@@ -32,4 +32,9 @@ export class BasicPageComponent implements OnInit {
     this.globalService.switchTheme();
   }
 
+  search(){
+    localStorage.setItem('query', this.query);
+    this.globalService.navigate('home/search/'+this.globalService.getSearchType(), null);
+  }
+
 }

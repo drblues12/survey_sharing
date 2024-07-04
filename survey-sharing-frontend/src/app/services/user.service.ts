@@ -24,8 +24,8 @@ export class UserService{
     return this.http.get<ResponseMessage>(this.base_url+'/search/all');
   }
 
-  public findUsersByNameAndSurname(name_and_surname: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_name_surname?query='+name_and_surname);
+  public findUsersByFirstnameAndLastname(query: string){
+    return this.http.get<ResponseMessage>(this.base_url+'/search/by_firstname_lastname?query='+query);
   }
 
   public findUsersByEmail(email: string){
