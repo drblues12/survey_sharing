@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { RegistrationRequest } from "../entities/auth/registration-request";
-import { ResponseMessage } from "../support/response-message";
-import { AuthenticationRequest } from "../entities/auth/authentication-request";
+import { RegistrationRequest } from "../../entities/auth/registration-request";
+import { ResponseMessage } from "../../support/response-message";
+import { AuthenticationRequest } from "../../entities/auth/authentication-request";
 
 @Injectable({
   providedIn: 'root'

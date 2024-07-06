@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AppComponent } from 'src/app/app.component';
-import { Answer } from 'src/app/entities/answer';
 import { Invitation } from 'src/app/entities/invitation';
 import { Survey } from 'src/app/entities/survey';
-import { User } from 'src/app/entities/user';
 import { GlobalService } from 'src/app/services/global.service';
 
 @Component({

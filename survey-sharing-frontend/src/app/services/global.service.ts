@@ -3,18 +3,18 @@ import { User } from "../entities/user";
 import { Survey } from "../entities/survey";
 import { Answer } from "../entities/answer";
 import { Invitation } from "../entities/invitation";
-import { ActivatedRoute, Router } from "@angular/router";
-import { UserService } from "./user.service";
-import { SurveyService } from "./survey.service";
-import { InvitationService } from "./invitation.service";
-import { QuestionService } from "./question.service";
-import { StatisticsService } from "./statistics.service";
-import { ImageService } from "./image.service";
+import { Router } from "@angular/router";
+import { UserService } from "./api/user.service";
+import { SurveyService } from "./api/survey.service";
+import { InvitationService } from "./api/invitation.service";
+import { QuestionService } from "./api/question.service";
+import { StatisticsService } from "./api/statistics.service";
+import { ImageService } from "./api/image.service";
 import { DomSanitizer } from "@angular/platform-browser";
 import { NbThemeService } from "@nebular/theme";
-import { AnswerService } from "./answer.service";
+import { AnswerService } from "./api/answer.service";
 import { BehaviorSubject } from "rxjs";
-import { TokenService } from "./token.service";
+import { TokenService } from "./auth/token.service";
 
 @Injectable({
   providedIn: 'root'
@@ -65,18 +65,6 @@ export class GlobalService {
     this.fetchAnswers();
     this.fetchInvitations();
   }
-
-  /*
-  checkLogin(): void {
-    const loggedIn: string | null = localStorage.getItem('loggedIn');
-    if(loggedIn==null){
-      this.logout();
-      return;
-    }
-    if(loggedIn=='true') return;
-    this.logout();
-  }
-  */
 
   themeCheck(): void {
     const theme: string | null = localStorage.getItem('theme');

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { ResponseMessage } from "../support/response-message";
-import { Invitation } from "../entities/invitation";
+import { ResponseMessage } from "../../support/response-message";
+import { Invitation } from "../../entities/invitation";
 
 @Injectable({
   providedIn: 'root'

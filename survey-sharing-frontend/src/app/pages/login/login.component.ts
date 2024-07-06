@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
 import { AuthenticationRequest } from 'src/app/entities/auth/authentication-request';
 import { AuthenticationResponse } from 'src/app/entities/auth/authentication-response';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 import { GlobalService } from 'src/app/services/global.service';
-import { TokenService } from 'src/app/services/token.service';
+import { TokenService } from 'src/app/services/auth/token.service';
 
 @Component({
   selector: 'app-login',

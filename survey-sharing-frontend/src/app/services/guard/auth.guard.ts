@@ -1,7 +1,6 @@
-import { inject, Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanActivateFn, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
-import { TokenService } from '../token.service';
+import { inject } from '@angular/core';
+import { CanActivateFn } from '@angular/router';
+import { TokenService } from '../auth/token.service';
 import { GlobalService } from '../global.service';
 
 export const authGuard: CanActivateFn = () => {

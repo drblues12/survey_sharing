@@ -1,9 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Invitation } from 'src/app/entities/invitation';
 import { User } from 'src/app/entities/user';
-import { InvitationService } from 'src/app/services/invitation.service';
-import { UserService } from 'src/app/services/user.service';
-import { SupportService } from 'src/app/services/support.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-invitation',
@@ -17,15 +15,15 @@ export class InvitationComponent implements OnInit {
   users: {invited: boolean, user: User}[] = []
   message: string = "";
 
-  //TODO: delete all these services from the constructor and use only globalService
-  constructor(private userService: UserService, private invitationService: InvitationService,
-              private supportService: SupportService) {
-    this.surveyTitle = this.supportService.surveyTitle;
-    this.user = this.supportService.username;
+  constructor(private globalService: GlobalService) {
+    this.surveyTitle = localStorage.getItem('surveyTitle') as string;
+    this.user = this.globalService.getUser().username;
+    console.log(this.user);
+    console.log(this.surveyTitle);
   }
 
   ngOnInit(): void {
-    this.userService.findAllUsers().subscribe(responseMessage => {
+    this.globalService.userService.findAllUsers().subscribe(responseMessage => {
       if(responseMessage.object!=null){
         const result: User[] = responseMessage.object;
         result.forEach(x => {
@@ -44,7 +42,7 @@ export class InvitationComponent implements OnInit {
         toSend.push(i);
       }
     })
-    this.invitationService.createInvitations(this.surveyTitle, toSend).subscribe(responseMessage => {
+    this.globalService.invitationService.createInvitations(this.surveyTitle, toSend).subscribe(responseMessage => {
       alert(responseMessage.message);
       window.location.reload();
     })

@@ -5,12 +5,6 @@
         <nb-card-header>
           <h4>Register</h4>
         </nb-card-header>
-        <!--
-        <input nbInput fullWidth [(ngModel)]="surveyTitle" (input)="onInputChange($event)"
-        [status]="getInputStatus(available)" [nbTooltip]="getInputTooltip(available)"
-        [nbTooltipStatus]="getInputStatus(available)" [nbTooltipIcon]="getTooltipIcon()"
-        [nbTooltipTrigger]="tooltipTrigger">
-        -->
         <nb-card-body>
           <nb-form-field>
             <input nbInput type="text" placeholder="Email" [(ngModel)]="fields.email.email" (input)="onInputChangeEmail($event)"

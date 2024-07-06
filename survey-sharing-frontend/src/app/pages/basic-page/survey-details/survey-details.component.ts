@@ -7,7 +7,6 @@ import { MultipleChoiceQuestion, Question } from 'src/app/entities/question';
 import { Survey } from 'src/app/entities/survey';
 import { User } from 'src/app/entities/user';
 import { InvitationComponent } from '../invitation/invitation.component';
-import { SupportService } from 'src/app/services/support.service';
 import { Answer } from 'src/app/entities/answer';
 import { Statistics } from 'src/app/entities/statistics';
 import { GlobalService } from 'src/app/services/global.service';
@@ -29,8 +28,7 @@ export class SurveyDetailsComponent implements OnInit {
   statistics!: Statistics;
   nullVariable: null = null;
 
-  constructor(public globalService: GlobalService, private route: ActivatedRoute,
-              private windowService: NbWindowService, private supportService: SupportService) {}
+  constructor(public globalService: GlobalService, private route: ActivatedRoute, private windowService: NbWindowService) {}
 
   ngOnInit(): void {
     this.globalService.reloadWindow();
@@ -208,8 +206,7 @@ export class SurveyDetailsComponent implements OnInit {
   }
 
   openInvitationWindow(){
-    this.supportService.surveyTitle = this.survey.title;
-    this.supportService.username = this.globalService.getUser().username;
+    localStorage.setItem('surveyTitle', this.survey.title);
     this.windowService.open(InvitationComponent,
       { title: 'Invite other users to answer your survey', windowClass: 'custom-window' });
   }
