@@ -66,7 +66,7 @@ public class SecurityConfiguration {
                 HttpHeaders.AUTHORIZATION
         ));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**",configuration);
+        source.registerCorsConfiguration("/**",configuration);
         return source;
     }
 

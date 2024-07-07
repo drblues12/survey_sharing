@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { RegistrationRequest } from "../../entities/auth/registration-request";
 import { ResponseMessage } from "../../support/response-message";
 import { AuthenticationRequest } from "../../entities/auth/authentication-request";
@@ -9,16 +9,16 @@ import { AuthenticationRequest } from "../../entities/auth/authentication-reques
 })
 export class AuthenticationService {
 
-  private base_url = 'http://localhost:8080/auth'
+  private path = 'auth'
 
-  constructor(private httpClient:HttpClient){}
+  constructor(@Inject('BASE_URL') private BASE_URL: string, private httpClient:HttpClient){}
 
   public register(request: RegistrationRequest){
-    return this.httpClient.post<ResponseMessage>(this.base_url+'/register',request);
+    return this.httpClient.post<ResponseMessage>(this.BASE_URL+this.path+'/register',request);
   }
 
   public authenticate(request: AuthenticationRequest){
-    return this.httpClient.post<ResponseMessage>(this.base_url+'/authenticate',request);
+    return this.httpClient.post<ResponseMessage>(this.BASE_URL+this.path+'/authenticate',request);
   }
 
 }
