@@ -57,7 +57,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:80"));
+        configuration.setAllowedOrigins(Arrays.asList("http://surveysharing"));
         configuration.setAllowedMethods(Arrays.asList("POST","GET","DELETE","PUT"));
         configuration.setAllowedHeaders(Arrays.asList(
                 HttpHeaders.ORIGIN,

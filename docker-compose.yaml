@@ -10,6 +10,8 @@ services:
     restart: unless-stopped
     environment:
       - TZ=Europe/Rome
+    networks:
+      - survey_sharing_network
   springboot_backend:
     build:
       context: ./survey_sharing_backend
@@ -22,6 +24,8 @@ services:
       - mongodb
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/survey_sharing
+    networks:
+      - survey_sharing_network
   angular_frontend:
     build:
       context: ./survey-sharing-frontend
@@ -31,7 +35,10 @@ services:
       - "80:80"
     depends_on:
       - springboot_backend
-    expose:
-      - 80
+    networks:
+      - survey_sharing_network
 volumes:
   data: {}
+networks:
+  survey_sharing_network:
+    driver: bridge
