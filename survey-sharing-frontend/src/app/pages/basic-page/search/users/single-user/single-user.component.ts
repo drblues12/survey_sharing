@@ -22,20 +22,16 @@ export class SingleUserComponent implements OnInit {
     if(username!=null){
       this.globalService.userService.findUsersByUsername(username).subscribe(responseMessage => {
         this.user = responseMessage.object[0];
-        this.findSurveys();
+        this.globalService.surveyService.findAllSurveysByOwner(this.user.username, false).subscribe(responseMessage2 => {
+          var search_results: Survey[] = responseMessage2.object;
+          if(search_results.length==0) alert (responseMessage2.message);
+          this.createdSurveys = search_results;
+        })
       });
     }
     else{
       alert ("No results");
     }
-  }
-
-  findSurveys(){
-    this.globalService.surveyService.findAllSurveysByOwner(this.user.username, false).subscribe(responseMessage => {
-      var search_results: Survey[] = responseMessage.object;
-      if(search_results.length==0) alert (responseMessage.message);
-      this.createdSurveys = search_results;
-    })
   }
 
   surveyAlreadyAnswered(surveyTitle: string): boolean {

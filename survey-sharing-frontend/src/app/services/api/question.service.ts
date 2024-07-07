@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { ResponseMessage } from "../../support/response-message";
 
 @Injectable({
@@ -7,14 +7,14 @@ import { ResponseMessage } from "../../support/response-message";
 })
 export class QuestionService{
 
-  private base_url = "http://localhost:8080/questions";
+  private path = "questions";
 
-  constructor(private http: HttpClient) { }
+  constructor(@Inject('BASE_URL') private BASE_URL: string, private http: HttpClient) { }
 
   // GET
 
   public findQuestionById(questionId: string){
-    return this.http.get<ResponseMessage>(this.base_url+'?questionId='+questionId);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'?questionId='+questionId);
   }
 
 }

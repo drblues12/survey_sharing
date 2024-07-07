@@ -29,6 +29,8 @@ import { LineChartComponent } from './support/charts/line-chart/line-chart.compo
 import { BasicPageComponent } from './pages/basic-page/basic-page.component';
 import { HttpTokenInterceptor } from './services/interceptor/http-token.interceptor';
 
+const BASE_URL: string = 'http://localhost:8080/api/';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,6 +96,10 @@ import { HttpTokenInterceptor } from './services/interceptor/http-token.intercep
       provide: HTTP_INTERCEPTORS,
       useClass: HttpTokenInterceptor,
       multi: true
+    },
+    {
+      provide: 'BASE_URL',
+      useValue: BASE_URL
     }
   ],
   bootstrap: [AppComponent]

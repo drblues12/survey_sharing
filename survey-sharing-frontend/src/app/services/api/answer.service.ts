@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { ResponseMessage } from "../../support/response-message";
 import { Question } from "../../entities/question";
@@ -8,14 +8,14 @@ import { Question } from "../../entities/question";
 })
 export class AnswerService{
 
-  private base_url = "http://localhost:8080/answers";
+  private path = "answers";
 
-  constructor(private http:HttpClient) { }
+  constructor(@Inject('BASE_URL') private BASE_URL: string, private http:HttpClient) { }
 
   // POST
 
   public createAnswer(survey: string, rating: number, feedback: string, questions: string){
-    return this.http.post<ResponseMessage>(this.base_url+'/create?survey='+survey+'&rating='+rating+'&feedback='+feedback, questions, {
+    return this.http.post<ResponseMessage>(this.BASE_URL+this.path+'/create?survey='+survey+'&rating='+rating+'&feedback='+feedback, questions, {
       headers: { 'Content-Type': 'application/json' }
     });
   }
@@ -23,21 +23,21 @@ export class AnswerService{
   // GET
 
   public findAllAnswers(){
-    return this.http.get<ResponseMessage>(this.base_url+'/search');
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search');
   }
 
   public findAnswersBySurveyTitle(surveyTitle: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_survey_title?surveyTitle='+surveyTitle);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search/by_survey_title?surveyTitle='+surveyTitle);
   }
 
   public findAnswerById(answer: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_id?answer_id='+answer);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search/by_id?answer_id='+answer);
   }
 
   // DELETE
 
   public deleteAnswer(answer: string){
-    return this.http.delete<ResponseMessage>(this.base_url+'/'+answer);
+    return this.http.delete<ResponseMessage>(this.BASE_URL+this.path+'/'+answer);
   }
 
 }

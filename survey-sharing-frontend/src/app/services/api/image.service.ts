@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { ResponseMessage } from "../../support/response-message";
 
 @Injectable({
@@ -7,20 +7,20 @@ import { ResponseMessage } from "../../support/response-message";
 })
 export class ImageService {
 
-  private base_url = 'http://localhost:8080/images';
+  private path = 'images';
 
-  constructor(private http: HttpClient){}
+  constructor(@Inject('BASE_URL') private BASE_URL: string, private http: HttpClient){}
 
   // POST
 
   public uploadImage(image: number[], fileName: string){
-    return this.http.post<ResponseMessage>(this.base_url+'?fileName='+fileName, image);
+    return this.http.post<ResponseMessage>(this.BASE_URL+this.path+'?fileName='+fileName, image);
   }
 
   // GET
 
   public findImageById(imageId: string){
-    return this.http.get<ResponseMessage>(this.base_url+'?imageId='+imageId);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'?imageId='+imageId);
   }
 
 }

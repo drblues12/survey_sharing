@@ -5,6 +5,7 @@ import { AuthenticationResponse } from 'src/app/entities/auth/authentication-res
 import { AuthenticationService } from 'src/app/services/auth/authentication.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { TokenService } from 'src/app/services/auth/token.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit {
   password!: string;
   showPassword = false;
 
-  constructor(private globalService: GlobalService, private authenticationService: AuthenticationService, private tokenService: TokenService) { }
+  constructor(private globalService: GlobalService, private authenticationService: AuthenticationService,
+              private tokenService: TokenService, private router: Router) { }
 
   ngOnInit(): void {
     this.globalService.reloadWindow();

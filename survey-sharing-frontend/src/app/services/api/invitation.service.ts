@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { ResponseMessage } from "../../support/response-message";
 import { Invitation } from "../../entities/invitation";
@@ -8,36 +8,36 @@ import { Invitation } from "../../entities/invitation";
 })
 export class InvitationService{
 
-  private base_url = "http://localhost:8080/invitations";
+  private path = "invitations";
 
-  constructor(private http:HttpClient) { }
+  constructor(@Inject('BASE_URL') private BASE_URL: string, private http:HttpClient) { }
 
   // POST
 
   public createInvitations(surveyTitle: string, invitations: Invitation[]){
-    return this.http.post<ResponseMessage>(this.base_url+'?surveyTitle='+surveyTitle,invitations);
+    return this.http.post<ResponseMessage>(this.BASE_URL+this.path+'?surveyTitle='+surveyTitle,invitations);
   }
 
   // GET
 
   public findAllInvitations(){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/all');
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search/all');
   }
 
   public findInvitationById(invitationId: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_id?invitationId='+invitationId);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search/by_id?invitationId='+invitationId);
   }
 
   // DELETE
 
   public deleteInvitation(invitation: string){
-    return this.http.delete<ResponseMessage>(this.base_url+'?invitation='+invitation);
+    return this.http.delete<ResponseMessage>(this.BASE_URL+this.path+'?invitation='+invitation);
   }
 
   // PUT
 
   public updateInvitation(invitation: string, accepted: boolean){
-    return this.http.put<ResponseMessage>(this.base_url+'?invitation='+invitation+'&accepted='+accepted,null);
+    return this.http.put<ResponseMessage>(this.BASE_URL+this.path+'?invitation='+invitation+'&accepted='+accepted,null);
   }
 
 }

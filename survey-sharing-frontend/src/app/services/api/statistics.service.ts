@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { ResponseMessage } from "../../support/response-message";
 
@@ -7,18 +7,18 @@ import { ResponseMessage } from "../../support/response-message";
 })
 export class StatisticsService{
 
-  private base_url = "http://localhost:8080/statistics";
+  private path = "statistics";
 
-  constructor(private http:HttpClient) { }
+  constructor(@Inject('BASE_URL') private BASE_URL: string, private http:HttpClient) { }
 
   // GET
 
   public computeStatistics(survey: string){
-    return this.http.get<ResponseMessage>(this.base_url+'?surveyTitle='+survey);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'?surveyTitle='+survey);
   }
 
   public computeAverageRating(survey: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/averageRating?surveyTitle='+survey);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/averageRating?surveyTitle='+survey);
   }
 
 }

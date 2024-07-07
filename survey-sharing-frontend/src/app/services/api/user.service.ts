@@ -1,57 +1,56 @@
-import { Injectable } from "@angular/core";
+import { Inject, Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { ResponseMessage } from "../../support/response-message";
-import { User } from "../../entities/user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService{
 
-  private base_url = "http://localhost:8080/users";
+  private path = "users";
 
-  constructor(private http:HttpClient) { }
+  constructor(@Inject('BASE_URL') private BASE_URL: string, private http:HttpClient) { }
 
   // POST
   // Deprecated
   public createUser(username: string, email: string, name: string, surname: string, age: string, gender: string, country: string){
-    return this.http.post<ResponseMessage>(this.base_url+'?username='+username+'&email='+email+'&name='+name+'&surname='+surname+'&age='+age+'&gender='+gender+'&country='+country,null);
+    return this.http.post<ResponseMessage>(this.BASE_URL+this.path+'?username='+username+'&email='+email+'&name='+name+'&surname='+surname+'&age='+age+'&gender='+gender+'&country='+country,null);
   }
 
   // GET
 
   public findAllUsers(){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/all');
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search/all');
   }
 
   public findUsersByFirstnameAndLastname(query: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_firstname_lastname?query='+query);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search/by_firstname_lastname?query='+query);
   }
 
   public findUsersByEmail(email: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_email?email='+email);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search/by_email?email='+email);
   }
 
   public findUserByEmail(email: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/single/by_email?email='+email);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search/single/by_email?email='+email);
   }
 
   public findUserById(id: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_id?id='+id);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search/by_id?id='+id);
   }
 
   public findUsersByUsername(username: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/by_username?username='+username);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search/by_username?username='+username);
   }
 
   public findUserByUsername(username: string){
-    return this.http.get<ResponseMessage>(this.base_url+'/search/single/by_username?username='+username);
+    return this.http.get<ResponseMessage>(this.BASE_URL+this.path+'/search/single/by_username?username='+username);
   }
 
   // DELETE
 
   public deleteUser(user: string){ //user = username or email
-    return this.http.delete<ResponseMessage>(this.base_url+'?user='+user);
+    return this.http.delete<ResponseMessage>(this.BASE_URL+this.path+'?user='+user);
   }
 
 }
