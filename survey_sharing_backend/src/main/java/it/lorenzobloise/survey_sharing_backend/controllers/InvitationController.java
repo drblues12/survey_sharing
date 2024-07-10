@@ -25,8 +25,6 @@ public class InvitationController {
 
     // POST
 
-    //TODO
-    // Authentication as this survey's owner
     @PostMapping
     public ResponseEntity createInvitations(@RequestParam String surveyTitle, @RequestBody @Valid List<Invitation> invitations){
         try{
@@ -41,8 +39,6 @@ public class InvitationController {
 
     // GET
 
-    //TODO
-    // Authentication as this user
     @GetMapping("/search/all")
     public ResponseEntity findAllInvitations(Authentication connectedUser){
         try{
@@ -67,8 +63,6 @@ public class InvitationController {
 
     // DELETE
 
-    //TODO
-    // Authentication as this user
     @DeleteMapping
     public ResponseEntity deleteInvitation(@RequestParam String invitation){
         try {
@@ -81,8 +75,6 @@ public class InvitationController {
 
     // PUT
 
-    //TODO
-    // Authentication as this user
     @PutMapping
     public ResponseEntity updateInvitation(@RequestParam String invitation, @RequestParam boolean accepted, Authentication connectedUser){
         try {

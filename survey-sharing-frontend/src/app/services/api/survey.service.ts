@@ -55,11 +55,4 @@ export class SurveyService{
     return this.http.delete<ResponseMessage>(this.BASE_URL+this.path+'?surveyTitle='+surveyTitle);
   }
 
-  //Deprecated
-  /*
-  public deleteSurvey(surveyTitle: string): Observable<ResponseMessage>{
-    return this.http.delete<ResponseMessage>(this.base_url+'?surveyTitle='+surveyTitle);
-  }
-  */
-
 }

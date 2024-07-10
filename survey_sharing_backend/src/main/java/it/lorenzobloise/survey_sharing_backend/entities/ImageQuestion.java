@@ -18,12 +18,6 @@ public class ImageQuestion extends Question {
     @NotBlank(message = "Id of the image shall not be blank")
     private String image; // Id of the image uploaded by the user
 
-    public ImageQuestion(String image){
-        super();
-        this.image = image;
-        this.type = QuestionType.ImageQuestion.toString();
-    }
-
     public ImageQuestion(ImageQuestion iq){
         super(iq);
         this.image = iq.getImage();

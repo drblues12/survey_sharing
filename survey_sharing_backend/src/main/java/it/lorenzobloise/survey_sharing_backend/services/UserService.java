@@ -16,21 +16,6 @@ public class UserService {
 
     // POST
 
-    //TODO
-    // Deprecated
-    public User addUser(String username, String email, String password, String firstname, String lastname, int age, String gender, String country){
-        if(userRepository.existsByIdOrUsernameOrEmail(null, username, email))
-            throw new RuntimeException("User already exists");
-        try {
-            User.Gender genderConverted = User.Gender.valueOf(gender);
-            User user = new User(username, email, password, firstname, lastname, age, genderConverted, country);
-            // Add this user in the users repository
-            return userRepository.save(user);
-        }catch (IllegalArgumentException e){
-            throw new RuntimeException("Gender "+gender+" is not supported");
-        }
-    }
-
     public User addUser(User user){
         if(userRepository.existsByIdOrUsernameOrEmail(user.getId(), user.getUsername(), user.getEmail()))
             throw new RuntimeException("User already exists");

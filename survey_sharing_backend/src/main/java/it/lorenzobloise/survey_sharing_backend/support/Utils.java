@@ -19,8 +19,4 @@ public class Utils {
         return ret;
     }
 
-    public static boolean feedbackIsPositive(String feedback){
-        return true;
-    }
-
 }

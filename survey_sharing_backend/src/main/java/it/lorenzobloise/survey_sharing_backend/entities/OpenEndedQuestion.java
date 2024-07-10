@@ -15,12 +15,6 @@ public class OpenEndedQuestion extends Question {
 
     private String answer;
 
-    public OpenEndedQuestion(String answer){
-        super();
-        this.answer = answer;
-        this.type = QuestionType.OpenEndedQuestion.toString();
-    }
-
     public OpenEndedQuestion(OpenEndedQuestion oeq){
         super(oeq);
         this.answer = oeq.getAnswer();

@@ -20,27 +20,8 @@ public class UserController {
 
     private final UserService userService;
 
-    // POST
-
-    //TODO
-    // Deprecated
-    // Authentication as admin
-    @PostMapping
-    public ResponseEntity createUser(@RequestParam String username, @RequestParam String email, @RequestParam String password,
-                                     @RequestParam String firstname, @RequestParam String lastname, @RequestParam int age,
-                                     @RequestParam String gender, @RequestParam String country){
-        try{
-            return new ResponseEntity(new ResponseMessage("Created successfully",
-                    userService.addUser(username,email,password,firstname,lastname,age,gender,country)), HttpStatus.OK);
-        }catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-        }
-    }
-
     // GET
 
-    //TODO
-    // Authentication (every role)
     @GetMapping("/search/all")
     public ResponseEntity findAllUsers(){
         Set<User> result = userService.getAllUsers();
@@ -49,8 +30,6 @@ public class UserController {
         return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
     }
 
-    //TODO
-    // Authentication (every role)
     @GetMapping("/search/by_firstname_lastname")
     public ResponseEntity findUsersByFirstnameAndLastname(@RequestParam(required = false) String query){
         if(query==null)
@@ -61,8 +40,6 @@ public class UserController {
         return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
     }
 
-    //TODO
-    // Authentication (every role)
     @GetMapping("/search/by_username")
     public ResponseEntity findUsersByUsername(@RequestParam String username){
         Set<User> result = userService.getUsersByUsername(username);
@@ -79,8 +56,6 @@ public class UserController {
         return new ResponseEntity(new ResponseMessage("", result), HttpStatus.OK);
     }
 
-    //TODO
-    // Authentication (every role)
     @GetMapping("/search/by_email")
     public ResponseEntity findUsersByEmail(@RequestParam String email){
         Set<User> result = userService.getUsersByEmail(email);
@@ -107,8 +82,6 @@ public class UserController {
 
     // DELETE
 
-    //TODO
-    // Authentication as this user
     @DeleteMapping
     public ResponseEntity deleteUser(@RequestParam String user){
         try{

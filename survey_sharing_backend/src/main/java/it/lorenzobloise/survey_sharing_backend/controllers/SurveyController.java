@@ -24,8 +24,6 @@ public class SurveyController {
 
     // POST
 
-    //TODO
-    // Authentication as this user
     @PostMapping(consumes = "application/json")
     public ResponseEntity createSurvey(@RequestParam String surveyTitle, @RequestBody List<Question> questions, Authentication connectedUser){
         try{
@@ -36,10 +34,8 @@ public class SurveyController {
         }
     }
 
-    // GET methods about all surveys
+    // GET
 
-    //TODO
-    // Authentication (every role)
     @GetMapping("/search")
     public ResponseEntity findAllSurveys(@RequestParam boolean returnClosedSurveys){
         Set<Survey> result = surveyService.getAllSurveys(returnClosedSurveys);
@@ -48,8 +44,6 @@ public class SurveyController {
         return new ResponseEntity<>(new ResponseMessage("",result), HttpStatus.OK);
     }
 
-    //TODO
-    // Authentication (every role)
     @GetMapping("/all")
     public ResponseEntity findAllCreatedSurveys(@RequestParam boolean returnClosedSurveys, Authentication connectedUser){
         try{
@@ -74,8 +68,6 @@ public class SurveyController {
         }
     }
 
-    //TODO
-    // Authentication (every role)
     @GetMapping("/search/by_title")
     public ResponseEntity findSurveysByTitle(@RequestParam String surveyTitle, @RequestParam boolean returnClosedSurveys){
         try{
@@ -88,8 +80,6 @@ public class SurveyController {
         }
     }
 
-    //TODO
-    // Authentication (every role)
     @GetMapping("/search/single/by_title")
     public ResponseEntity findSurveyByTitle(@RequestParam String surveyTitle, @RequestParam boolean returnClosedSurveys){
         try{
@@ -104,8 +94,6 @@ public class SurveyController {
 
     // PUT
 
-    //TODO
-    // Authentication as this user
     @PutMapping
     public ResponseEntity closeSurvey(@RequestParam String surveyTitle){
         try{
@@ -116,10 +104,8 @@ public class SurveyController {
         }
     }
 
-    // DELETE methods about this user's surveys
+    // DELETE
 
-    //TODO
-    // Authentication as this user
     @DeleteMapping
     public ResponseEntity deleteCreatedSurvey(@RequestParam String surveyTitle){
         //TODO
@@ -131,20 +117,5 @@ public class SurveyController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
     }
-
-    /*
-    //TODO
-    // Authentication as admin
-    @DeleteMapping
-    public ResponseEntity deleteSurvey(@RequestParam String surveyTitle){
-        try{
-            Optional<Survey> result = surveyService.removeSurvey(surveyTitle);
-            return new ResponseEntity(new ResponseMessage("Deleted successfully", result.get()), HttpStatus.OK);
-        }catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage(), e);
-        }
-    }
-
-     */
 
 }

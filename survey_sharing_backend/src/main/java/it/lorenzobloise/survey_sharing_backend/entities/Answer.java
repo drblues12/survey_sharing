@@ -44,16 +44,6 @@ public class Answer implements Comparable<Answer> {
         this.rating = null;
     }
 
-    public Answer(String user, String survey, String feedback){
-        this(user, survey);
-        this.feedback = feedback;
-    }
-
-    public Answer(String user, String survey, double rating){
-        this(user, survey);
-        this.rating = rating;
-    }
-
     public Answer(String user, String survey, String feedback, double rating){
         this(user, survey);
         this.feedback = feedback;

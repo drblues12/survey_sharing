@@ -20,12 +20,6 @@ public class MultipleChoiceQuestion extends Question {
     @DocumentReference
     private List<Option> options = new LinkedList<>();
 
-    public MultipleChoiceQuestion(List<Option> options){
-        super();
-        this.options = options;
-        this.type = QuestionType.MultipleChoiceQuestion.toString();
-    }
-
     public MultipleChoiceQuestion(MultipleChoiceQuestion mcq){
         super(mcq);
         this.type = QuestionType.MultipleChoiceQuestion.toString();

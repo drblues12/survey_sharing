@@ -21,8 +21,6 @@ public class StatisticsController {
 
     private final StatisticsService statisticsService;
 
-    //TODO
-    // Authentication as this user
     @GetMapping()
     public ResponseEntity computeStatistics(@RequestParam String surveyTitle){
         try{
@@ -33,8 +31,6 @@ public class StatisticsController {
         }
     }
 
-    //TODO
-    // Authentication as this user
     @GetMapping("/averageRating")
     public ResponseEntity computeAverageRating(@RequestParam String surveyTitle){
         try{

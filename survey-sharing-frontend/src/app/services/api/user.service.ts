@@ -11,12 +11,6 @@ export class UserService{
 
   constructor(@Inject('BASE_URL') private BASE_URL: string, private http:HttpClient) { }
 
-  // POST
-  // Deprecated
-  public createUser(username: string, email: string, name: string, surname: string, age: string, gender: string, country: string){
-    return this.http.post<ResponseMessage>(this.BASE_URL+this.path+'?username='+username+'&email='+email+'&name='+name+'&surname='+surname+'&age='+age+'&gender='+gender+'&country='+country,null);
-  }
-
   // GET
 
   public findAllUsers(){

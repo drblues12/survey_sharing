@@ -60,8 +60,8 @@ public class QuestionService {
 
     // DELETE
 
-    public void removeQuestion(String q){
-        Optional<Question> opt_q = questionRepository.findById(q);
+    public void removeQuestion(String question_id){
+        Optional<Question> opt_q = questionRepository.findById(question_id);
         if(opt_q.isEmpty())
             throw new RuntimeException("Question does not exist");
         if(opt_q.get().getType().equals("MutipleChoiceQuestion"))

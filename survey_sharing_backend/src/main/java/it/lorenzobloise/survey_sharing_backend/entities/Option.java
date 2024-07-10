@@ -29,9 +29,4 @@ public class Option {
         this.option = option;
     }
 
-    public Option(String option, boolean selected){
-        this(option);
-        this.selected = selected;
-    }
-
 }

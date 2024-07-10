@@ -26,8 +26,6 @@ public class AnswerController {
 
     // POST
 
-    //TODO
-    // Authentication as this user
     @PostMapping("/create")
     public ResponseEntity createAnswer(@RequestParam String survey, @RequestParam double rating, @RequestParam String feedback,
                                        @RequestBody List<Question> questions, Authentication connectedUser){
@@ -41,8 +39,6 @@ public class AnswerController {
 
     // GET
 
-    //TODO
-    // Authentication as this user
     @GetMapping("/search")
     public ResponseEntity findAllAnswers(Authentication connectedUser){
         try{
@@ -55,8 +51,6 @@ public class AnswerController {
         }
     }
 
-    //TODO
-    // Authentication as this user
     @GetMapping("/search/by_survey_title")
     public ResponseEntity findAnswersBySurveyTitle(@RequestParam String surveyTitle, Authentication connectedUser){
         try{
@@ -83,8 +77,6 @@ public class AnswerController {
 
     // DELETE
 
-    //TODO
-    // Authentication as this user
     @DeleteMapping("/{answer}")
     public ResponseEntity deleteAnswer(@PathVariable(value = "answer") String answer){
         try{
