@@ -38,4 +38,8 @@ export class SingleUserComponent implements OnInit {
     return this.globalService.getAnswers().find(a => a.answer.survey==surveyTitle)!=undefined;
   }
 
+  goToAnswerPage(surveyTitle: string): void {
+    this.globalService.navigate('home/answer',surveyTitle);
+  }
+
 }

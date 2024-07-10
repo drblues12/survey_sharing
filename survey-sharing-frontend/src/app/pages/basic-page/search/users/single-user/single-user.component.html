@@ -88,7 +88,7 @@
                       </div>
                       <div class="item-3">
                         <button nbButton [disabled]="surveyAlreadyAnswered(survey.title)" nbTooltip="You have already answered this survey"
-                        [nbTooltipDisabled]="!surveyAlreadyAnswered(survey.title)">Answer</button>
+                        [nbTooltipDisabled]="!surveyAlreadyAnswered(survey.title)" (click)="goToAnswerPage(survey.title)">Answer</button>
                       </div>
                     </div>
                   </nb-list-item>
