@@ -16,9 +16,9 @@ import java.nio.charset.StandardCharsets;
 
 public class SentimentAnalysis {
 
-    private static final String awsAccessKey = "AKIAZI2LELKBO55D57W3";
-    private static final String awsSecretKey = "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";
-    private static final String awsRegion = "eu-west-2";
+    private static final String awsAccessKey = ""; //Insert AWS access key
+    private static final String awsSecretKey = ""; //Insert AWS secret key
+    private static final String awsRegion = ""; //Insert AWS region
 
     private AmazonComprehend comprehendClient() {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(awsAccessKey, awsSecretKey);
